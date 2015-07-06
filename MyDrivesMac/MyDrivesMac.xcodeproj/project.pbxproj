@@ -1,0 +1,427 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		B55B2AC01B4A86C900DED7E2 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = B55B2ABF1B4A86C900DED7E2 /* AppDelegate.m */; };
+		B55B2AC21B4A86C900DED7E2 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = B55B2AC11B4A86C900DED7E2 /* main.m */; };
+		B55B2AC41B4A86C900DED7E2 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B55B2AC31B4A86C900DED7E2 /* Images.xcassets */; };
+		B55B2AC71B4A86C900DED7E2 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = B55B2AC51B4A86C900DED7E2 /* MainMenu.xib */; };
+		B55B2AD31B4A86C900DED7E2 /* MyDrivesMacTests.m in Sources */ = {isa = PBXBuildFile; fileRef = B55B2AD21B4A86C900DED7E2 /* MyDrivesMacTests.m */; };
+		B55B2ADD1B4A891E00DED7E2 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B55B2ADC1B4A891E00DED7E2 /* WebKit.framework */; };
+		B55B2ADF1B4A8A3C00DED7E2 /* index.html in Resources */ = {isa = PBXBuildFile; fileRef = B55B2ADE1B4A8A3C00DED7E2 /* index.html */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		B55B2ACD1B4A86C900DED7E2 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B55B2AB11B4A86C900DED7E2 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = B55B2AB81B4A86C900DED7E2;
+			remoteInfo = MyDrivesMac;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		B55B2AB91B4A86C900DED7E2 /* MyDrivesMac.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyDrivesMac.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		B55B2ABD1B4A86C900DED7E2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B55B2ABE1B4A86C900DED7E2 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		B55B2ABF1B4A86C900DED7E2 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		B55B2AC11B4A86C900DED7E2 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		B55B2AC31B4A86C900DED7E2 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		B55B2AC61B4A86C900DED7E2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		B55B2ACC1B4A86C900DED7E2 /* MyDrivesMacTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MyDrivesMacTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		B55B2AD11B4A86C900DED7E2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B55B2AD21B4A86C900DED7E2 /* MyDrivesMacTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MyDrivesMacTests.m; sourceTree = "<group>"; };
+		B55B2ADC1B4A891E00DED7E2 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
+		B55B2ADE1B4A8A3C00DED7E2 /* index.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = index.html; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		B55B2AB61B4A86C900DED7E2 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B55B2ADD1B4A891E00DED7E2 /* WebKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B55B2AC91B4A86C900DED7E2 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		B55B2AB01B4A86C900DED7E2 = {
+			isa = PBXGroup;
+			children = (
+				B55B2ADE1B4A8A3C00DED7E2 /* index.html */,
+				B55B2ADC1B4A891E00DED7E2 /* WebKit.framework */,
+				B55B2ABB1B4A86C900DED7E2 /* MyDrivesMac */,
+				B55B2ACF1B4A86C900DED7E2 /* MyDrivesMacTests */,
+				B55B2ABA1B4A86C900DED7E2 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		B55B2ABA1B4A86C900DED7E2 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				B55B2AB91B4A86C900DED7E2 /* MyDrivesMac.app */,
+				B55B2ACC1B4A86C900DED7E2 /* MyDrivesMacTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		B55B2ABB1B4A86C900DED7E2 /* MyDrivesMac */ = {
+			isa = PBXGroup;
+			children = (
+				B55B2ABE1B4A86C900DED7E2 /* AppDelegate.h */,
+				B55B2ABF1B4A86C900DED7E2 /* AppDelegate.m */,
+				B55B2AC31B4A86C900DED7E2 /* Images.xcassets */,
+				B55B2AC51B4A86C900DED7E2 /* MainMenu.xib */,
+				B55B2ABC1B4A86C900DED7E2 /* Supporting Files */,
+			);
+			path = MyDrivesMac;
+			sourceTree = "<group>";
+		};
+		B55B2ABC1B4A86C900DED7E2 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				B55B2ABD1B4A86C900DED7E2 /* Info.plist */,
+				B55B2AC11B4A86C900DED7E2 /* main.m */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		B55B2ACF1B4A86C900DED7E2 /* MyDrivesMacTests */ = {
+			isa = PBXGroup;
+			children = (
+				B55B2AD21B4A86C900DED7E2 /* MyDrivesMacTests.m */,
+				B55B2AD01B4A86C900DED7E2 /* Supporting Files */,
+			);
+			path = MyDrivesMacTests;
+			sourceTree = "<group>";
+		};
+		B55B2AD01B4A86C900DED7E2 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				B55B2AD11B4A86C900DED7E2 /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		B55B2AB81B4A86C900DED7E2 /* MyDrivesMac */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B55B2AD61B4A86C900DED7E2 /* Build configuration list for PBXNativeTarget "MyDrivesMac" */;
+			buildPhases = (
+				B55B2AB51B4A86C900DED7E2 /* Sources */,
+				B55B2AB61B4A86C900DED7E2 /* Frameworks */,
+				B55B2AB71B4A86C900DED7E2 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = MyDrivesMac;
+			productName = MyDrivesMac;
+			productReference = B55B2AB91B4A86C900DED7E2 /* MyDrivesMac.app */;
+			productType = "com.apple.product-type.application";
+		};
+		B55B2ACB1B4A86C900DED7E2 /* MyDrivesMacTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B55B2AD91B4A86C900DED7E2 /* Build configuration list for PBXNativeTarget "MyDrivesMacTests" */;
+			buildPhases = (
+				B55B2AC81B4A86C900DED7E2 /* Sources */,
+				B55B2AC91B4A86C900DED7E2 /* Frameworks */,
+				B55B2ACA1B4A86C900DED7E2 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				B55B2ACE1B4A86C900DED7E2 /* PBXTargetDependency */,
+			);
+			name = MyDrivesMacTests;
+			productName = MyDrivesMacTests;
+			productReference = B55B2ACC1B4A86C900DED7E2 /* MyDrivesMacTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		B55B2AB11B4A86C900DED7E2 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0640;
+				ORGANIZATIONNAME = cobasoft;
+				TargetAttributes = {
+					B55B2AB81B4A86C900DED7E2 = {
+						CreatedOnToolsVersion = 6.4;
+						DevelopmentTeam = C49A3W264D;
+					};
+					B55B2ACB1B4A86C900DED7E2 = {
+						CreatedOnToolsVersion = 6.4;
+						TestTargetID = B55B2AB81B4A86C900DED7E2;
+					};
+				};
+			};
+			buildConfigurationList = B55B2AB41B4A86C900DED7E2 /* Build configuration list for PBXProject "MyDrivesMac" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = B55B2AB01B4A86C900DED7E2;
+			productRefGroup = B55B2ABA1B4A86C900DED7E2 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				B55B2AB81B4A86C900DED7E2 /* MyDrivesMac */,
+				B55B2ACB1B4A86C900DED7E2 /* MyDrivesMacTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		B55B2AB71B4A86C900DED7E2 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B55B2ADF1B4A8A3C00DED7E2 /* index.html in Resources */,
+				B55B2AC41B4A86C900DED7E2 /* Images.xcassets in Resources */,
+				B55B2AC71B4A86C900DED7E2 /* MainMenu.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B55B2ACA1B4A86C900DED7E2 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		B55B2AB51B4A86C900DED7E2 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B55B2AC21B4A86C900DED7E2 /* main.m in Sources */,
+				B55B2AC01B4A86C900DED7E2 /* AppDelegate.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B55B2AC81B4A86C900DED7E2 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B55B2AD31B4A86C900DED7E2 /* MyDrivesMacTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		B55B2ACE1B4A86C900DED7E2 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = B55B2AB81B4A86C900DED7E2 /* MyDrivesMac */;
+			targetProxy = B55B2ACD1B4A86C900DED7E2 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		B55B2AC51B4A86C900DED7E2 /* MainMenu.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				B55B2AC61B4A86C900DED7E2 /* Base */,
+			);
+			name = MainMenu.xib;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		B55B2AD41B4A86C900DED7E2 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		B55B2AD51B4A86C900DED7E2 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		B55B2AD71B4A86C900DED7E2 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "Developer ID Application";
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = MyDrivesMac/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		B55B2AD81B4A86C900DED7E2 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "Developer ID Application";
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = MyDrivesMac/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		B55B2ADA1B4A86C900DED7E2 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+					"$(inherited)",
+				);
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = MyDrivesMacTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MyDrivesMac.app/Contents/MacOS/MyDrivesMac";
+			};
+			name = Debug;
+		};
+		B55B2ADB1B4A86C900DED7E2 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = MyDrivesMacTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MyDrivesMac.app/Contents/MacOS/MyDrivesMac";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		B55B2AB41B4A86C900DED7E2 /* Build configuration list for PBXProject "MyDrivesMac" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B55B2AD41B4A86C900DED7E2 /* Debug */,
+				B55B2AD51B4A86C900DED7E2 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		B55B2AD61B4A86C900DED7E2 /* Build configuration list for PBXNativeTarget "MyDrivesMac" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B55B2AD71B4A86C900DED7E2 /* Debug */,
+				B55B2AD81B4A86C900DED7E2 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		B55B2AD91B4A86C900DED7E2 /* Build configuration list for PBXNativeTarget "MyDrivesMacTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B55B2ADA1B4A86C900DED7E2 /* Debug */,
+				B55B2ADB1B4A86C900DED7E2 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = B55B2AB11B4A86C900DED7E2 /* Project object */;
+}
