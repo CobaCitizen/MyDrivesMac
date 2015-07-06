@@ -14,6 +14,7 @@
 		B55B2AD31B4A86C900DED7E2 /* MyDrivesMacTests.m in Sources */ = {isa = PBXBuildFile; fileRef = B55B2AD21B4A86C900DED7E2 /* MyDrivesMacTests.m */; };
 		B55B2ADD1B4A891E00DED7E2 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B55B2ADC1B4A891E00DED7E2 /* WebKit.framework */; };
 		B55B2ADF1B4A8A3C00DED7E2 /* index.html in Resources */ = {isa = PBXBuildFile; fileRef = B55B2ADE1B4A8A3C00DED7E2 /* index.html */; };
+		B55B2AE01B4A8BE600DED7E2 /* index.html in Sources */ = {isa = PBXBuildFile; fileRef = B55B2ADE1B4A8A3C00DED7E2 /* index.html */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -219,6 +220,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B55B2AE01B4A8BE600DED7E2 /* index.html in Sources */,
 				B55B2AC21B4A86C900DED7E2 /* main.m in Sources */,
 				B55B2AC01B4A86C900DED7E2 /* AppDelegate.m in Sources */,
 			);

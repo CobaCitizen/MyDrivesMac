@@ -19,10 +19,8 @@
 @implementation AppDelegate
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
-
-
-    NSString *urlText = @"file://Users/maksim/Projects/MyDrivesMac/MyDrivesMac/index.html";
-    NSURL *url = [NSURL URLWithString:urlText];
+    
+    NSURL *url = [[NSBundle mainBundle] URLForResource:@"index" withExtension:@"html"];
     [[self.myWebView mainFrame] loadRequest:[NSURLRequest requestWithURL:url]];
 }
 
