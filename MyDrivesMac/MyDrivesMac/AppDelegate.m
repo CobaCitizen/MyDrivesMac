@@ -44,4 +44,25 @@
     }
 }
 
+-(IBAction)actViewLog:(id)sender {
+    
+}
+
+-(IBAction)actAddFolder:(id)sender {
+}
+
+-(IBAction)actRemoveFolder:(id)sender {
+}
+
+-(IBAction)actEditFolder:(id)sender {
+}
+
+-(IBAction)actGetFreePort:(id)sender {
+}
+
+-(IBAction)actStartServer:(id)sender {
+}
+
+-(IBAction)actStopServer:(id)sender {
+}
 @end
