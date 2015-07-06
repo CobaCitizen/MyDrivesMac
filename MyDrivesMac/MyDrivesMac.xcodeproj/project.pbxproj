@@ -12,9 +12,7 @@
 		B55B2AC41B4A86C900DED7E2 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B55B2AC31B4A86C900DED7E2 /* Images.xcassets */; };
 		B55B2AC71B4A86C900DED7E2 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = B55B2AC51B4A86C900DED7E2 /* MainMenu.xib */; };
 		B55B2AD31B4A86C900DED7E2 /* MyDrivesMacTests.m in Sources */ = {isa = PBXBuildFile; fileRef = B55B2AD21B4A86C900DED7E2 /* MyDrivesMacTests.m */; };
-		B55B2ADD1B4A891E00DED7E2 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B55B2ADC1B4A891E00DED7E2 /* WebKit.framework */; };
-		B55B2ADF1B4A8A3C00DED7E2 /* index.html in Resources */ = {isa = PBXBuildFile; fileRef = B55B2ADE1B4A8A3C00DED7E2 /* index.html */; };
-		B55B2AE01B4A8BE600DED7E2 /* index.html in Sources */ = {isa = PBXBuildFile; fileRef = B55B2ADE1B4A8A3C00DED7E2 /* index.html */; };
+		B5D0DBAD1B4AB73400B39CC7 /* Folders.plist in Resources */ = {isa = PBXBuildFile; fileRef = B5D0DBAC1B4AB73400B39CC7 /* Folders.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -39,7 +37,7 @@
 		B55B2AD11B4A86C900DED7E2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B55B2AD21B4A86C900DED7E2 /* MyDrivesMacTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MyDrivesMacTests.m; sourceTree = "<group>"; };
 		B55B2ADC1B4A891E00DED7E2 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
-		B55B2ADE1B4A8A3C00DED7E2 /* index.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = index.html; sourceTree = "<group>"; };
+		B5D0DBAC1B4AB73400B39CC7 /* Folders.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Folders.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -47,7 +45,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B55B2ADD1B4A891E00DED7E2 /* WebKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -64,7 +61,7 @@
 		B55B2AB01B4A86C900DED7E2 = {
 			isa = PBXGroup;
 			children = (
-				B55B2ADE1B4A8A3C00DED7E2 /* index.html */,
+				B5D0DBAC1B4AB73400B39CC7 /* Folders.plist */,
 				B55B2ADC1B4A891E00DED7E2 /* WebKit.framework */,
 				B55B2ABB1B4A86C900DED7E2 /* MyDrivesMac */,
 				B55B2ACF1B4A86C900DED7E2 /* MyDrivesMacTests */,
@@ -200,8 +197,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B55B2ADF1B4A8A3C00DED7E2 /* index.html in Resources */,
 				B55B2AC41B4A86C900DED7E2 /* Images.xcassets in Resources */,
+				B5D0DBAD1B4AB73400B39CC7 /* Folders.plist in Resources */,
 				B55B2AC71B4A86C900DED7E2 /* MainMenu.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -220,7 +217,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B55B2AE01B4A8BE600DED7E2 /* index.html in Sources */,
 				B55B2AC21B4A86C900DED7E2 /* main.m in Sources */,
 				B55B2AC01B4A86C900DED7E2 /* AppDelegate.m in Sources */,
 			);
@@ -414,6 +410,7 @@
 				B55B2AD81B4A86C900DED7E2 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		B55B2AD91B4A86C900DED7E2 /* Build configuration list for PBXNativeTarget "MyDrivesMacTests" */ = {
 			isa = XCConfigurationList;
@@ -422,6 +419,7 @@
 				B55B2ADB1B4A86C900DED7E2 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

@@ -7,11 +7,10 @@
 //
 
 #import <Cocoa/Cocoa.h>
-#import <WebKit/Webkit.h>
 
 @interface AppDelegate : NSObject <NSApplicationDelegate>
 
-@property (retain, nonatomic) IBOutlet WebView *myWebView;
+@property (nonatomic, retain) IBOutlet NSComboBox *cbAddresses;
 
 @end
 
