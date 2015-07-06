@@ -35,6 +35,9 @@
 		B5D0DBDD1B4B16AA00B39CC7 /* favicon.bmp in Resources */ = {isa = PBXBuildFile; fileRef = B5D0DBD91B4B16AA00B39CC7 /* favicon.bmp */; };
 		B5D0DBDE1B4B16AA00B39CC7 /* favicon.ico in Resources */ = {isa = PBXBuildFile; fileRef = B5D0DBDA1B4B16AA00B39CC7 /* favicon.ico */; };
 		B5D0DBDF1B4B16AA00B39CC7 /* img_view.html in Resources */ = {isa = PBXBuildFile; fileRef = B5D0DBDB1B4B16AA00B39CC7 /* img_view.html */; };
+		B5D0DBE11B4B173600B39CC7 /* WndWebView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B5D0DBE01B4B173600B39CC7 /* WndWebView.xib */; };
+		B5D0DBE51B4B176700B39CC7 /* WndWebView.m in Sources */ = {isa = PBXBuildFile; fileRef = B5D0DBE41B4B176700B39CC7 /* WndWebView.m */; };
+		B5D0DBE61B4B177F00B39CC7 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B55B2ADC1B4A891E00DED7E2 /* WebKit.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -83,6 +86,9 @@
 		B5D0DBD91B4B16AA00B39CC7 /* favicon.bmp */ = {isa = PBXFileReference; lastKnownFileType = image.bmp; path = favicon.bmp; sourceTree = "<group>"; };
 		B5D0DBDA1B4B16AA00B39CC7 /* favicon.ico */ = {isa = PBXFileReference; lastKnownFileType = image.ico; path = favicon.ico; sourceTree = "<group>"; };
 		B5D0DBDB1B4B16AA00B39CC7 /* img_view.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = img_view.html; sourceTree = "<group>"; };
+		B5D0DBE01B4B173600B39CC7 /* WndWebView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WndWebView.xib; sourceTree = "<group>"; };
+		B5D0DBE31B4B176700B39CC7 /* WndWebView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WndWebView.h; sourceTree = "<group>"; };
+		B5D0DBE41B4B176700B39CC7 /* WndWebView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WndWebView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -90,6 +96,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B5D0DBE61B4B177F00B39CC7 /* WebKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -127,11 +134,13 @@
 		B55B2ABB1B4A86C900DED7E2 /* MyDrivesMac */ = {
 			isa = PBXGroup;
 			children = (
+				B5D0DBE21B4B174800B39CC7 /* WndControllers */,
 				B55B2ABE1B4A86C900DED7E2 /* AppDelegate.h */,
 				B55B2ABF1B4A86C900DED7E2 /* AppDelegate.m */,
 				B55B2AC31B4A86C900DED7E2 /* Images.xcassets */,
 				B55B2AC51B4A86C900DED7E2 /* MainMenu.xib */,
 				B55B2ABC1B4A86C900DED7E2 /* Supporting Files */,
+				B5D0DBE01B4B173600B39CC7 /* WndWebView.xib */,
 			);
 			path = MyDrivesMac;
 			sourceTree = "<group>";
@@ -224,6 +233,15 @@
 			name = data;
 			sourceTree = "<group>";
 		};
+		B5D0DBE21B4B174800B39CC7 /* WndControllers */ = {
+			isa = PBXGroup;
+			children = (
+				B5D0DBE31B4B176700B39CC7 /* WndWebView.h */,
+				B5D0DBE41B4B176700B39CC7 /* WndWebView.m */,
+			);
+			name = WndControllers;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -304,6 +322,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B5D0DBE11B4B173600B39CC7 /* WndWebView.xib in Resources */,
 				B5D0DBC71B4B162100B39CC7 /* fm.js in Resources */,
 				B5D0DBC51B4B162100B39CC7 /* bootstrap.min.js in Resources */,
 				B5D0DBBC1B4B160000B39CC7 /* glyphicons-halflings-regular.woff2 in Resources */,
@@ -346,6 +365,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B5D0DBCA1B4B162100B39CC7 /* jquery.min.map in Sources */,
+				B5D0DBE51B4B176700B39CC7 /* WndWebView.m in Sources */,
 				B55B2AC21B4A86C900DED7E2 /* main.m in Sources */,
 				B55B2AC01B4A86C900DED7E2 /* AppDelegate.m in Sources */,
 			);

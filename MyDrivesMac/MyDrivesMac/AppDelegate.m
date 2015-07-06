@@ -7,11 +7,12 @@
 //
 
 #import "AppDelegate.h"
-
+#import "WndWebView.h"
 
 @interface AppDelegate ()
 
 @property (weak) IBOutlet NSWindow *window;
+@property (strong) WndWebView *wndWebViewController;
 
 
 @end
@@ -19,8 +20,7 @@
 @implementation AppDelegate
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
-    
-//    NSURL *url = [[NSBundle mainBundle] URLForResource:@"index" withExtension:@"html"];
+
     [self readSettingsFile];
     [self fillAddressesCombo];
 }
@@ -46,6 +46,8 @@
 
 -(IBAction)actViewLog:(id)sender {
     
+    self.wndWebViewController = [[WndWebView alloc] initWithWindowNibName:@"WndWebView"];
+    [self.wndWebViewController showWindow:self];
 }
 
 -(IBAction)actAddFolder:(id)sender {
