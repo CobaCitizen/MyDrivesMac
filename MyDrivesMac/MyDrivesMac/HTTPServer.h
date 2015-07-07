@@ -12,11 +12,7 @@
 //  appreciated but not required.
 //
 
-#if TARGET_OS_IPHONE
-#import <UIKit/UIKit.h>
-#else
 #import <Cocoa/Cocoa.h>
-#endif
 
 typedef enum
 {
@@ -36,12 +32,18 @@ typedef enum
 	HTTPServerState state;
 	CFMutableDictionaryRef incomingRequests;
 	NSMutableSet *responseHandlers;
+	
+	NSString *_host;
+	int _port;
 }
 
 @property (nonatomic, readonly, retain) NSError *lastError;
 @property (readonly, assign) HTTPServerState state;
+@property (nonatomic) NSString *site;
+@property (nonatomic, readonly, retain) NSArray *folders;
 
-+ (HTTPServer *)sharedHTTPServer;
+//+ (HTTPServer *)sharedHTTPServer;
+-(id) initWithHost:(NSString*) host andPort:(int) port;
 
 - (void)start;
 - (void)stop;

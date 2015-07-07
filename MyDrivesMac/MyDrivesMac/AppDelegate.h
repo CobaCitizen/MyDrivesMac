@@ -11,6 +11,6 @@
 @interface AppDelegate : NSObject <NSApplicationDelegate>
 
 @property (nonatomic, retain) IBOutlet NSComboBox *cbAddresses;
-
+@property (nonatomic, retain) IBOutlet NSTextField *fldPort;
 @end
 

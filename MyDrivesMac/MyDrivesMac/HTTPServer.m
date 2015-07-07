@@ -16,10 +16,9 @@
 #import "SynthesizeSingleton.h"
 #import <sys/socket.h>
 #import <netinet/in.h>
-#if TARGET_OS_IPHONE
-#import <CFNetwork/CFNetwork.h>
-#endif
+#import <netdb.h>
 #import "HTTPResponseHandler.h"
+#import "PList.h"
 
 #define HTTP_SERVER_PORT 8080
 
@@ -30,16 +29,16 @@ NSString * const HTTPServerNotificationStateChanged = @"ServerNotificationStateC
 //	The "lastError" and "state" are only writable by the server itself.
 //
 @interface HTTPServer ()
-@property (nonatomic, readwrite, retain) NSError *lastError;
+@property (nonatomic, readwrite) NSError *lastError;
 @property (readwrite, assign) HTTPServerState state;
 @end
 
 @implementation HTTPServer
-
-@synthesize lastError;
+//@property (nonatomic, @synthesize lastError;
 @synthesize state;
+@synthesize lastError;
 
-SYNTHESIZE_SINGLETON_FOR_CLASS(HTTPServer);
+//SYNTHESIZE_SINGLETON_FOR_CLASS(HTTPServer);
 
 //
 // init
@@ -65,7 +64,26 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(HTTPServer);
 	}
 	return self;
 }
+-(id) initWithHost:(NSString*) host andPort:(int)port{
 
+	
+	self = [super init];
+	if (self != nil)
+	{
+		_host = [NSString stringWithString:host];
+		_port = port;
+		
+		self.state = SERVER_STATE_IDLE;
+		responseHandlers = [[NSMutableSet alloc] init];
+		incomingRequests =
+		CFDictionaryCreateMutable(
+								  kCFAllocatorDefault,
+								  0,
+								  &kCFTypeDictionaryKeyCallBacks,
+								  &kCFTypeDictionaryValueCallBacks);
+	}
+	return self;
+}
 //
 // setLastError:
 //
@@ -76,8 +94,8 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(HTTPServer);
 //
 - (void)setLastError:(NSError *)anError
 {
-	[anError retain];
-	[lastError release];
+	//[anError retain];
+	//[lastError release];
 	lastError = anError;
 	
 	if (lastError == nil)
@@ -89,6 +107,29 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(HTTPServer);
 	
 	self.state = SERVER_STATE_IDLE;
 	NSLog(@"HTTPServer error: %@", self.lastError);
+}
+
+-(NSString*) _getDocumentFolder{
+	NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+	NSString *directory = [NSString stringWithFormat:@"%@/MyDrivesMac/",[paths objectAtIndex:0]];
+	
+	
+	NSFileManager *fileManager= [NSFileManager defaultManager];
+	BOOL isDir;
+	if([fileManager fileExistsAtPath:directory isDirectory: &isDir]){
+		return directory;
+	}
+	NSError *error = nil;
+	if(![fileManager createDirectoryAtPath:directory withIntermediateDirectories:YES attributes:nil error:&error]) {
+		// An error has occurred, do something to handle it
+		NSLog(@"Failed to create directory \"%@\". Error: %@", directory, error);
+	}
+	return  directory;
+}
+-(NSString*) _getMoviesFolder{
+	NSArray *paths = NSSearchPathForDirectoriesInDomains(NSMoviesDirectory, NSUserDomainMask, YES);
+	return [paths objectAtIndex:0];
+	
 }
 
 //
@@ -135,7 +176,95 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(HTTPServer);
 		postNotificationName:HTTPServerNotificationStateChanged
 		object:self];
 }
+-(bool)getHostAddress:(NSString*)hostname sockAddressIn:(struct sockaddr_in*)result {
+	struct addrinfo hints, *res, *iterateRes;
+	int retval;
+	
+	memset (&hints, 0, sizeof (struct addrinfo));
+	hints.ai_family = PF_UNSPEC;
+	hints.ai_socktype = SOCK_STREAM;
+	hints.ai_flags |= AI_CANONNAME;
+	
+	unsigned long maxLength = [hostname length]+1;
+	const char hostNameC[maxLength];
+	struct in_addr *inAddr;
+	bool foundAddress = NO;
+	
+	if (hostNameC[0] != 0) {
+		[hostname getCString:(void*)&hostNameC maxLength:maxLength encoding:NSASCIIStringEncoding];
+		
+		retval = getaddrinfo (hostNameC, NULL, &hints, &res);
+		if (retval == 0) {
+			
+			iterateRes = res;
+			while (iterateRes && !foundAddress) {
+				switch (iterateRes->ai_family)
+				{
+					case AF_INET:
+						inAddr = &((struct sockaddr_in *) iterateRes->ai_addr)->sin_addr;
+						memcpy(&(result->sin_addr), inAddr, sizeof(struct in_addr));
+						foundAddress = YES;
+				}
+				iterateRes = iterateRes->ai_next;
+			}
+		}
+		
+		freeaddrinfo (res);
+	}
+	
+	return foundAddress;
+}
 
+-(NSMutableDictionary*) _loadServerSettings
+{
+	
+	NSMutableDictionary *list = nil;
+	
+	NSFileManager *fileManager = [NSFileManager defaultManager];
+	NSString *fileName = [NSString stringWithFormat:@"%@/folders.plist",[self _getDocumentFolder]];
+	BOOL isDir;
+	
+	if([fileManager fileExistsAtPath:fileName isDirectory: &isDir]){
+		list = [NSMutableDictionary dictionaryWithContentsOfFile:fileName];
+		return list;
+	}
+
+	//Main Container
+	NSDictionary * dict =[NSMutableDictionary new];
+ 
+	NSNumber * port = [NSNumber numberWithInt:_port];
+	NSString * site =  @"/Users/maximbukshovan/MyDrivesMac/MyDrivesMac%@";
+ 
+	//NSString * dataString =@"My Photo";
+	//NSData * photo = [dataString dataUsingEncoding:NSUTF8StringEncoding];
+ 
+	NSMutableArray * folders =[NSMutableArray new];
+ 
+	NSMutableDictionary * folder =[NSMutableDictionary new];
+	[folder setValue: @"Documents" forKey:@"name"];
+	[folder setValue: [self _getDocumentFolder] forKey:@"path"];
+
+	[folders addObject:folder];
+
+	[folder setValue: @"Movies" forKey:@"name"];
+	[folder setValue: [self _getMoviesFolder] forKey:@"path"];
+	
+	[folders addObject:folder];
+
+	[dict setValue:_host forKey:@"host"];
+	[dict setValue:port forKey:@"port"];
+	[dict setValue:site forKey:@"site"];
+	[dict setValue:folders forKey:@"folders"];
+ 
+	NSString * plist = [PList objToPlistAsString:dict];
+ 
+	list = [PList plistToObjectFromString:plist];
+	NSLog(@"Plist =%@",plist);
+	
+	[list writeToFile:fileName atomically:YES];
+	
+	return list;
+}
 //
 // start
 //
@@ -143,6 +272,11 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(HTTPServer);
 //
 - (void)start
 {
+	NSString *docFolder = [self _getDocumentFolder];
+	NSMutableDictionary *dic = [self _loadServerSettings];
+	
+	_folders = dic[@"folders"];
+	
 	self.lastError = nil;
 	self.state = SERVER_STATE_STARTING;
 
@@ -162,16 +296,20 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(HTTPServer);
 		[self errorWithName:@"Unable to set socket options."];
 		return;
 	}
-	
+
 	struct sockaddr_in address;
 	memset(&address, 0, sizeof(address));
 	address.sin_len = sizeof(address);
 	address.sin_family = AF_INET;
-	address.sin_addr.s_addr = htonl(INADDR_ANY);
-	address.sin_port = htons(HTTP_SERVER_PORT);
-	CFDataRef addressData =
-		CFDataCreate(NULL, (const UInt8 *)&address, sizeof(address));
-	[(id)addressData autorelease];
+//	address.sin_addr.s_addr = htonl(INADDR_ANY); 
+	//address.sin_addr.s_addr = inet_addr([_host UTF8String]);
+	[self getHostAddress:_host sockAddressIn:&address];
+
+//	address.sin_port = htons(HTTP_SERVER_PORT);
+	address.sin_port = htons(_port);
+	
+	CFDataRef addressData =	CFDataCreate(NULL, (const UInt8 *)&address, sizeof(address));
+	//[(id)addressData autorelease];
 	
 	if (CFSocketSetAddress(socket, addressData) != kCFSocketSuccess)
 	{
@@ -179,9 +317,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(HTTPServer);
 		return;
 	}
 
-	listeningHandle = [[NSFileHandle alloc]
-		initWithFileDescriptor:fileDescriptor
-		closeOnDealloc:YES];
+	listeningHandle = [[NSFileHandle alloc]	initWithFileDescriptor:fileDescriptor closeOnDealloc:YES];
 
 	[[NSNotificationCenter defaultCenter]
 		addObserver:self
@@ -191,6 +327,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(HTTPServer);
 	[listeningHandle acceptConnectionInBackgroundAndNotify];
 	
 	self.state = SERVER_STATE_RUNNING;
+	self.site = @"/Users/maximbukshovan/MyDrivesMac/MyDrivesMac%@";
 }
 
 //
@@ -217,7 +354,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(HTTPServer);
 		removeObserver:self
 		name:NSFileHandleDataAvailableNotification
 		object:incomingFileHandle];
-	CFDictionaryRemoveValue(incomingRequests, incomingFileHandle);
+	CFDictionaryRemoveValue(incomingRequests, (__bridge const void *)(incomingFileHandle));
 }
 
 //
@@ -237,11 +374,11 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(HTTPServer);
 	[responseHandlers removeAllObjects];
 
 	[listeningHandle closeFile];
-	[listeningHandle release];
+	//[listeningHandle release];
 	listeningHandle = nil;
 	
 	for (NSFileHandle *incomingFileHandle in
-		[[(NSDictionary *)incomingRequests copy] autorelease])
+		[(__bridge NSDictionary *)incomingRequests copy] )
 	{
 		[self stopReceivingForFileHandle:incomingFileHandle close:YES];
 	}
@@ -276,8 +413,8 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(HTTPServer);
 	{
 		CFDictionaryAddValue(
 			incomingRequests,
-			incomingFileHandle,
-			[(id)CFHTTPMessageCreateEmpty(kCFAllocatorDefault, TRUE) autorelease]);
+			(__bridge const void *)(incomingFileHandle),
+			(__bridge const void *)((__bridge id)CFHTTPMessageCreateEmpty(kCFAllocatorDefault, TRUE) ));
 		
 		[[NSNotificationCenter defaultCenter]
 			addObserver:self
@@ -314,7 +451,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(HTTPServer);
 	}
 
 	CFHTTPMessageRef incomingRequest =
-		(CFHTTPMessageRef)CFDictionaryGetValue(incomingRequests, incomingFileHandle);
+		(CFHTTPMessageRef)CFDictionaryGetValue(incomingRequests, (__bridge const void *)(incomingFileHandle));
 	if (!incomingRequest)
 	{
 		[self stopReceivingForFileHandle:incomingFileHandle close:YES];
@@ -341,7 +478,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(HTTPServer);
 		[responseHandlers addObject:handler];
 		[self stopReceivingForFileHandle:incomingFileHandle close:NO];
 
-		[handler startResponse];	
+		[handler startResponse ];
 		return;
 	}
 

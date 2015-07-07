@@ -15,7 +15,13 @@
 #import "AppTextFileResponse.h"
 #import "HTTPServer.h"
 
-@implementation AppTextFileResponse
+
+NSString *_filePath;
+
+@implementation AppTextFileResponse{
+
+}
+
 
 //
 // load
@@ -47,43 +53,127 @@
 	method:(NSString *)requestMethod
 	url:(NSURL *)requestURL
 	headerFields:(NSDictionary *)requestHeaderFields
+	server : (HTTPServer*)server
 {
-	if ([requestURL.path isEqualToString:@"/"])
-	{
+
+	if([[requestURL path] isEqualTo:@"/get.folder"]){
+		return YES;
+	}
+
+	if([requestURL.path isEqualTo:@"/"]){
+		_filePath = [NSString stringWithFormat: [server site] ,@"/index.html"];
 		return YES;
 	}
 	
-	return NO;
+	_filePath = [NSString stringWithFormat:[server site],requestURL.path];
+	
+	
+	BOOL exists = [[NSFileManager defaultManager] fileExistsAtPath:_filePath];
+	if (!exists)
+	{
+		NSLog(@"File not found : %@", _filePath);
+		return  NO;
+	}
+
+	return YES;
 }
 
-//
-// startResponse
-//
-// Since this is a simple response, we handle it synchronously by sending
-// everything at once.
-//
-- (void)startResponse
-{
-	NSData *fileData =
-		[NSData dataWithContentsOfFile:[AppTextFileResponse pathForFile]];
 
-	CFHTTPMessageRef response =
-		CFHTTPMessageCreateResponse(
-			kCFAllocatorDefault, 200, NULL, kCFHTTPVersion1_1);
-	CFHTTPMessageSetHeaderFieldValue(
-		response, (CFStringRef)@"Content-Type", (CFStringRef)@"text/plain");
-	CFHTTPMessageSetHeaderFieldValue(
-		response, (CFStringRef)@"Connection", (CFStringRef)@"close");
-	CFHTTPMessageSetHeaderFieldValue(
-		response,
-		(CFStringRef)@"Content-Length",
-		(CFStringRef)[NSString stringWithFormat:@"%ld", [fileData length]]);
++(NSString*) getMimeType : (NSString *) filePath{
+
+	NSString *ext = [filePath pathExtension];
+	
+	
+	NSDictionary *dic = @{
+		@"ico" : @"image/x-icon",
+		@"html" : @"text/html",
+		@"js" : @"text/javascript",
+		@"css" : @"text/css",
+		@"woff2" :@"application/octet-stream"
+								};
+
+	NSString *mime = dic[ext];
+
+	if(mime == nil){
+		NSLog(@"Extention not found :%@",ext);
+		return @"application/octet-stream";
+	}
+	//return @"application/octet-stream";
+
+	return mime;
+	
+}
+
+-(NSString*) _dictionaryToJson:(NSDictionary *) dic{
+
+	NSString *json = @"{";
+	
+	int i =0;
+	for(NSString *key in dic){
+		NSString *value = dic[key];
+		NSString *s = [NSString stringWithFormat:@"\'%@\':\'%@\'", key,value];
+		
+		if(i>0){
+			json = [json stringByAppendingString:@","];
+		}
+		json = [json stringByAppendingString:s];
+		i++;
+	}
+	json = [json stringByAppendingString:@"}"];
+	return json;
+}
+-(NSString*) _arrayToJson:(NSArray *) arr{
+	
+	NSString *json = @"[";
+	for(int i =0; i < arr.count ; i++){
+		NSDictionary *item = [arr objectAtIndex:i] ;
+		NSString *s = [self _dictionaryToJson:item];
+		if(i>0){
+			json = [json stringByAppendingString:@","];
+		}
+		json = [json stringByAppendingString:s];
+	}
+	json = [json stringByAppendingString:@"]"];
+	return json;
+}
+
+-(NSDictionary*) _parseQueryString{
+	
+  NSArray *parameters = [[[self url] query] componentsSeparatedByString:@"&"];
+  
+  NSMutableDictionary *dic = [NSMutableDictionary dictionary];
+  
+  for (NSString *param in parameters)
+  {
+	  NSArray *para = [param componentsSeparatedByString:@"="];
+	  if ( [para count] == 2 )
+	  {
+		  dic[para[0]] = para[1];
+	  }
+	  else
+	  {
+		  dic[para[0]] = para[0];
+	  }
+  }
+	return dic;
+}
+-(void) _sendJsonString:(NSString *)json{
+	
+	
+	
+	NSData *data =	[json dataUsingEncoding:NSUTF8StringEncoding];
+	
+	CFHTTPMessageRef response =	CFHTTPMessageCreateResponse(kCFAllocatorDefault, 200, NULL, kCFHTTPVersion1_1);
+	CFHTTPMessageSetHeaderFieldValue(response, (CFStringRef)@"Content-Type", (__bridge CFStringRef)@"text/json");
+	CFHTTPMessageSetHeaderFieldValue(response, (CFStringRef)@"Connection", (CFStringRef)@"close");
+	CFHTTPMessageSetHeaderFieldValue(response, (CFStringRef)@"Content-Length",
+									 (__bridge CFStringRef)[NSString stringWithFormat:@"%ld", [data length]]);
 	CFDataRef headerData = CFHTTPMessageCopySerializedMessage(response);
-
+	
 	@try
 	{
-		[fileHandle writeData:(NSData *)headerData];
-		[fileHandle writeData:fileData];
+		[self.fileHandle writeData:(__bridge NSData *)headerData];
+		[self.fileHandle writeData:data];
 	}
 	@catch (NSException *exception)
 	{
@@ -93,7 +183,65 @@
 	@finally
 	{
 		CFRelease(headerData);
-		[server closeHandler:self];
+		[self.server closeHandler:self];
+	}
+
+}
+-(void ) _sendFolder{
+	
+	NSDictionary *dic = [self _parseQueryString];
+
+	NSString *folder = dic[@"folder"];
+	
+	if([folder isEqualTo:@"root"]){
+		NSString *json = [self _arrayToJson:[self.server folders]];
+		[self _sendJsonString:json];
+		return;
+	}
+	else{
+		
+	}
+}
+//
+// startResponse
+//
+// Since this is a simple response, we handle it synchronously by sending
+// everything at once.
+//
+- (void)startResponse
+{
+	
+	if([[self.url path] isEqualTo:@"/get.folder"]){
+		[self _sendFolder];
+		return;
+	}
+	if([self.requestMethod isEqualTo:@"GET"]){
+		
+	}
+	NSString *mime = [AppTextFileResponse getMimeType: _filePath];
+	//NSLog(@"File : %@", _filePath);
+	NSData *fileData =	[NSData dataWithContentsOfFile:_filePath];
+  	CFHTTPMessageRef response =	CFHTTPMessageCreateResponse(kCFAllocatorDefault, 200, NULL, kCFHTTPVersion1_1);
+	CFHTTPMessageSetHeaderFieldValue(response, (CFStringRef)@"Content-Type", (__bridge CFStringRef)mime);
+	CFHTTPMessageSetHeaderFieldValue(response, (CFStringRef)@"Connection", (CFStringRef)@"close");
+	CFHTTPMessageSetHeaderFieldValue(response, (CFStringRef)@"Content-Length",
+		(__bridge CFStringRef)[NSString stringWithFormat:@"%ld", [fileData length]]);
+	CFDataRef headerData = CFHTTPMessageCopySerializedMessage(response);
+
+	@try
+	{
+		[self.fileHandle writeData:(__bridge NSData *)headerData];
+		[self.fileHandle writeData:fileData];
+	}
+	@catch (NSException *exception)
+	{
+		// Ignore the exception, it normally just means the client
+		// closed the connection from the other end.
+	}
+	@finally
+	{
+		CFRelease(headerData);
+		[self.server closeHandler:self];
 	}
 }
 
@@ -107,22 +255,23 @@
 //
 + (NSString *)pathForFile
 {
-	NSString *path =
-		[NSSearchPathForDirectoriesInDomains(
-				NSApplicationSupportDirectory,
-				NSUserDomainMask,
-				YES)
-			objectAtIndex:0];
-	BOOL exists = [[NSFileManager defaultManager] fileExistsAtPath:path];
+//	NSString *path =
+//		[NSSearchPathForDirectoriesInDomains(
+//				NSApplicationSupportDirectory,
+//				NSUserDomainMask,
+//				YES)
+//			objectAtIndex:0];
+	BOOL exists = [[NSFileManager defaultManager] fileExistsAtPath:_filePath];
 	if (!exists)
 	{
-		[[NSFileManager defaultManager]
-			createDirectoryAtPath:path
-			withIntermediateDirectories:YES
-			attributes:nil
-			error:nil];
+//		[[NSFileManager defaultManager]
+//			createDirectoryAtPath:path
+//			withIntermediateDirectories:YES
+//			attributes:nil
+//			error:nil];
+		
 	}
-	return [path stringByAppendingPathComponent:@"file.txt"];
+	return _filePath; //[path stringByAppendingPathComponent:@"file.txt"];
 }
 
 @end

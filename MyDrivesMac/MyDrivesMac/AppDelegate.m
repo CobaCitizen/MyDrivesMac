@@ -8,6 +8,7 @@
 
 #import "AppDelegate.h"
 #import "WndWebView.h"
+#import "HTTPServer.h"
 
 @interface AppDelegate ()
 
@@ -15,14 +16,22 @@
 @property (strong) WndWebView *wndWebViewController;
 
 
+
+
 @end
 
+
 @implementation AppDelegate
+{
+	HTTPServer *_server;
+}
+
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
 
     [self readSettingsFile];
     [self fillAddressesCombo];
+	
 }
 
 - (void)applicationWillTerminate:(NSNotification *)aNotification {
@@ -40,8 +49,12 @@
     NSArray *ipAddresses =  [[NSHost currentHost] addresses];
     
     for(NSString *strAddress in ipAddresses) {
-        [self.cbAddresses addItemWithObjectValue:strAddress];
+		if([strAddress isLike:@"*.*"]){
+          [self.cbAddresses addItemWithObjectValue:strAddress];
+		}
     }
+	[self.cbAddresses selectItemAtIndex:0];
+	self.fldPort.stringValue = @"3030";
 }
 
 -(IBAction)actViewLog:(id)sender {
@@ -63,8 +76,24 @@
 }
 
 -(IBAction)actStartServer:(id)sender {
+	if(_server){
+		return;
+	}
+	NSString *host =(NSString*) [self.cbAddresses objectValueOfSelectedItem];
+	int port = (int)[self.fldPort integerValue];
+	if(port == 0){
+		self.fldPort.stringValue =@"3030";
+		port = 3030;
+	}
+	_server = [[HTTPServer alloc] initWithHost:host andPort:port];
+	[_server start];
+	
 }
 
 -(IBAction)actStopServer:(id)sender {
+	if(_server){
+		[_server stop];
+		_server = nil;
+	}
 }
 @end

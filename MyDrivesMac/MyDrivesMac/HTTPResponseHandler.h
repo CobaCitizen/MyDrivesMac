@@ -24,12 +24,14 @@
 @interface HTTPResponseHandler : NSObject
 {
 	CFHTTPMessageRef request;
-	NSString *requestMethod;
-	NSDictionary *headerFields;
-	NSFileHandle *fileHandle;
-	HTTPServer *server;
-	NSURL *url;
 }
+
+@property (strong , readonly) HTTPServer *server;
+@property (strong , readonly) NSString *requestMethod;
+@property (strong , readonly) NSDictionary *headerFields;
+@property (strong , readonly) NSFileHandle *fileHandle;
+@property (strong , readonly) NSURL *url;
+
 
 + (NSUInteger)priority;
 + (void)registerHandler:(Class)handlerClass;
@@ -44,7 +46,10 @@
 	headerFields:(NSDictionary *)requestHeaderFields
 	fileHandle:(NSFileHandle *)requestFileHandle
 	server:(HTTPServer *)aServer;
+
 - (void)startResponse;
+
+
 - (void)endResponse;
 
 @end
