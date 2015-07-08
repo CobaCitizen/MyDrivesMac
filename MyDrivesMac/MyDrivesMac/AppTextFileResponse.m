@@ -14,7 +14,7 @@
 
 #import "AppTextFileResponse.h"
 #import "HTTPServer.h"
-
+#import "JSONParser.h"
 
 NSString *_filePath;
 
@@ -103,7 +103,7 @@ NSString *_filePath;
 	return mime;
 	
 }
-
+/*
 -(NSString*) _dictionaryToJson:(NSDictionary *) dic{
 
 	NSString *json = @"{";
@@ -136,6 +136,7 @@ NSString *_filePath;
 	json = [json stringByAppendingString:@"]"];
 	return json;
 }
+*/
 
 -(NSDictionary*) _parseQueryString{
 	
@@ -187,6 +188,34 @@ NSString *_filePath;
 	}
 
 }
+-(NSString *) _redirect:(NSString *) folder{
+	
+	
+	NSArray *lines = [folder componentsSeparatedByString: @"/"];
+	NSString *target = lines[0];
+	
+	NSString *result ;
+	for(int i = 0; i < self.server.folders.count;i++){
+		NSDictionary *item = self.server.folders[i];
+		NSString *fname = item[@"name"];
+		if([target isEqualToString:fname]){
+			NSString *path = item[@"path"];
+			result = [folder stringByReplacingOccurrencesOfString:fname withString:path];
+			return result;
+		}
+	}
+	return result;
+}
+-(NSNumber *) _getFileSize:(NSFileManager*) manager filePath:(NSString*) path{
+	NSNumber * size = [NSNumber numberWithUnsignedLongLong:[[ manager attributesOfItemAtPath:path error:nil] fileSize]];
+	return size;
+}
+- (NSString *)URLDecode:(NSString *)stringToDecode
+{
+	NSString *result = [stringToDecode stringByReplacingOccurrencesOfString:@"+" withString:@" "];
+	result = [result stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+	return result;
+}
 -(void ) _sendFolder{
 	
 	NSDictionary *dic = [self _parseQueryString];
@@ -194,12 +223,58 @@ NSString *_filePath;
 	NSString *folder = dic[@"folder"];
 	
 	if([folder isEqualTo:@"root"]){
-		NSString *json = [self _arrayToJson:[self.server folders]];
+		NSString *json = [JSONParser arrayToJson:[self.server folders]];
 		[self _sendJsonString:json];
 		return;
 	}
 	else{
 		
+		// TODO use simple string for response
+		NSString *decoded =[self URLDecode:folder];
+		NSString *dir = [self _redirect: decoded];
+
+		NSFileManager *fileManager = [NSFileManager defaultManager];
+		if ([fileManager fileExistsAtPath:dir]) {
+			BOOL isDir = NO;
+			[fileManager fileExistsAtPath:dir isDirectory:(&isDir)];
+			if (isDir == YES) {
+
+
+				NSMutableArray *data = [NSMutableArray new];
+				
+				NSArray *contents = [fileManager contentsOfDirectoryAtPath:dir error:nil];
+				for (NSString *entity in contents) {
+					
+					NSString *filePath = [NSString stringWithFormat:@"%@/%@", dir,entity];
+				
+					NSDictionary *attr = [ fileManager attributesOfItemAtPath:filePath error:nil];
+					NSString *type = attr[@"NSFileType"];
+					if([type isEqualToString:@"NSFileTypeDirectory"] ){ // file
+						NSMutableDictionary *d = [NSMutableDictionary new];
+						[d setValue:entity forKey:@"name"];
+						[d setValue:[NSNumber numberWithInt:1] forKey:@"d"];
+						[d setValue:[NSNumber numberWithFloat:0] forKey:@"size"];
+						[data addObject:d];
+					}
+					else{ //folder
+						NSMutableDictionary *d = [NSMutableDictionary new];
+						[d setValue:entity forKey:@"name"];
+						[d setValue:[NSNumber numberWithInt:0] forKey:@"d"];
+						filePath = [NSString stringWithFormat:@"%@%@", dir,entity];
+						//[d setValue:[self _getFileSize:fileManager filePath:filePath] forKey:@"size"];
+						[d setValue: attr[@"NSFileSize"] forKey:@"size"];
+						[data addObject:d];
+					}
+				}
+				NSString *json = [JSONParser arrayToJson:data];
+				[self _sendJsonString:json];
+
+			} else {
+				NSLog(@"%@ is not a directory", dir);
+			}
+		} else {
+			NSLog(@"%@ does not exist", dir);
+		}
 	}
 }
 //

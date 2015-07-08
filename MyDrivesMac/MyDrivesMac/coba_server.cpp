@@ -1,18 +1,25 @@
-#include "stdafx.h"
+//#include "stdafx.h"
+//#import <Foundation/Foundation.h>
 #include "CobaServer.h"
 
 //wsock32.lib
-#pragma comment(lib, "Ws2_32.lib")
+//#pragma comment(lib, "Ws2_32.lib")
 
 namespace coba
 {
+	//using namespace std;
 
-  WSADATA WSAData;
+  //WSADATA WSAData;
 
-  std::mutex mtx;
-  std::mutex sqlight_mtx;
+//  std::mutex mtx;
+//  std::mutex sqlight_mtx;
 
-  ///////////////////////////////////////////////////////////////  
+//  NSLock *lock;
+	thread_mutex_t *tLock;
+	int tErr;
+	tErr = pthread_mutex_init(tLock, NULL);
+
+  ///////////////////////////////////////////////////////////////
   /*
   void message(const char *format, ...)
   {

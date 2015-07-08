@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		997962011B4CD6C300459652 /* JSONParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 997962001B4CD6C300459652 /* JSONParser.m */; };
 		99B152701B4B2BAD00732AF5 /* AppTextFileResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 99B1526F1B4B2BAD00732AF5 /* AppTextFileResponse.m */; };
 		99B152751B4B2BBA00732AF5 /* HTTPResponseHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 99B152721B4B2BBA00732AF5 /* HTTPResponseHandler.m */; };
 		99B152761B4B2BBA00732AF5 /* HTTPServer.m in Sources */ = {isa = PBXBuildFile; fileRef = 99B152741B4B2BBA00732AF5 /* HTTPServer.m */; };
@@ -56,6 +57,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		997961FF1B4CD6C300459652 /* JSONParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSONParser.h; sourceTree = "<group>"; };
+		997962001B4CD6C300459652 /* JSONParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSONParser.m; sourceTree = "<group>"; };
 		99B1526E1B4B2BAD00732AF5 /* AppTextFileResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppTextFileResponse.h; sourceTree = "<group>"; };
 		99B1526F1B4B2BAD00732AF5 /* AppTextFileResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppTextFileResponse.m; sourceTree = "<group>"; };
 		99B152711B4B2BBA00732AF5 /* HTTPResponseHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HTTPResponseHandler.h; sourceTree = "<group>"; };
@@ -164,6 +167,8 @@
 				B5D0DBE01B4B173600B39CC7 /* WndWebView.xib */,
 				99B152AF1B4BF3A700732AF5 /* PList.h */,
 				99B152B01B4BF3A700732AF5 /* PList.m */,
+				997961FF1B4CD6C300459652 /* JSONParser.h */,
+				997962001B4CD6C300459652 /* JSONParser.m */,
 			);
 			path = MyDrivesMac;
 			sourceTree = "<group>";
@@ -393,6 +398,7 @@
 				B55B2AC21B4A86C900DED7E2 /* main.m in Sources */,
 				B55B2AC01B4A86C900DED7E2 /* AppDelegate.m in Sources */,
 				99B152AC1B4BB8C800732AF5 /* jquery.min.map in Sources */,
+				997962011B4CD6C300459652 /* JSONParser.m in Sources */,
 				99B152B11B4BF3A700732AF5 /* PList.m in Sources */,
 				99B152761B4B2BBA00732AF5 /* HTTPServer.m in Sources */,
 				99B152751B4B2BBA00732AF5 /* HTTPResponseHandler.m in Sources */,

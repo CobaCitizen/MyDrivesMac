@@ -1,18 +1,42 @@
 #pragma once
+//#include <Cocoa/Cocoa.h>
+//#include "sqlite3.h"
 
-#include "stdafx.h"
-#include "sqlite3.h"
-#include <assert.h>
+
+#import <stdio.h>
+#import <stdlib.h>
+#import <string.h>
+#import <unistd.h>
+#import <sys/types.h>
+#import <sys/socket.h>
+#import <netinet/in.h>
+#import <pthread.h>
+#import <assert.h>
+
+
+//#import <tchar.h>
+//#import <xstring.h>
+#import <time.h>
+#import <wchar.h>
+
+//#include <thread>         // std::thread
+//#import <sys/mutex.h>          // std::mutex
+
+
+
 
 extern char *strptime(const char *buf, const char *format, struct tm *timeptr);
 
 namespace coba
 {
-  
+	
+  typedef  int SOCKET;
+  //using namespace std;
+	
   const int FILE_NAME_SIZE = 1024;
 
-  unsigned long WINAPI main_server_thread(LPVOID lpvParam);
-  DWORD WINAPI create_client_main_thread(void *data);
+  pthread_t* main_server_thread(void* lpvParam);
+  pthread_t* create_client_main_thread(void *data);
   /////////////////////////////////////////////////////
 
   int create_child_process(SOCKET sock_client);
@@ -27,15 +51,16 @@ namespace coba
   void heap_free(void **p);
   */
   /////////////////////////////////////////////////////
-  inline bool file_exists(wchar_t *path)
+ // inline bool file_exists(wchar_t *path)
+  inline bool file_exists(char *path)
   {
 #define COBA_ACCESS_MODE_EXISTS 0
 #define COBA_ACCESS_SUCCESS 0
-    return _waccess(path, COBA_ACCESS_MODE_EXISTS) == COBA_ACCESS_SUCCESS;
+    return access(path, COBA_ACCESS_MODE_EXISTS) == COBA_ACCESS_SUCCESS;
   }
   inline wchar_t* wcdup(wchar_t *ws)
   {
-    int len = wcslen(ws);
+    size_t len = wcslen(ws);
     wchar_t *p = new wchar_t[len + sizeof(wchar_t)];
     memset(p, 0, len + sizeof(wchar_t));
     wcscpy(p, ws);
@@ -43,7 +68,7 @@ namespace coba
   }
   inline wchar_t *wcdup(char *s)
   {
-    if (s == nullptr || *s == NULL)
+    if (s == nullptr || *s == 0)
     {
       return nullptr;
     }
@@ -54,7 +79,7 @@ namespace coba
   }
   inline char *wctoc(wchar_t *ws)
   {
-    int size = wcslen(ws) + 1;
+    size_t size = wcslen(ws) + 1;
     char *s = new char[size];
     for (int i = 0; i < size; i++)
     {
@@ -64,7 +89,7 @@ namespace coba
   }
   inline wchar_t *ctowc(char *s)
   {
-    int size = strlen(s) + 1;
+    size_t size = strlen(s) + 1;
     wchar_t *wc = new wchar_t[size];
     memset(wc, 0, size);
     for (int i = 0; i < size; i++)
@@ -75,7 +100,7 @@ namespace coba
   }
   inline void wccopy(wchar_t* d, wchar_t *s)
   {
-    while (*d++ = *s++);
+    while ( (*d++ = *s++));
     *d = *s;
   }
   inline size_t get_file_size(FILE *fp)
@@ -144,7 +169,7 @@ namespace coba
       this->socket = sc;
       this->site = coba::wcdup(site_folder);
       this->folder_list_file = coba::wcdup(folders_file);
-      this->http_connect = _strdup(connect);
+      this->http_connect = strdup(connect);
       this->remote_ip = ip;
     }
     ~coba_client_info()

@@ -109,7 +109,7 @@ NSString * const HTTPServerNotificationStateChanged = @"ServerNotificationStateC
 	NSLog(@"HTTPServer error: %@", self.lastError);
 }
 
--(NSString*) _getDocumentFolder{
+-(NSString*) _getMyDrivesFolder{
 	NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
 	NSString *directory = [NSString stringWithFormat:@"%@/MyDrivesMac/",[paths objectAtIndex:0]];
 	
@@ -126,10 +126,17 @@ NSString * const HTTPServerNotificationStateChanged = @"ServerNotificationStateC
 	}
 	return  directory;
 }
+-(NSString*) _getDocumentFolder{
+	NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+	return [NSString stringWithFormat:@"%@/",[paths objectAtIndex:0]];
+}
 -(NSString*) _getMoviesFolder{
 	NSArray *paths = NSSearchPathForDirectoriesInDomains(NSMoviesDirectory, NSUserDomainMask, YES);
-	return [paths objectAtIndex:0];
-	
+	return [NSString stringWithFormat:@"%@/",[paths objectAtIndex:0]];
+}
+-(NSString*) _getMusicFolder{
+	NSArray *paths = NSSearchPathForDirectoriesInDomains(NSMusicDirectory, NSUserDomainMask, YES);
+	return [NSString stringWithFormat:@"%@/",[paths objectAtIndex:0]];
 }
 
 //
@@ -221,7 +228,7 @@ NSString * const HTTPServerNotificationStateChanged = @"ServerNotificationStateC
 	NSMutableDictionary *list = nil;
 	
 	NSFileManager *fileManager = [NSFileManager defaultManager];
-	NSString *fileName = [NSString stringWithFormat:@"%@/folders.plist",[self _getDocumentFolder]];
+	NSString *fileName = [NSString stringWithFormat:@"%@/folders.plist",[self _getMyDrivesFolder]];
 	BOOL isDir;
 	
 	if([fileManager fileExistsAtPath:fileName isDirectory: &isDir]){
@@ -241,14 +248,21 @@ NSString * const HTTPServerNotificationStateChanged = @"ServerNotificationStateC
 	NSMutableArray * folders =[NSMutableArray new];
  
 	NSMutableDictionary * folder =[NSMutableDictionary new];
-	[folder setValue: @"Documents" forKey:@"name"];
+	[folder setValue: @"~Documents" forKey:@"name"];
 	[folder setValue: [self _getDocumentFolder] forKey:@"path"];
-
+	[folder setValue: [NSNumber numberWithInt:1] forKey:@"d"];
 	[folders addObject:folder];
 
-	[folder setValue: @"Movies" forKey:@"name"];
+	folder =[NSMutableDictionary new];
+	[folder setValue: @"~Movies" forKey:@"name"];
 	[folder setValue: [self _getMoviesFolder] forKey:@"path"];
-	
+	[folder setValue: [NSNumber numberWithInt:1] forKey:@"d"];
+	[folders addObject:folder];
+
+	folder =[NSMutableDictionary new];
+	[folder setValue: @"~Music" forKey:@"name"];
+	[folder setValue: [self _getMusicFolder] forKey:@"path"];
+	[folder setValue: [NSNumber numberWithInt:1] forKey:@"d"];
 	[folders addObject:folder];
 
 	[dict setValue:_host forKey:@"host"];
@@ -272,7 +286,7 @@ NSString * const HTTPServerNotificationStateChanged = @"ServerNotificationStateC
 //
 - (void)start
 {
-	NSString *docFolder = [self _getDocumentFolder];
+//	NSString *docFolder = [self _getMyDrivesFolder];
 	NSMutableDictionary *dic = [self _loadServerSettings];
 	
 	_folders = dic[@"folders"];

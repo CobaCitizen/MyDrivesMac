@@ -12,5 +12,6 @@
 @interface WndWebView : NSWindowController
 
 @property (weak) IBOutlet WebView *webView;
+@property (nonatomic) NSString *url;
 
 @end

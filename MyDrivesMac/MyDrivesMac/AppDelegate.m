@@ -60,6 +60,7 @@
 -(IBAction)actViewLog:(id)sender {
     
     self.wndWebViewController = [[WndWebView alloc] initWithWindowNibName:@"WndWebView"];
+	self.wndWebViewController.url = [NSString stringWithFormat:@"http://%@:%d", _server.host,_server.port];
     [self.wndWebViewController showWindow:self];
 }
 

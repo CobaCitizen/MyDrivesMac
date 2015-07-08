@@ -17,8 +17,8 @@
 - (void)windowDidLoad {
     [super windowDidLoad];
     
-    NSString *urlStr = @"http://www.google.com";
-    [[self.webView mainFrame] loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:urlStr]]];
+//    NSString *urlStr = @"http://www.google.com";
+    [[self.webView mainFrame] loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:_url]]];
     [[self.webView windowScriptObject] setValue:self forKey:@"objcConnector"];
 }
 
@@ -31,5 +31,4 @@
     
     // <button id="example" onClick="window.objcConnector.elementClicked_(this.id)">Click me</button>
 }
-
 @end

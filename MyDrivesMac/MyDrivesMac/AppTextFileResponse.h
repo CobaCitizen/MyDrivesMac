@@ -21,6 +21,6 @@
 
 
 + (NSString *)pathForFile;
-+ (BOOL)redirectUrl :(NSString*) url;
-+ (NSString *)fileName;
+//+ (BOOL)redirectUrl :(NSString*) url;
+//+ (NSString *)fileName;
 @end
