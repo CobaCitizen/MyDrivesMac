@@ -54,7 +54,7 @@
 		}
     }
 	[self.cbAddresses selectItemAtIndex:0];
-	self.fldPort.stringValue = @"3030";
+	self.fldPort.stringValue = @"13003";
 }
 
 -(IBAction)actViewLog:(id)sender {
@@ -83,8 +83,8 @@
 	NSString *host =(NSString*) [self.cbAddresses objectValueOfSelectedItem];
 	int port = (int)[self.fldPort integerValue];
 	if(port == 0){
-		self.fldPort.stringValue =@"3030";
-		port = 3030;
+		self.fldPort.stringValue =@"13003";
+		port = 13003;
 	}
 	_server = [[HTTPServer alloc] initWithHost:host andPort:port];
 	[_server start];

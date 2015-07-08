@@ -23,7 +23,7 @@
 
 @interface HTTPResponseHandler : NSObject
 {
-	CFHTTPMessageRef request;
+//	CFHTTPMessageRef request;
 }
 
 @property (strong , readonly) HTTPServer *server;
@@ -32,6 +32,7 @@
 @property (strong , readonly) NSFileHandle *fileHandle;
 @property (strong , readonly) NSURL *url;
 
+@property (readonly) CFHTTPMessageRef request;
 
 + (NSUInteger)priority;
 + (void)registerHandler:(Class)handlerClass;

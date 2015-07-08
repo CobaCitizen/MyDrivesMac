@@ -56,7 +56,12 @@ NSString *_filePath;
 	server : (HTTPServer*)server
 {
 
-	if([[requestURL path] isEqualTo:@"/get.folder"]){
+	if(  [[requestURL path] isEqualToString:@"/mkdir"]
+	   ||[[requestURL path] isEqualToString:@"/get.folder"]
+	   ||[[requestURL path] isEqualToString:@"/open"]
+	   ||[[requestURL path] isEqualToString:@"/continue"]
+	   ||[[requestURL path] isEqualToString:@"/close"]
+	   ){
 		return YES;
 	}
 
@@ -111,7 +116,9 @@ NSString *_filePath;
 }
 
 -(NSDictionary*) _parseQueryString{
-	
+
+	return [self _parseQueryString:[[self url] query]];
+	/*
   NSArray *parameters = [[[self url] query] componentsSeparatedByString:@"&"];
   
   NSMutableDictionary *dic = [NSMutableDictionary dictionary];
@@ -129,7 +136,29 @@ NSString *_filePath;
 	  }
   }
 	return dic;
+	 */
 }
+-(NSDictionary*) _parseQueryString:(NSString *) query{
+	
+	NSArray *parameters = [ query componentsSeparatedByString:@"&"];
+	
+	NSMutableDictionary *dic = [NSMutableDictionary dictionary];
+	
+	for (NSString *param in parameters)
+	{
+		NSArray *para = [param componentsSeparatedByString:@"="];
+		if ( [para count] == 2 )
+		{
+			dic[para[0]] = para[1];
+		}
+		else
+		{
+			dic[para[0]] = para[0];
+		}
+	}
+	return dic;
+}
+
 -(void) _sendJsonString:(NSString *)json{
 	
 	
@@ -300,6 +329,67 @@ NSString *_filePath;
 
 	return headerData;
 }
+-(void) _createDirectory{
+
+	NSDictionary *prms = [self _parseQueryString];
+	
+	NSString *folder = prms[@"folder"];
+	folder = [self.server redirect: [HTTPServer URLDecode:folder]];
+	
+	NSString *subfolder = [HTTPServer URLDecode:prms[@"name"]];
+	NSString *directory = [NSString stringWithFormat:@"%@/%@" , folder, subfolder];
+	NSError *error = nil;
+	if(![ [ NSFileManager defaultManager] createDirectoryAtPath:directory withIntermediateDirectories:YES attributes:nil error:&error]) {
+		
+		[self _sendJsonString:[NSString stringWithFormat:@"{result:false,msg:\'Failed to create directory %@. Error: %@\'}", directory, error]];
+		return;
+	}
+	
+	[self _sendJsonString:@"{result:true,msg:'created'}"];
+}
+-(void) _upload{
+
+	NSString *s = self.headerFields[@"coba-file-info"];
+	NSDictionary *prms = [self _parseQueryString:s];
+	
+	NSString *name = [self.server redirect:[HTTPServer URLDecode:prms[@"name"]]];
+	NSString *action = prms[@"action"];
+
+	long long size = [NSString stringWithString:prms[@"size"]].longLongValue;
+	long long filesize = [NSString stringWithString:prms[@"filesize"]].longLongValue;
+    long long start = [NSString stringWithString:prms[@"start"]].longLongValue;
+	long long end = [NSString stringWithString:prms[@"end"]].longLongValue;
+
+
+	if(	 [[self.url path] isEqualToString:@"/open"]){
+		
+	}
+	else if([[self.url path] isEqualToString:@"/continue"]){
+		
+	}
+	else if([[self.url path] isEqualToString:@"/close"]){
+	}
+
+	while(size > 0){
+		NSData *data =	[self.fileHandle availableData];
+		size -= data.length;
+	}
+	/*
+	//CFDataRef data = CFHTTPMessageCopyBody ( self.request );
+	
+	CFReadStreamRef stream = CFReadStreamCreateForHTTPRequest(kCFAllocatorDefault, self.request);
+ 
+	CFReadStreamOpen(stream);
+
+	int sz =sizeof(UInt8) * 1024;
+	
+	CFIndex bufferLength = sz;
+	
+	UInt8 *buffer = (UInt8*) malloc(sz);
+	CFIndex readed = CFReadStreamRead(stream, buffer ,bufferLength);
+	CFReadStreamClose(stream);
+	 */
+}
 //
 // startResponse
 //
@@ -313,6 +403,17 @@ NSString *_filePath;
 		[self _sendFolder];
 		return;
 	}
+	if([[self.url path] isEqualToString:@"/mkdir"]){
+		[self _createDirectory];
+		return;
+	}
+	if(	 [[self.url path] isEqualToString:@"/open"]
+	   ||[[self.url path] isEqualToString:@"/continue"]
+	   ||[[self.url path] isEqualToString:@"/close"]){
+		[self _upload];
+		return;
+	}
+
 	if([self.requestMethod isEqualTo:@"GET"]){
 		
 	}

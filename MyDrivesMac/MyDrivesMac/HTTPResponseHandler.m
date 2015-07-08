@@ -161,6 +161,10 @@ static NSMutableArray *registeredHandlers = nil;
 	NSURL *requestURL =	(__bridge NSURL *)CFHTTPMessageCopyRequestURL(aRequest);
 	NSString *method =	(__bridge NSString *)CFHTTPMessageCopyRequestMethod(aRequest);
 
+	//CFDataRef data = CFHTTPMessageCopyBody(aRequest);
+	
+	//data = CFHTTPMessageCopySerializedMessage(aRequest);
+	
 	Class classForRequest =	[self handlerClassForRequest:aRequest
 												  method:method
 												  url:requestURL
@@ -207,7 +211,7 @@ static NSMutableArray *registeredHandlers = nil;
 	self = [super init];
 	if (self != nil)
 	{
-		request = (__bridge CFHTTPMessageRef)(__bridge id)aRequest;
+		_request = (__bridge CFHTTPMessageRef)(__bridge id)aRequest;
 		_requestMethod = method;
 		_url = requestURL;
 		_headerFields = requestHeaderFields;
@@ -369,7 +373,7 @@ static NSMutableArray *registeredHandlers = nil;
 	}
 	
 	//[(__bridge id)request release];
-	request = nil;
+	_request = nil;
 
 	//[requestMethod release];
 	_requestMethod = nil;
