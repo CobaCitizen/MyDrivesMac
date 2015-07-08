@@ -43,12 +43,14 @@ typedef enum
 @property int port;
 
 //+ (HTTPServer *)sharedHTTPServer;
++ (NSString *)URLDecode:(NSString *)stringToDecode;
 -(id) initWithHost:(NSString*) host andPort:(int) port;
 
 - (void)start;
 - (void)stop;
 
 - (void)closeHandler:(HTTPResponseHandler *)aHandler;
+-(NSString *) redirect:(NSString *) folder;
 
 @end
 

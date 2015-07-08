@@ -512,5 +512,30 @@ NSString * const HTTPServerNotificationStateChanged = @"ServerNotificationStateC
 	[aHandler endResponse];
 	[responseHandlers removeObject:aHandler];
 }
+-(NSString *) redirect:(NSString *) folder{
+	
+	
+	NSArray *lines = [folder componentsSeparatedByString: @"/"];
+	NSString *target = lines[0];
+	
+	NSString *result ;
+	for(int i = 0; i < _folders.count;i++){
+		NSDictionary *item = _folders[i];
+		NSString *fname = item[@"name"];
+		if([target isEqualToString:fname]){
+			NSString *path = item[@"path"];
+			result = [folder stringByReplacingOccurrencesOfString:fname withString:path];
+			return result;
+		}
+	}
+	return result;
+}
+
++ (NSString *)URLDecode:(NSString *)stringToDecode
+{
+	NSString *result = [stringToDecode stringByReplacingOccurrencesOfString:@"+" withString:@" "];
+	result = [result stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+	return result;
+}
 
 @end

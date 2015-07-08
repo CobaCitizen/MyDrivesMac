@@ -64,8 +64,13 @@ NSString *_filePath;
 		_filePath = [NSString stringWithFormat: [server site] ,@"/index.html"];
 		return YES;
 	}
+	if([requestURL.path  characterAtIndex:1] == '~'){
+		NSString *s = [HTTPServer URLDecode:requestURL.path];
+		_filePath = [server redirect:[s substringFromIndex:1]];
+		return YES;
+	}
 	
-	_filePath = [NSString stringWithFormat:[server site],requestURL.path];
+	_filePath = [NSString stringWithFormat:[server site],[HTTPServer URLDecode:requestURL.path]];
 	
 	
 	BOOL exists = [[NSFileManager defaultManager] fileExistsAtPath:_filePath];
@@ -89,6 +94,7 @@ NSString *_filePath;
 		@"html" : @"text/html",
 		@"js" : @"text/javascript",
 		@"css" : @"text/css",
+		@"woff" :@"application/octet-stream",
 		@"woff2" :@"application/octet-stream"
 								};
 
@@ -103,40 +109,6 @@ NSString *_filePath;
 	return mime;
 	
 }
-/*
--(NSString*) _dictionaryToJson:(NSDictionary *) dic{
-
-	NSString *json = @"{";
-	
-	int i =0;
-	for(NSString *key in dic){
-		NSString *value = dic[key];
-		NSString *s = [NSString stringWithFormat:@"\'%@\':\'%@\'", key,value];
-		
-		if(i>0){
-			json = [json stringByAppendingString:@","];
-		}
-		json = [json stringByAppendingString:s];
-		i++;
-	}
-	json = [json stringByAppendingString:@"}"];
-	return json;
-}
--(NSString*) _arrayToJson:(NSArray *) arr{
-	
-	NSString *json = @"[";
-	for(int i =0; i < arr.count ; i++){
-		NSDictionary *item = [arr objectAtIndex:i] ;
-		NSString *s = [self _dictionaryToJson:item];
-		if(i>0){
-			json = [json stringByAppendingString:@","];
-		}
-		json = [json stringByAppendingString:s];
-	}
-	json = [json stringByAppendingString:@"]"];
-	return json;
-}
-*/
 
 -(NSDictionary*) _parseQueryString{
 	
@@ -188,34 +160,11 @@ NSString *_filePath;
 	}
 
 }
--(NSString *) _redirect:(NSString *) folder{
-	
-	
-	NSArray *lines = [folder componentsSeparatedByString: @"/"];
-	NSString *target = lines[0];
-	
-	NSString *result ;
-	for(int i = 0; i < self.server.folders.count;i++){
-		NSDictionary *item = self.server.folders[i];
-		NSString *fname = item[@"name"];
-		if([target isEqualToString:fname]){
-			NSString *path = item[@"path"];
-			result = [folder stringByReplacingOccurrencesOfString:fname withString:path];
-			return result;
-		}
-	}
-	return result;
-}
+/*
 -(NSNumber *) _getFileSize:(NSFileManager*) manager filePath:(NSString*) path{
 	NSNumber * size = [NSNumber numberWithUnsignedLongLong:[[ manager attributesOfItemAtPath:path error:nil] fileSize]];
 	return size;
-}
-- (NSString *)URLDecode:(NSString *)stringToDecode
-{
-	NSString *result = [stringToDecode stringByReplacingOccurrencesOfString:@"+" withString:@" "];
-	result = [result stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-	return result;
-}
+}*/
 -(void ) _sendFolder{
 	
 	NSDictionary *dic = [self _parseQueryString];
@@ -230,8 +179,8 @@ NSString *_filePath;
 	else{
 		
 		// TODO use simple string for response
-		NSString *decoded =[self URLDecode:folder];
-		NSString *dir = [self _redirect: decoded];
+		NSString *decoded =[HTTPServer URLDecode:folder];
+		NSString *dir = [self.server redirect: decoded];
 
 		NSFileManager *fileManager = [NSFileManager defaultManager];
 		if ([fileManager fileExistsAtPath:dir]) {
@@ -277,6 +226,80 @@ NSString *_filePath;
 		}
 	}
 }
+-(void) _parseRange:(NSString*)range start:(long long*) start end:(long long*) end chunck:(long long*) chunck fileSize:(unsigned long long) size{
+	
+	NSString *s =[range stringByReplacingOccurrencesOfString:@"bytes=" withString:@""];
+	NSArray *ranges = [s componentsSeparatedByString:@"-"];
+	
+	NSString *r1 = ranges[0];
+	NSString *r2 = ranges[1];
+	
+	*start = r1.longLongValue;
+	*end   = r2.longLongValue;
+
+	if( *end <= 0){
+		*end = size -1;
+	}
+	*chunck = *end - *start +1;
+}
+
+-(CFDataRef) _sendForMacRange:(NSString*) range {
+
+	NSNumber* size = [[NSFileManager defaultManager] attributesOfItemAtPath:_filePath error:nil][@"NSFileSize"];
+	long long start,end,chunck;
+	[self _parseRange:range start:&start end:&end chunck:&chunck fileSize:size.longLongValue];
+
+	NSString *mime = [AppTextFileResponse getMimeType: _filePath];
+
+	CFHTTPMessageRef response =	CFHTTPMessageCreateResponse(kCFAllocatorDefault, 206, NULL, kCFHTTPVersion1_1);
+	CFHTTPMessageSetHeaderFieldValue(response, (CFStringRef)@"Content-Type", (__bridge CFStringRef)mime);
+	CFHTTPMessageSetHeaderFieldValue(response, (CFStringRef)@"Connection", (CFStringRef)@"close");
+	CFHTTPMessageSetHeaderFieldValue(response, (CFStringRef)@"Content-Length",(__bridge CFStringRef)[NSString stringWithFormat:@"%lld", chunck]);
+	CFHTTPMessageSetHeaderFieldValue(response, (CFStringRef)@"Accept-Ranges",(CFStringRef)@"bytes");
+	CFHTTPMessageSetHeaderFieldValue(response, (CFStringRef)@"Content-Range",
+									 (__bridge CFStringRef)[NSString stringWithFormat:@"bytes %lld-%lld/%lld",start,end,size.longLongValue]);
+	
+	CFDataRef headerData = CFHTTPMessageCopySerializedMessage(response);
+
+	
+	NSFileHandle *file;
+	NSData *buffer;
+	@try
+	{
+		[self.fileHandle writeData:(__bridge NSData *)headerData];
+
+		file = [NSFileHandle fileHandleForReadingAtPath: _filePath];
+		
+		if (file == nil)
+			NSLog(@"Failed to open file");
+		
+		[file seekToFileOffset: start];
+		
+		while (chunck > 0) {
+	
+			buffer = [file readDataOfLength: 128*1024];
+			if (buffer.length > 0) {
+				[self.fileHandle writeData:buffer];
+				chunck -= buffer.length;
+			}
+			else break;
+		}
+	}
+	@catch (NSException *exception)
+	{
+		// Ignore the exception, it normally just means the client
+		// closed the connection from the other end.
+	}
+	@finally
+	{
+		CFRelease(headerData);
+		[self.server closeHandler:self];
+		
+		[file closeFile];
+	}
+
+	return headerData;
+}
 //
 // startResponse
 //
@@ -293,15 +316,28 @@ NSString *_filePath;
 	if([self.requestMethod isEqualTo:@"GET"]){
 		
 	}
+	CFDataRef headerData;
+	
+	NSString *range = self.headerFields[@"Range"];
+	if(range != nil){
+//		NSNumber* size = [[NSFileManager defaultManager] attributesOfItemAtPath:_filePath error:nil][@"NSFileSize"];
+//		long long start,end,chunck;
+//		[self _parseRange:range start:&start end:&end chunck:&chunck fileSize:size.longLongValue];
+
+		[self _sendForMacRange:range];
+		return;
+	}
+	
 	NSString *mime = [AppTextFileResponse getMimeType: _filePath];
-	//NSLog(@"File : %@", _filePath);
+
 	NSData *fileData =	[NSData dataWithContentsOfFile:_filePath];
+	
   	CFHTTPMessageRef response =	CFHTTPMessageCreateResponse(kCFAllocatorDefault, 200, NULL, kCFHTTPVersion1_1);
 	CFHTTPMessageSetHeaderFieldValue(response, (CFStringRef)@"Content-Type", (__bridge CFStringRef)mime);
 	CFHTTPMessageSetHeaderFieldValue(response, (CFStringRef)@"Connection", (CFStringRef)@"close");
 	CFHTTPMessageSetHeaderFieldValue(response, (CFStringRef)@"Content-Length",
 		(__bridge CFStringRef)[NSString stringWithFormat:@"%ld", [fileData length]]);
-	CFDataRef headerData = CFHTTPMessageCopySerializedMessage(response);
+	headerData = CFHTTPMessageCopySerializedMessage(response);
 
 	@try
 	{
