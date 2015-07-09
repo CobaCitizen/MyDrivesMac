@@ -24,15 +24,17 @@
 @interface HTTPResponseHandler : NSObject
 {
 //	CFHTTPMessageRef request;
+	NSString *filePath;
 }
+@property (strong) NSFileHandle *fileHandle;
 
-@property (strong , readonly) HTTPServer *server;
-@property (strong , readonly) NSString *requestMethod;
-@property (strong , readonly) NSDictionary *headerFields;
-@property (strong , readonly) NSFileHandle *fileHandle;
-@property (strong , readonly) NSURL *url;
 
-@property (readonly) CFHTTPMessageRef request;
+@property (strong ) HTTPServer *server;
+@property (strong ) NSString *requestMethod;
+@property (strong ) NSDictionary *headerFields;
+@property (strong ) NSURL *url;
+
+@property  CFHTTPMessageRef request;
 
 + (NSUInteger)priority;
 + (void)registerHandler:(Class)handlerClass;
@@ -49,8 +51,10 @@
 	server:(HTTPServer *)aServer;
 
 - (void)startResponse;
-
-
 - (void)endResponse;
+
+-(void) sendJsonString:(NSString *)json closeConnect:(BOOL) close;
+-(NSDictionary*) parseQueryString:(NSString *) query;
+-(NSDictionary*) parseQueryString;
 
 @end

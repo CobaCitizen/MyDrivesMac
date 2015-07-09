@@ -16,7 +16,7 @@
 #import "HTTPServer.h"
 #import "JSONParser.h"
 
-NSString *_filePath;
+
 
 @implementation AppTextFileResponse{
 
@@ -58,32 +58,32 @@ NSString *_filePath;
 
 	if(  [[requestURL path] isEqualToString:@"/mkdir"]
 	   ||[[requestURL path] isEqualToString:@"/get.folder"]
-	   ||[[requestURL path] isEqualToString:@"/open"]
-	   ||[[requestURL path] isEqualToString:@"/continue"]
-	   ||[[requestURL path] isEqualToString:@"/close"]
+	 //  ||[[requestURL path] isEqualToString:@"/open"]
+	 //  ||[[requestURL path] isEqualToString:@"/continue"]
+	 //  ||[[requestURL path] isEqualToString:@"/close"]
 	   ){
 		return YES;
 	}
 
 	if([requestURL.path isEqualTo:@"/"]){
-		_filePath = [NSString stringWithFormat: [server site] ,@"/index.html"];
+		//self.filePath = [NSString stringWithFormat: [server site] ,@"/index.html"];
 		return YES;
 	}
 	if([requestURL.path  characterAtIndex:1] == '~'){
-		NSString *s = [HTTPServer URLDecode:requestURL.path];
-		_filePath = [server redirect:[s substringFromIndex:1]];
+		//NSString *s = [HTTPServer URLDecode:requestURL.path];
+		//_filePath = [server redirect:[s substringFromIndex:1]];
 		return YES;
 	}
 	
-	_filePath = [NSString stringWithFormat:[server site],[HTTPServer URLDecode:requestURL.path]];
+	//_filePath = [NSString stringWithFormat:[server site],[HTTPServer URLDecode:requestURL.path]];
 	
 	
-	BOOL exists = [[NSFileManager defaultManager] fileExistsAtPath:_filePath];
-	if (!exists)
-	{
-		NSLog(@"File not found : %@", _filePath);
-		return  NO;
-	}
+//	BOOL exists = [[NSFileManager defaultManager] fileExistsAtPath:_filePath];
+//	if (!exists)
+//	{
+//		NSLog(@"File not found : %@", _filePath);
+//		return  NO;
+//	}
 
 	return YES;
 }
@@ -115,80 +115,6 @@ NSString *_filePath;
 	
 }
 
--(NSDictionary*) _parseQueryString{
-
-	return [self _parseQueryString:[[self url] query]];
-	/*
-  NSArray *parameters = [[[self url] query] componentsSeparatedByString:@"&"];
-  
-  NSMutableDictionary *dic = [NSMutableDictionary dictionary];
-  
-  for (NSString *param in parameters)
-  {
-	  NSArray *para = [param componentsSeparatedByString:@"="];
-	  if ( [para count] == 2 )
-	  {
-		  dic[para[0]] = para[1];
-	  }
-	  else
-	  {
-		  dic[para[0]] = para[0];
-	  }
-  }
-	return dic;
-	 */
-}
--(NSDictionary*) _parseQueryString:(NSString *) query{
-	
-	NSArray *parameters = [ query componentsSeparatedByString:@"&"];
-	
-	NSMutableDictionary *dic = [NSMutableDictionary dictionary];
-	
-	for (NSString *param in parameters)
-	{
-		NSArray *para = [param componentsSeparatedByString:@"="];
-		if ( [para count] == 2 )
-		{
-			dic[para[0]] = para[1];
-		}
-		else
-		{
-			dic[para[0]] = para[0];
-		}
-	}
-	return dic;
-}
-
--(void) _sendJsonString:(NSString *)json{
-	
-	
-	
-	NSData *data =	[json dataUsingEncoding:NSUTF8StringEncoding];
-	
-	CFHTTPMessageRef response =	CFHTTPMessageCreateResponse(kCFAllocatorDefault, 200, NULL, kCFHTTPVersion1_1);
-	CFHTTPMessageSetHeaderFieldValue(response, (CFStringRef)@"Content-Type", (__bridge CFStringRef)@"text/json");
-	CFHTTPMessageSetHeaderFieldValue(response, (CFStringRef)@"Connection", (CFStringRef)@"close");
-	CFHTTPMessageSetHeaderFieldValue(response, (CFStringRef)@"Content-Length",
-									 (__bridge CFStringRef)[NSString stringWithFormat:@"%ld", [data length]]);
-	CFDataRef headerData = CFHTTPMessageCopySerializedMessage(response);
-	
-	@try
-	{
-		[self.fileHandle writeData:(__bridge NSData *)headerData];
-		[self.fileHandle writeData:data];
-	}
-	@catch (NSException *exception)
-	{
-		// Ignore the exception, it normally just means the client
-		// closed the connection from the other end.
-	}
-	@finally
-	{
-		CFRelease(headerData);
-		[self.server closeHandler:self];
-	}
-
-}
 /*
 -(NSNumber *) _getFileSize:(NSFileManager*) manager filePath:(NSString*) path{
 	NSNumber * size = [NSNumber numberWithUnsignedLongLong:[[ manager attributesOfItemAtPath:path error:nil] fileSize]];
@@ -196,13 +122,13 @@ NSString *_filePath;
 }*/
 -(void ) _sendFolder{
 	
-	NSDictionary *dic = [self _parseQueryString];
+	NSDictionary *dic = [self parseQueryString];
 
 	NSString *folder = dic[@"folder"];
 	
 	if([folder isEqualTo:@"root"]){
 		NSString *json = [JSONParser arrayToJson:[self.server folders]];
-		[self _sendJsonString:json];
+		[self sendJsonString:json closeConnect:YES];
 		return;
 	}
 	else{
@@ -245,7 +171,7 @@ NSString *_filePath;
 					}
 				}
 				NSString *json = [JSONParser arrayToJson:data];
-				[self _sendJsonString:json];
+				[self sendJsonString:json closeConnect:YES];
 
 			} else {
 				NSLog(@"%@ is not a directory", dir);
@@ -274,11 +200,11 @@ NSString *_filePath;
 
 -(CFDataRef) _sendForMacRange:(NSString*) range {
 
-	NSNumber* size = [[NSFileManager defaultManager] attributesOfItemAtPath:_filePath error:nil][@"NSFileSize"];
+	NSNumber* size = [[NSFileManager defaultManager] attributesOfItemAtPath:filePath error:nil][@"NSFileSize"];
 	long long start,end,chunck;
 	[self _parseRange:range start:&start end:&end chunck:&chunck fileSize:size.longLongValue];
 
-	NSString *mime = [AppTextFileResponse getMimeType: _filePath];
+	NSString *mime = [AppTextFileResponse getMimeType: filePath];
 
 	CFHTTPMessageRef response =	CFHTTPMessageCreateResponse(kCFAllocatorDefault, 206, NULL, kCFHTTPVersion1_1);
 	CFHTTPMessageSetHeaderFieldValue(response, (CFStringRef)@"Content-Type", (__bridge CFStringRef)mime);
@@ -297,7 +223,7 @@ NSString *_filePath;
 	{
 		[self.fileHandle writeData:(__bridge NSData *)headerData];
 
-		file = [NSFileHandle fileHandleForReadingAtPath: _filePath];
+		file = [NSFileHandle fileHandleForReadingAtPath: filePath];
 		
 		if (file == nil)
 			NSLog(@"Failed to open file");
@@ -331,7 +257,7 @@ NSString *_filePath;
 }
 -(void) _createDirectory{
 
-	NSDictionary *prms = [self _parseQueryString];
+	NSDictionary *prms = [self parseQueryString];
 	
 	NSString *folder = prms[@"folder"];
 	folder = [self.server redirect: [HTTPServer URLDecode:folder]];
@@ -341,54 +267,12 @@ NSString *_filePath;
 	NSError *error = nil;
 	if(![ [ NSFileManager defaultManager] createDirectoryAtPath:directory withIntermediateDirectories:YES attributes:nil error:&error]) {
 		
-		[self _sendJsonString:[NSString stringWithFormat:@"{result:false,msg:\'Failed to create directory %@. Error: %@\'}", directory, error]];
+		[self sendJsonString:[NSString stringWithFormat:@"{result:false,msg:\'Failed to create directory %@. Error: %@\'}", directory, error]
+		 closeConnect:YES];
 		return;
 	}
 	
-	[self _sendJsonString:@"{result:true,msg:'created'}"];
-}
--(void) _upload{
-
-	NSString *s = self.headerFields[@"coba-file-info"];
-	NSDictionary *prms = [self _parseQueryString:s];
-	
-	NSString *name = [self.server redirect:[HTTPServer URLDecode:prms[@"name"]]];
-	NSString *action = prms[@"action"];
-
-	long long size = [NSString stringWithString:prms[@"size"]].longLongValue;
-	long long filesize = [NSString stringWithString:prms[@"filesize"]].longLongValue;
-    long long start = [NSString stringWithString:prms[@"start"]].longLongValue;
-	long long end = [NSString stringWithString:prms[@"end"]].longLongValue;
-
-
-	if(	 [[self.url path] isEqualToString:@"/open"]){
-		
-	}
-	else if([[self.url path] isEqualToString:@"/continue"]){
-		
-	}
-	else if([[self.url path] isEqualToString:@"/close"]){
-	}
-
-	while(size > 0){
-		NSData *data =	[self.fileHandle availableData];
-		size -= data.length;
-	}
-	/*
-	//CFDataRef data = CFHTTPMessageCopyBody ( self.request );
-	
-	CFReadStreamRef stream = CFReadStreamCreateForHTTPRequest(kCFAllocatorDefault, self.request);
- 
-	CFReadStreamOpen(stream);
-
-	int sz =sizeof(UInt8) * 1024;
-	
-	CFIndex bufferLength = sz;
-	
-	UInt8 *buffer = (UInt8*) malloc(sz);
-	CFIndex readed = CFReadStreamRead(stream, buffer ,bufferLength);
-	CFReadStreamClose(stream);
-	 */
+	[self sendJsonString:@"{result:true,msg:'created'}" closeConnect:YES];
 }
 //
 // startResponse
@@ -407,13 +291,32 @@ NSString *_filePath;
 		[self _createDirectory];
 		return;
 	}
+	
+	if([[self.url path] isEqualTo:@"/"]){
+		filePath = [NSString stringWithFormat: [self.server site] ,@"/index.html"];
+	}
+	else if([[self.url path]  characterAtIndex:1] == '~'){
+		NSString *s = [HTTPServer URLDecode:[self.url path]];
+		filePath = [self.server redirect:[s substringFromIndex:1]];
+	}
+	else {
+		filePath = [NSString stringWithFormat:[self.server site],[HTTPServer URLDecode:[self.url path]]];
+	}
+	
+	BOOL exists = [[NSFileManager defaultManager] fileExistsAtPath:filePath];
+	if (!exists)
+	{
+		NSLog(@"File not found : %@", filePath);
+	}
+	
+	/*
 	if(	 [[self.url path] isEqualToString:@"/open"]
 	   ||[[self.url path] isEqualToString:@"/continue"]
 	   ||[[self.url path] isEqualToString:@"/close"]){
 		[self _upload];
 		return;
 	}
-
+*/
 	if([self.requestMethod isEqualTo:@"GET"]){
 		
 	}
@@ -429,9 +332,9 @@ NSString *_filePath;
 		return;
 	}
 	
-	NSString *mime = [AppTextFileResponse getMimeType: _filePath];
+	NSString *mime = [AppTextFileResponse getMimeType: filePath];
 
-	NSData *fileData =	[NSData dataWithContentsOfFile:_filePath];
+	NSData *fileData =	[NSData dataWithContentsOfFile: filePath];
 	
   	CFHTTPMessageRef response =	CFHTTPMessageCreateResponse(kCFAllocatorDefault, 200, NULL, kCFHTTPVersion1_1);
 	CFHTTPMessageSetHeaderFieldValue(response, (CFStringRef)@"Content-Type", (__bridge CFStringRef)mime);
@@ -465,6 +368,7 @@ NSString *_filePath;
 //
 // returns the path of the text file.
 //
+/*
 + (NSString *)pathForFile
 {
 //	NSString *path =
@@ -473,7 +377,7 @@ NSString *_filePath;
 //				NSUserDomainMask,
 //				YES)
 //			objectAtIndex:0];
-	BOOL exists = [[NSFileManager defaultManager] fileExistsAtPath:_filePath];
+	BOOL exists = [[NSFileManager defaultManager] fileExistsAtPath:filePath];
 	if (!exists)
 	{
 //		[[NSFileManager defaultManager]
@@ -485,5 +389,5 @@ NSString *_filePath;
 	}
 	return _filePath; //[path stringByAppendingPathComponent:@"file.txt"];
 }
-
+*/
 @end

@@ -301,7 +301,8 @@ static NSMutableArray *registeredHandlers = nil;
 //
 - (void)endResponse
 {
-	if (self.fileHandle)
+	
+	if (_fileHandle != nil)
 	{
 		[[NSNotificationCenter defaultCenter]
 			removeObserver:self
@@ -370,6 +371,7 @@ static NSMutableArray *registeredHandlers = nil;
 	if (_server)
 	{
 		[self endResponse];
+		_server = nil;
 	}
 	
 	//[(__bridge id)request release];
@@ -386,5 +388,66 @@ static NSMutableArray *registeredHandlers = nil;
 
 	//[super dealloc];
 }
+
+-(void) sendJsonString:(NSString *)json closeConnect:(BOOL) close{
+	
+	
+	NSData *data =	[json dataUsingEncoding:NSUTF8StringEncoding];
+	
+	CFHTTPMessageRef response =	CFHTTPMessageCreateResponse(kCFAllocatorDefault, 200, NULL, kCFHTTPVersion1_1);
+	CFHTTPMessageSetHeaderFieldValue(response, (CFStringRef)@"Content-Type", (__bridge CFStringRef)@"text/json");
+	CFHTTPMessageSetHeaderFieldValue(response, (CFStringRef)@"Connection", (CFStringRef)@"close");
+	CFHTTPMessageSetHeaderFieldValue(response, (CFStringRef)@"Content-Length",
+									 (__bridge CFStringRef)[NSString stringWithFormat:@"%ld", [data length]]);
+	CFDataRef headerData = CFHTTPMessageCopySerializedMessage(response);
+	
+	@try
+	{
+		[self.fileHandle writeData:(__bridge NSData *)headerData];
+		[self.fileHandle writeData:data];
+	}
+	@catch (NSException *exception)
+	{
+		NSLog( @"NSException caught" );
+		NSLog( @"Name: %@", exception.name);
+		NSLog( @"Reason: %@", exception.reason );
+		// Ignore the exception, it normally just means the client
+		// closed the connection from the other end.
+	}
+	@finally
+	{
+		CFRelease(headerData);
+		data = nil;
+		if(close){
+			[self.server closeHandler:self];
+		}
+	}
+	
+}
+
+-(NSDictionary*) parseQueryString{
+	return [self parseQueryString:[[self url] query]];
+}
+-(NSDictionary*) parseQueryString:(NSString *) query{
+	
+	NSArray *parameters = [ query componentsSeparatedByString:@"&"];
+	
+	NSMutableDictionary *dic = [NSMutableDictionary dictionary];
+	
+	for (NSString *param in parameters)
+	{
+		NSArray *para = [param componentsSeparatedByString:@"="];
+		if ( [para count] == 2 )
+		{
+			dic[para[0]] = para[1];
+		}
+		else
+		{
+			dic[para[0]] = para[0];
+		}
+	}
+	return dic;
+}
+
 
 @end

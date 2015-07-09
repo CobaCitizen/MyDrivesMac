@@ -420,8 +420,7 @@ NSString * const HTTPServerNotificationStateChanged = @"ServerNotificationStateC
 - (void)receiveIncomingConnectionNotification:(NSNotification *)notification
 {
 	NSDictionary *userInfo = [notification userInfo];
-	NSFileHandle *incomingFileHandle =
-		[userInfo objectForKey:NSFileHandleNotificationFileHandleItem];
+	NSFileHandle *incomingFileHandle =	[userInfo objectForKey:NSFileHandleNotificationFileHandleItem];
 
     if(incomingFileHandle)
 	{

@@ -30,6 +30,7 @@
 		99B152AC1B4BB8C800732AF5 /* jquery.min.map in Sources */ = {isa = PBXBuildFile; fileRef = 99B152AB1B4BB8C800732AF5 /* jquery.min.map */; };
 		99B152AE1B4BBA1C00732AF5 /* coba_upload.js in Resources */ = {isa = PBXBuildFile; fileRef = 99B152AD1B4BBA1C00732AF5 /* coba_upload.js */; };
 		99B152B11B4BF3A700732AF5 /* PList.m in Sources */ = {isa = PBXBuildFile; fileRef = 99B152B01B4BF3A700732AF5 /* PList.m */; };
+		99B1D5701B4E58DD00CCEC5C /* AppUploader.m in Sources */ = {isa = PBXBuildFile; fileRef = 99B1D56F1B4E58DD00CCEC5C /* AppUploader.m */; };
 		B55B2AC01B4A86C900DED7E2 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = B55B2ABF1B4A86C900DED7E2 /* AppDelegate.m */; };
 		B55B2AC21B4A86C900DED7E2 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = B55B2AC11B4A86C900DED7E2 /* main.m */; };
 		B55B2AC41B4A86C900DED7E2 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B55B2AC31B4A86C900DED7E2 /* Images.xcassets */; };
@@ -86,6 +87,8 @@
 		99B152AD1B4BBA1C00732AF5 /* coba_upload.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = coba_upload.js; path = js/coba_upload.js; sourceTree = "<group>"; };
 		99B152AF1B4BF3A700732AF5 /* PList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PList.h; sourceTree = "<group>"; };
 		99B152B01B4BF3A700732AF5 /* PList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PList.m; sourceTree = "<group>"; };
+		99B1D56E1B4E58DD00CCEC5C /* AppUploader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppUploader.h; sourceTree = "<group>"; };
+		99B1D56F1B4E58DD00CCEC5C /* AppUploader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppUploader.m; sourceTree = "<group>"; };
 		B55B2AB91B4A86C900DED7E2 /* MyDrivesMac.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyDrivesMac.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B55B2ABD1B4A86C900DED7E2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B55B2ABE1B4A86C900DED7E2 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -151,13 +154,15 @@
 		B55B2ABB1B4A86C900DED7E2 /* MyDrivesMac */ = {
 			isa = PBXGroup;
 			children = (
+				99B1526E1B4B2BAD00732AF5 /* AppTextFileResponse.h */,
+				99B1526F1B4B2BAD00732AF5 /* AppTextFileResponse.m */,
+				99B1D56E1B4E58DD00CCEC5C /* AppUploader.h */,
+				99B1D56F1B4E58DD00CCEC5C /* AppUploader.m */,
 				99B152771B4B2BCB00732AF5 /* SynthesizeSingleton.h */,
 				99B152711B4B2BBA00732AF5 /* HTTPResponseHandler.h */,
 				99B152721B4B2BBA00732AF5 /* HTTPResponseHandler.m */,
 				99B152731B4B2BBA00732AF5 /* HTTPServer.h */,
 				99B152741B4B2BBA00732AF5 /* HTTPServer.m */,
-				99B1526E1B4B2BAD00732AF5 /* AppTextFileResponse.h */,
-				99B1526F1B4B2BAD00732AF5 /* AppTextFileResponse.m */,
 				B5D0DBE21B4B174800B39CC7 /* WndControllers */,
 				B55B2ABE1B4A86C900DED7E2 /* AppDelegate.h */,
 				B55B2ABF1B4A86C900DED7E2 /* AppDelegate.m */,
@@ -402,6 +407,7 @@
 				99B152B11B4BF3A700732AF5 /* PList.m in Sources */,
 				99B152761B4B2BBA00732AF5 /* HTTPServer.m in Sources */,
 				99B152751B4B2BBA00732AF5 /* HTTPResponseHandler.m in Sources */,
+				99B1D5701B4E58DD00CCEC5C /* AppUploader.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
