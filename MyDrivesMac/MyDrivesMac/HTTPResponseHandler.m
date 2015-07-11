@@ -244,11 +244,7 @@ static NSMutableArray *registeredHandlers = nil;
 //
 // [server closeHandler:self] should be invoked when done sending data.
 //
-- (void)startResponse /*: (NSString *)method
-				  url:(NSURL *)requestURL
-		 headerFields:(NSDictionary *)requestHeaderFields
-		   fileHandle:(NSFileHandle *)requestFileHandle
-			   server:(HTTPServer *)aServer*/
+- (void)startResponse
 {
 	CFHTTPMessageRef response =
 		CFHTTPMessageCreateResponse(
@@ -282,7 +278,9 @@ static NSMutableArray *registeredHandlers = nil;
 		[_server closeHandler:self];
 	}
 }
-
+- (void)startResponseWithBody:(NSData *)body{
+	NSLog(@"0.ERROR ....");
+}
 //
 // endResponse
 //

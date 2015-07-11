@@ -51,6 +51,7 @@
 	server:(HTTPServer *)aServer;
 
 - (void)startResponse;
+- (void)startResponseWithBody:(NSData *) body;
 - (void)endResponse;
 
 -(void) sendJsonString:(NSString *)json closeConnect:(BOOL) close;

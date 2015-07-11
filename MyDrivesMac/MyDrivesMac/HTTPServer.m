@@ -19,6 +19,7 @@
 #import <netdb.h>
 #import "HTTPResponseHandler.h"
 #import "PList.h"
+#import "AppUploader.h"
 
 #define HTTP_SERVER_PORT 8080
 
@@ -323,10 +324,11 @@ NSString * const HTTPServerNotificationStateChanged = @"ServerNotificationStateC
 	address.sin_port = htons(_port);
 	
 	CFDataRef addressData =	CFDataCreate(NULL, (const UInt8 *)&address, sizeof(address));
-	//[(id)addressData autorelease];
+//	[(id)(addressData) autorelease];
 	
 	if (CFSocketSetAddress(socket, addressData) != kCFSocketSuccess)
 	{
+		CFRelease(addressData);
 		[self errorWithName:@"Unable to bind socket to address."];
 		return;
 	}
@@ -339,6 +341,8 @@ NSString * const HTTPServerNotificationStateChanged = @"ServerNotificationStateC
 		name:NSFileHandleConnectionAcceptedNotification
 		object:nil];
 	[listeningHandle acceptConnectionInBackgroundAndNotify];
+
+	CFRelease(addressData);
 	
 	self.state = SERVER_STATE_RUNNING;
 	self.site = @"/Users/maximbukshovan/MyDrivesMac/MyDrivesMac%@";
@@ -368,6 +372,7 @@ NSString * const HTTPServerNotificationStateChanged = @"ServerNotificationStateC
 		removeObserver:self
 		name:NSFileHandleDataAvailableNotification
 		object:incomingFileHandle];
+	
 	CFDictionaryRemoveValue(incomingRequests, (__bridge const void *)(incomingFileHandle));
 }
 
@@ -481,6 +486,7 @@ NSString * const HTTPServerNotificationStateChanged = @"ServerNotificationStateC
 
 	if(CFHTTPMessageIsHeaderComplete(incomingRequest))
 	{
+		
 		HTTPResponseHandler *handler =
 			[HTTPResponseHandler
 				handlerForRequest:incomingRequest
@@ -490,7 +496,13 @@ NSString * const HTTPServerNotificationStateChanged = @"ServerNotificationStateC
 		[responseHandlers addObject:handler];
 		[self stopReceivingForFileHandle:incomingFileHandle close:NO];
 
-		[handler startResponse ];
+		NSData *body = (__bridge NSData *)(CFHTTPMessageCopyBody(incomingRequest));
+		if(body != nil && [body length] > 0){
+			[handler startResponseWithBody:body];
+		}
+		else {
+			[handler startResponse ];
+		}
 		return;
 	}
 

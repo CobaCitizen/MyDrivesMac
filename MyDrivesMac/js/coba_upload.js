@@ -60,12 +60,16 @@ function coba_upload_part(file, blobs, poss, first, dv)
        + "&type=" + file.type
        + "&size=" + (blob ? blob.size : -1)
        + "&filesize=" + file.size
-       + "&start=" + (pos ? pos[0] : -1)
-       + "&end=" + (pos ? pos[1] : -1);
+     //  + "&start=" + (pos ? pos[0] : -1)
+     //  + "&end=" + (pos ? pos[1] : -1);
+	   + "&start=" + (blob ? pos[0] : -1)
+	   + "&end=" + (blob ? pos[1] : -1);
 
   var action = (first ? 'open' : (blob ? 'continue' : 'close'));
   info += "&action=" + action;
 
+// console.log(info);
+	
   var client = new XMLHttpRequest();
   client.ontimeout = function (e) {
      alert('client timeout ...')
@@ -132,7 +136,7 @@ function coba_upload_file(file,td)
   var poss = [];
 
   //var bytes_per_chunk = 1024 * 1024;
-  var bytes_per_chunk = 1024 * 512;
+  var bytes_per_chunk = 1024 * 64;
   var start = 0;
   var end = bytes_per_chunk;
   var size = file.size;
