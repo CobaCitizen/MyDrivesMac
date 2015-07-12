@@ -80,14 +80,23 @@
 	if(_server){
 		return;
 	}
-	NSString *host =(NSString*) [self.cbAddresses objectValueOfSelectedItem];
-	int port = (int)[self.fldPort integerValue];
-	if(port == 0){
-		self.fldPort.stringValue =@"13003";
-		port = 13003;
+	
+	@try {
+		NSString *host =(NSString*) [self.cbAddresses objectValueOfSelectedItem];
+		int port = (int)[self.fldPort integerValue];
+		if(port == 0){
+			self.fldPort.stringValue =@"13003";
+			port = 13003;
+		}
+		_server = [[HTTPServer alloc] initWithHost:host andPort:port];
+		[_server start];
 	}
-	_server = [[HTTPServer alloc] initWithHost:host andPort:port];
-	[_server start];
+	@catch (NSException *exception) {
+		NSLog(@"Exception .....");
+	}
+	@finally {
+		
+	}
 	
 }
 

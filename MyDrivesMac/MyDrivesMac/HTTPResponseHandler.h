@@ -54,6 +54,7 @@
 - (void)startResponseWithBody:(NSData *) body;
 - (void)endResponse;
 
+-(BOOL) writeResponseData:(NSData *) data;
 -(void) sendJsonString:(NSString *)json closeConnect:(BOOL) close;
 -(NSDictionary*) parseQueryString:(NSString *) query;
 -(NSDictionary*) parseQueryString;

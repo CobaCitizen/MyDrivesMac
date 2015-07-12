@@ -20,13 +20,13 @@
 		id value = dic[key];
 
 		if([value isKindOfClass:[NSString class]]){
-			s = [NSString stringWithFormat:@"\'%@\':\'%@\'", key,value];
+			s = [NSString stringWithFormat:@"\"%@\":\"%@\"", key,value];
 		}
 		else if([value isKindOfClass:[NSNumber class]]){
-			s = [NSString stringWithFormat:@"\'%@\':%lld", key, [value longLongValue]];
+			s = [NSString stringWithFormat:@"\"%@\":%lld", key, [value longLongValue]];
 		}
 		else {
-		  s = [NSString stringWithFormat:@"\'%@\':\'%@\'", key,value];
+		  s = [NSString stringWithFormat:@"\"%@\":\"%@\"", key,value];
 		}
 		if(i>0){
 			json = [json stringByAppendingString:@","];

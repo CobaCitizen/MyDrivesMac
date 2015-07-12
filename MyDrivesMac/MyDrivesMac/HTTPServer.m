@@ -440,11 +440,20 @@ NSString * const HTTPServerNotificationStateChanged = @"ServerNotificationStateC
 			name:NSFileHandleDataAvailableNotification
 			object:incomingFileHandle];
 		
+//				[[NSNotificationCenter defaultCenter]
+//					addObserver:self
+//					selector:@selector(incomingDataException:)
+//					name:NSFileHandleOperationException
+//					object:incomingFileHandle];
+
         [incomingFileHandle waitForDataInBackgroundAndNotify];
     }
 
 	[listeningHandle acceptConnectionInBackgroundAndNotify];
 }
+//- (void)incomingDataException:(NSNotification *)notification{
+//	NSLog(@"Exception ...............");
+//}
 
 //
 // receiveIncomingDataNotification:
@@ -503,6 +512,7 @@ NSString * const HTTPServerNotificationStateChanged = @"ServerNotificationStateC
 		else {
 			[handler startResponse ];
 		}
+		CFRelease((__bridge CFTypeRef)(body));
 		return;
 	}
 

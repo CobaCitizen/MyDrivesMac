@@ -100,6 +100,9 @@
 		@"js" : @"text/javascript",
 		@"css" : @"text/css",
 		@"woff" :@"application/octet-stream",
+		@"mov" :@"video/quicktime",
+		@"mp4" :@"video/quicktime",
+		@"pdf" :@"application/pdf",
 		@"woff2" :@"application/octet-stream"
 								};
 
@@ -221,8 +224,9 @@
 	NSData *buffer;
 	@try
 	{
+	//if([self writeResponseData:(__bridge NSData *)headerData]) {
 		[self.fileHandle writeData:(__bridge NSData *)headerData];
-
+	
 		file = [NSFileHandle fileHandleForReadingAtPath: filePath];
 		
 		if (file == nil)
@@ -234,22 +238,29 @@
 	
 			buffer = [file readDataOfLength: 128*1024];
 			if (buffer.length > 0) {
+				//if(![self writeResponseData:buffer]) break;
 				[self.fileHandle writeData:buffer];
 				chunck -= buffer.length;
 			}
 			else break;
-		}
+			
+			buffer = nil;
+	//	}
+	}
 	}
 	@catch (NSException *exception)
 	{
 		// Ignore the exception, it normally just means the client
 		// closed the connection from the other end.
+		[self.server closeHandler:self];
 	}
 	@finally
 	{
 		CFRelease(headerData);
-		[self.server closeHandler:self];
+		CFRelease(response);
+		buffer = nil;
 		
+		[self.server closeHandler:self];
 		[file closeFile];
 	}
 
@@ -345,8 +356,11 @@
 
 	@try
 	{
-		[self.fileHandle writeData:(__bridge NSData *)headerData];
-		[self.fileHandle writeData:fileData];
+		if([self writeResponseData:(__bridge NSData *)headerData]){
+			[self writeResponseData:fileData];
+		  //[self.fileHandle writeData:(__bridge NSData *)headerData];
+		  // [self.fileHandle writeData:fileData];
+		}
 	}
 	@catch (NSException *exception)
 	{
@@ -356,6 +370,8 @@
 	@finally
 	{
 		CFRelease(headerData);
+		CFRelease(response);
+		//fileData = nil;
 		[self.server closeHandler:self];
 	}
 }

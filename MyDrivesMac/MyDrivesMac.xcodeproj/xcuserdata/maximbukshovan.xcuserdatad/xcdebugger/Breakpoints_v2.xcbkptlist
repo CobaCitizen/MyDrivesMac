@@ -26,11 +26,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MyDrivesMac/AppDelegate.m"
-            timestampString = "458024254.151942"
+            timestampString = "458370002.963685"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "95"
-            endingLineNumber = "95"
+            startingLineNumber = "104"
+            endingLineNumber = "104"
             landmarkName = "-actStopServer:"
             landmarkType = "5">
          </BreakpointContent>
@@ -74,11 +74,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MyDrivesMac/HTTPServer.m"
-            timestampString = "458292221.070368"
+            timestampString = "458295096.064274"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "385"
-            endingLineNumber = "385"
+            startingLineNumber = "386"
+            endingLineNumber = "386"
             landmarkName = "-stop"
             landmarkType = "5">
          </BreakpointContent>
@@ -134,11 +134,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MyDrivesMac/AppTextFileResponse.m"
-            timestampString = "458132375.895236"
+            timestampString = "458379701.916055"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "380"
-            endingLineNumber = "380"
+            startingLineNumber = "396"
+            endingLineNumber = "396"
             landmarkName = "@implementation AppTextFileResponse"
             landmarkType = "3">
          </BreakpointContent>
@@ -150,11 +150,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MyDrivesMac/AppTextFileResponse.m"
-            timestampString = "458121274.714785"
+            timestampString = "458379701.916055"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "177"
-            endingLineNumber = "177"
+            startingLineNumber = "180"
+            endingLineNumber = "180"
             landmarkName = "-_sendFolder"
             landmarkType = "5">
          </BreakpointContent>
@@ -166,11 +166,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MyDrivesMac/AppTextFileResponse.m"
-            timestampString = "458121274.714785"
+            timestampString = "458379701.916055"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "180"
-            endingLineNumber = "180"
+            startingLineNumber = "183"
+            endingLineNumber = "183"
             landmarkName = "-_sendFolder"
             landmarkType = "5">
          </BreakpointContent>
@@ -198,44 +198,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MyDrivesMac/AppTextFileResponse.m"
-            timestampString = "458121274.714785"
+            timestampString = "458379701.916055"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "155"
-            endingLineNumber = "155"
+            startingLineNumber = "158"
+            endingLineNumber = "158"
             landmarkName = "-_sendFolder"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "MyDrivesMac/AppTextFileResponse.m"
-            timestampString = "458121274.714785"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "250"
-            endingLineNumber = "250"
-            landmarkName = "-_sendForMacRange:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "MyDrivesMac/AppDelegate.m"
-            timestampString = "458056315.220804"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "83"
-            endingLineNumber = "83"
-            landmarkName = "-actStartServer:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -246,11 +214,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MyDrivesMac/AppTextFileResponse.m"
-            timestampString = "458121274.714785"
+            timestampString = "458379701.916055"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "260"
-            endingLineNumber = "260"
+            startingLineNumber = "271"
+            endingLineNumber = "271"
             landmarkName = "-_createDirectory"
             landmarkType = "5">
          </BreakpointContent>
@@ -262,11 +230,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MyDrivesMac/HTTPResponseHandler.m"
-            timestampString = "458289276.943661"
+            timestampString = "458306025.718195"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "348"
-            endingLineNumber = "348"
+            startingLineNumber = "356"
+            endingLineNumber = "356"
             landmarkName = "-receiveIncomingDataNotification:"
             landmarkType = "5">
          </BreakpointContent>
@@ -278,11 +246,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MyDrivesMac/AppUploader.m"
-            timestampString = "458290526.465535"
+            timestampString = "458306025.718195"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "84"
-            endingLineNumber = "84"
+            startingLineNumber = "90"
+            endingLineNumber = "90"
             landmarkName = "@implementation AppUploader"
             landmarkType = "3">
          </BreakpointContent>
@@ -294,11 +262,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MyDrivesMac/HTTPResponseHandler.m"
-            timestampString = "458289276.943661"
+            timestampString = "458306025.718195"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "343"
-            endingLineNumber = "343"
+            startingLineNumber = "351"
+            endingLineNumber = "351"
             landmarkName = "-receiveIncomingDataNotification:"
             landmarkType = "5">
          </BreakpointContent>
@@ -310,11 +278,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MyDrivesMac/HTTPServer.m"
-            timestampString = "458292221.070368"
+            timestampString = "458373182.031912"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "473"
-            endingLineNumber = "473"
+            startingLineNumber = "483"
+            endingLineNumber = "483"
             landmarkName = "-receiveIncomingDataNotification:"
             landmarkType = "5">
          </BreakpointContent>
@@ -326,11 +294,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MyDrivesMac/HTTPServer.m"
-            timestampString = "458292221.070368"
+            timestampString = "458373182.031912"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "482"
-            endingLineNumber = "482"
+            startingLineNumber = "492"
+            endingLineNumber = "492"
             landmarkName = "-receiveIncomingDataNotification:"
             landmarkType = "5">
          </BreakpointContent>
@@ -342,27 +310,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MyDrivesMac/HTTPServer.m"
-            timestampString = "458292221.070368"
+            timestampString = "458373182.031912"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "514"
-            endingLineNumber = "514"
-            landmarkName = "-receiveIncomingDataNotification:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "MyDrivesMac/AppUploader.m"
-            timestampString = "458290526.465535"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "217"
-            endingLineNumber = "217"
+            startingLineNumber = "519"
+            endingLineNumber = "519"
             landmarkName = "-receiveIncomingDataNotification:"
             landmarkType = "5">
          </BreakpointContent>
@@ -390,11 +342,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MyDrivesMac/AppUploader.m"
-            timestampString = "458289276.943661"
+            timestampString = "458306025.718195"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "109"
-            endingLineNumber = "109"
+            startingLineNumber = "115"
+            endingLineNumber = "115"
             landmarkName = "-_writeData:"
             landmarkType = "5">
          </BreakpointContent>
@@ -402,31 +354,15 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "MyDrivesMac/AppUploader.m"
-            timestampString = "458290526.465535"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "203"
-            endingLineNumber = "203"
-            landmarkName = "-startResponse"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MyDrivesMac/AppUploader.m"
-            timestampString = "458290526.465535"
+            timestampString = "458306025.718195"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "261"
-            endingLineNumber = "261"
+            startingLineNumber = "254"
+            endingLineNumber = "254"
             landmarkName = "-endResponse"
             landmarkType = "5">
          </BreakpointContent>
@@ -434,27 +370,11 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "MyDrivesMac/AppUploader.m"
-            timestampString = "458290526.465535"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "220"
-            endingLineNumber = "220"
-            landmarkName = "-receiveIncomingDataNotification:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MyDrivesMac/AppUploader.m"
-            timestampString = "458290526.465535"
+            timestampString = "458306025.718195"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "239"
@@ -470,11 +390,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MyDrivesMac/HTTPServer.m"
-            timestampString = "458292221.070368"
+            timestampString = "458295096.064274"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "426"
-            endingLineNumber = "426"
+            startingLineNumber = "427"
+            endingLineNumber = "427"
             landmarkName = "-receiveIncomingConnectionNotification:"
             landmarkType = "5">
          </BreakpointContent>
@@ -482,15 +402,15 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MyDrivesMac/HTTPServer.m"
-            timestampString = "458292221.070368"
+            timestampString = "458373182.031912"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "465"
-            endingLineNumber = "465"
+            startingLineNumber = "475"
+            endingLineNumber = "475"
             landmarkName = "-receiveIncomingDataNotification:"
             landmarkType = "5">
          </BreakpointContent>
@@ -502,11 +422,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MyDrivesMac/AppUploader.m"
-            timestampString = "458290526.465535"
+            timestampString = "458306025.718195"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "175"
-            endingLineNumber = "175"
+            startingLineNumber = "181"
+            endingLineNumber = "181"
             landmarkName = "-startResponseWithBody:"
             landmarkType = "5">
          </BreakpointContent>
@@ -518,11 +438,43 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MyDrivesMac/AppUploader.m"
-            timestampString = "458290526.465535"
+            timestampString = "458306025.718195"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "197"
-            endingLineNumber = "197"
+            startingLineNumber = "148"
+            endingLineNumber = "148"
+            landmarkName = "-_parseParameters"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "MyDrivesMac/AppUploader.m"
+            timestampString = "458306025.718195"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "176"
+            endingLineNumber = "176"
+            landmarkName = "-_parseParameters"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "MyDrivesMac/AppUploader.m"
+            timestampString = "458306025.718195"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "207"
+            endingLineNumber = "207"
             landmarkName = "-startResponse"
             landmarkType = "5">
          </BreakpointContent>
@@ -534,12 +486,28 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MyDrivesMac/AppUploader.m"
-            timestampString = "458290526.465535"
+            timestampString = "458306016.067111"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "161"
-            endingLineNumber = "161"
+            startingLineNumber = "171"
+            endingLineNumber = "171"
             landmarkName = "-_parseParameters"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "MyDrivesMac/HTTPResponseHandler.m"
+            timestampString = "458373182.031912"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "446"
+            endingLineNumber = "446"
+            landmarkName = "-sendJsonString:closeConnect:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -549,13 +517,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "MyDrivesMac/AppUploader.m"
-            timestampString = "458290526.465535"
+            filePath = "MyDrivesMac/AppTextFileResponse.m"
+            timestampString = "458379701.916055"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "142"
-            endingLineNumber = "142"
-            landmarkName = "-_parseParameters"
+            startingLineNumber = "233"
+            endingLineNumber = "233"
+            landmarkName = "-_sendForMacRange:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -565,13 +533,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "MyDrivesMac/AppUploader.m"
-            timestampString = "458290523.739655"
+            filePath = "MyDrivesMac/HTTPResponseHandler.m"
+            timestampString = "458373182.031912"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "170"
-            endingLineNumber = "170"
-            landmarkName = "-_parseParameters"
+            startingLineNumber = "381"
+            endingLineNumber = "381"
+            landmarkName = "-writeResponseData2:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -581,13 +549,29 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "MyDrivesMac/HTTPServer.m"
-            timestampString = "458292216.898338"
+            filePath = "MyDrivesMac/AppTextFileResponse.m"
+            timestampString = "458379701.916055"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "344"
-            endingLineNumber = "344"
-            landmarkName = "-start"
+            startingLineNumber = "255"
+            endingLineNumber = "255"
+            landmarkName = "-_sendForMacRange:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "MyDrivesMac/AppTextFileResponse.m"
+            timestampString = "458379701.916055"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "264"
+            endingLineNumber = "264"
+            landmarkName = "-_sendForMacRange:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

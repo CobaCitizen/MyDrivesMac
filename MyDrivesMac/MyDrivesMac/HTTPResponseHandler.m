@@ -224,10 +224,19 @@ static NSMutableArray *registeredHandlers = nil;
 			name:NSFileHandleDataAvailableNotification
 			object:_fileHandle];
 
+//		[[NSNotificationCenter defaultCenter]
+//			addObserver:self
+//			selector:@selector(incomingDataException:)
+//			name:NSFileHandleOperationException
+//			object:self.fileHandle];
+
 		[self.fileHandle waitForDataInBackgroundAndNotify];
 	}
 	return self;
 }
+//- (void)incomingDataException:(NSNotification *)notification{
+//	NSLog(@"Exception ...............");
+//}
 
 //
 // startResponse
@@ -314,7 +323,6 @@ static NSMutableArray *registeredHandlers = nil;
 	//[server release];
 	_server = nil;
 }
-
 //
 // receiveIncomingDataNotification:
 //
@@ -358,7 +366,24 @@ static NSMutableArray *registeredHandlers = nil;
 	
 	[incomingFileHandle waitForDataInBackgroundAndNotify];
 }
+-(BOOL) writeResponseData:(NSData *) data{
 
+	[self.fileHandle writeData:data];
+	return YES;
+}
+
+-(BOOL) writeResponseData2:(NSData *) data{
+	BOOL result = YES;
+	@try {
+		[self.fileHandle writeData:data];
+	}
+	@catch (NSException *exception) {
+		result = NO;
+	}
+	@finally {
+	}
+	return result;
+}
 //
 // dealloc
 //
@@ -401,20 +426,25 @@ static NSMutableArray *registeredHandlers = nil;
 	
 	@try
 	{
-		[self.fileHandle writeData:(__bridge NSData *)headerData];
-		[self.fileHandle writeData:data];
+		//[self.fileHandle writeData:(__bridge NSData *)headerData];
+		//[self.fileHandle writeData:data];
+		if([self writeResponseData:(__bridge NSData *)headerData]){
+			[self writeResponseData:data];
+		}
 	}
 	@catch (NSException *exception)
 	{
-		NSLog( @"NSException caught" );
-		NSLog( @"Name: %@", exception.name);
-		NSLog( @"Reason: %@", exception.reason );
+//		NSLog( @"NSException caught" );
+//		NSLog( @"Name: %@", exception.name);
+//		NSLog( @"Reason: %@", exception.reason );
 		// Ignore the exception, it normally just means the client
 		// closed the connection from the other end.
 	}
 	@finally
 	{
 		CFRelease(headerData);
+		CFRelease(response);
+		
 		data = nil;
 		if(close){
 			[self.server closeHandler:self];

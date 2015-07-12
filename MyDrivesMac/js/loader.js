@@ -1,9 +1,13 @@
 
 
 function id(name) {
-  var items = document.querySelectorAll(name);
-  return items[0];
- //return document.getElementById(name);
+ // var items = document.querySelectorAll(name);
+ // return items[0];
+ var item =document.getElementById(name);
+	if(!item) {
+		console.log("Error in id - name [" + name + "] not found!");
+	}
+ return item;
 }
 
   function toggleFullScreen() {

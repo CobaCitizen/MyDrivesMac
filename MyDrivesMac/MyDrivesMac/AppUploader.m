@@ -71,6 +71,12 @@
 			name:NSFileHandleDataAvailableNotification
 			object: self.fileHandle];
 
+//		[[NSNotificationCenter defaultCenter]
+//			addObserver:self
+//			selector:@selector(incomingDataException:)
+//			name:NSFileHandleOperationException
+//			object:self.fileHandle];
+		
 		[self.fileHandle waitForDataInBackgroundAndNotify];
 
 		
@@ -95,7 +101,7 @@
 	
    	if(total == size){
 		needWaitData = NO;
-		NSLog([NSString stringWithFormat:@"=0.total: %lld size:%lld rest:%lld",total, size,(filesize - end -1)]);
+//		NSLog([NSString stringWithFormat:@"=0.total: %lld size:%lld rest:%lld",total, size,(filesize - end -1)]);
 		[self.server closeHandler:self];
 		return;
 	}
@@ -106,7 +112,7 @@
 	
 	if(end >= filesize) {
 		action = @"close";
-		NSLog([NSString stringWithFormat:@"<0.total: %lld size:%lld rest:%lld",total, size,(filesize - end -1)]);
+//		NSLog([NSString stringWithFormat:@"<0.total: %lld size:%lld rest:%lld",total, size,(filesize - end -1)]);
 //			needWaitData = NO;
 			[self.server closeHandler:self];
 //			return;
@@ -148,7 +154,7 @@
 	
 	long long rest =(filesize - end - 1);
 	
-	NSLog([NSString stringWithFormat:@"rest:%lld total:%lld delta:%lld", rest , total , (end - start) ]);
+//	NSLog([NSString stringWithFormat:@"rest:%lld total:%lld delta:%lld", rest , total , (end - start) ]);
 
 	if(	 [[self.url path] isEqualToString:@"/open"]){
 		[[NSFileManager defaultManager] createFileAtPath:outputFileName contents:nil attributes:nil];
@@ -207,6 +213,9 @@
 	
 	
 }
+//- (void)incomingDataException:(NSNotification *)notification{
+//	NSLog(@"Exception ...............");
+//}
 - (void)receiveIncomingDataNotification:(NSNotification *)notification
 {
 	NSData *data;
@@ -218,52 +227,37 @@
 	}
 	else {
 		[self _writeData:data];
-		//[incomingFileHandle waitForDataInBackgroundAndNotify];
 	}
-	
-
-	//
-	// This is a default implementation and simply ignores all data.
-	// If you need the HTTP body, you need to override this method to continue
-	// accumulating data. Don't forget that new data may need to be combined
-	// with any HTTP body data that may have already been received in the
-	// "request" body.
-	//
-	if(needWaitData) {
-//		[incomingFileHandle waitForDataInBackgroundAndNotify];
+	if(data != nil) {
+	//	CFRelease((__bridge CFTypeRef)data);
 	}
 
 }
 - (void)endResponse
 {
-	needWaitData = NO;
+
 	if(file != nil) {
 		[file closeFile];
 		file = nil;
 	}
-//	if (self.fileHandle) {
-	//	[self sendJsonString:[NSString stringWithFormat:@"{result:'ok',msg:'%@',offset:%lld}", action,end]];
-	//	[super endResponse];
-//	}
-	
+
 	if (self.fileHandle)
 	{
 		NSString *json =[NSString stringWithFormat:@"{result:'ok',msg:'%@',offset:%lld}", action,end] ;
-		NSLog(json);
 		[self sendJsonString:json closeConnect:NO];
 		
 		[[NSNotificationCenter defaultCenter]
 			removeObserver:self
 			name:NSFileHandleDataAvailableNotification
 			object:self.fileHandle];
-//		[[NSNotificationCenter defaultCenter] removeObserver:self];
 
-	//	[self.fileHandle closeFile];
+		[self.fileHandle closeFile];
 	    self.fileHandle = nil;
 	}
-
-	//[server release];
-	//self.server = nil;
+	self.server = nil;
+	incomingFileHandle = nil;
+	outputFileName = nil;
+	action = nil;
 }
 
 
