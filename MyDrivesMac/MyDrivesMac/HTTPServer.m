@@ -345,7 +345,7 @@ NSString * const HTTPServerNotificationStateChanged = @"ServerNotificationStateC
 	CFRelease(addressData);
 	
 	self.state = SERVER_STATE_RUNNING;
-	self.site = @"/Users/maximbukshovan/MyDrivesMac/MyDrivesMac%@";
+//	self.site = @"/Users/maximbukshovan/MyDrivesMac/MyDrivesMac%@";
 }
 
 //

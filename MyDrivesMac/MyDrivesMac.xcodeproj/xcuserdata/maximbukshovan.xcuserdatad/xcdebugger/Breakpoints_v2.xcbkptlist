@@ -134,11 +134,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MyDrivesMac/AppTextFileResponse.m"
-            timestampString = "458379701.916055"
+            timestampString = "458466268.549139"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "396"
-            endingLineNumber = "396"
+            startingLineNumber = "425"
+            endingLineNumber = "425"
             landmarkName = "@implementation AppTextFileResponse"
             landmarkType = "3">
          </BreakpointContent>
@@ -572,6 +572,22 @@
             startingLineNumber = "264"
             endingLineNumber = "264"
             landmarkName = "-_sendForMacRange:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "MyDrivesMac/AppTextFileResponse.m"
+            timestampString = "458466268.549139"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "349"
+            endingLineNumber = "349"
+            landmarkName = "-startResponse"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

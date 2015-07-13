@@ -285,6 +285,33 @@
 	
 	[self sendJsonString:@"{result:true,msg:'created'}" closeConnect:YES];
 }
+-(NSString *) makeFilePath:(NSString *)url {
+	NSString *path;
+//	path = [[NSBundle mainBundle] pathForResource:@"loader" ofType:@"js" inDirectory:@"site/js"];
+//	path = [[NSBundle mainBundle] pathForResource:@"loader" ofType:@"js" inDirectory:@"js"];
+//	path = [[NSBundle mainBundle] pathForResource:@"index" ofType:@"html"];
+
+	NSString* fileName = [[url lastPathComponent] stringByDeletingPathExtension];
+	NSString* extension = [url pathExtension];
+	path = [[NSBundle mainBundle] pathForResource:fileName ofType:extension];
+
+//	NSArray *items = [url componentsSeparatedByString:@"/"];
+//	if ([items count] == 2) {
+////		NSRange range = [items[2] rangeOfString:@"."];
+//		NSString *ext = [url pathExtension];
+//       path = [[NSBundle mainBundle] pathForResource:items[1] ofType:ext];
+//	}
+//	else if([items count] == 3) {
+//		NSString *ext = [url pathExtension];
+//		NSRange range = [items[2] rangeOfString:@"."];
+//		
+//	
+//		path = [[NSBundle mainBundle] pathForResource:items[2] ofType:ext];
+//		path = [[NSBundle mainBundle] pathForResource:@"loader" ofType:@"js" inDirectory:@"js"];
+//	}
+////    path = [[NSBundle mainBundle] pathForResource:@"data" ofType:@"bin"];
+	return path;
+}
 //
 // startResponse
 //
@@ -304,14 +331,16 @@
 	}
 	
 	if([[self.url path] isEqualTo:@"/"]){
-		filePath = [NSString stringWithFormat: [self.server site] ,@"/index.html"];
+//		filePath = [NSString stringWithFormat: [self.server site] ,@"/index.html"];
+		filePath = [NSString stringWithFormat: [self makeFilePath:@"/index.html"]];
 	}
 	else if([[self.url path]  characterAtIndex:1] == '~'){
 		NSString *s = [HTTPServer URLDecode:[self.url path]];
 		filePath = [self.server redirect:[s substringFromIndex:1]];
 	}
 	else {
-		filePath = [NSString stringWithFormat:[self.server site],[HTTPServer URLDecode:[self.url path]]];
+		//filePath = [NSString stringWithFormat:[self.server site],[HTTPServer URLDecode:[self.url path]]];
+		filePath = [self makeFilePath:[self.url path]];
 	}
 	
 	BOOL exists = [[NSFileManager defaultManager] fileExistsAtPath:filePath];
