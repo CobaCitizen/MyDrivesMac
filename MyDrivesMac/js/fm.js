@@ -610,11 +610,14 @@ function make_popup() {
 }
 function make_breadcrumbs() {
 
+ var e = id("td-path");
+ if(e) {
   var html = generator.generate_one(fm.stack, "fm-bread-header")
    + generator.generate(fm.stack, "fm-bread-body")
    + generator.generate_one(fm.stack, "fm-bread-footer");
 
   id("td-path").innerHTML = html;
+  }
 
 }
 function fm_delete_file(file) {

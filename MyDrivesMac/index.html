@@ -69,32 +69,6 @@ img1:active {
     init_document("..");
   });
 
-  //
-/*
-function toggleFullScreen() {
-  if (!document.fullscreenElement &&    // alternative standard method
-      !document.mozFullScreenElement && !document.webkitFullscreenElement && !document.msFullscreenElement ) {  // current working methods
-    if (document.documentElement.requestFullscreen) {
-      document.documentElement.requestFullscreen();
-    } else if (document.documentElement.msRequestFullscreen) {
-      document.documentElement.msRequestFullscreen();
-    } else if (document.documentElement.mozRequestFullScreen) {
-      document.documentElement.mozRequestFullScreen();
-    } else if (document.documentElement.webkitRequestFullscreen) {
-      document.documentElement.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
-    }
-  } else {
-    if (document.exitFullscreen) {
-      document.exitFullscreen();
-    } else if (document.msExitFullscreen) {
-      document.msExitFullscreen();
-    } else if (document.mozCancelFullScreen) {
-      document.mozCancelFullScreen();
-    } else if (document.webkitExitFullscreen) {
-      document.webkitExitFullscreen();
-    }
-  }
-}*/
   ////////////////////////-
   function fm_restore_main(){
   var d =  document.getElementById("dd");
@@ -122,13 +96,46 @@ function toggleFullScreen() {
     <!--                         -->
         <table class="table">
           <tr>
+   			<td class="text-primary" onclick="init_document('..');">
+				<button type="button" class="btn btn-default"><span class="glyphicon glyphicon-arrow-left"></span></button>
+			</td>
+
+
+            <td class="btn text-primary" onclick="init_document('root'); " style="cursor:pointer;">
+              <button type="button" class="btn btn-default"><span class="glyphicon glyphicon-home"></span></button>
+            </td>
+            <td class="text-primary" onclick="fm_refresh();">
+              <button type="button" class="btn btn-default"><span class="glyphicon glyphicon-refresh"></span></button>
+            </td>
+            <td class="text-primary" onclick="create_upload_form();">
+              <button type="button" class="btn btn-default"><span class="glyphicon glyphicon-cloud"></span></button>
+            </td>
+
+            <td>
+              <div class="dropdown" id="dropdown-right">
+                <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
+                  <span class="glyphicon glyphicon-th-list"></span>
+                </button>
+
+                <ul class="dropdown-menu dropdown-menu-right">
+                  <li class="divider"></li>
+                  <li><a href="#" data-method="create_upload_form">Загрузить на сервер</a></li>
+                  <li><a href="#" data-method="create_folder_form">Создать папку</a></li>
+                  <li class="divider"></li>
+                  <li class="dropdown-header">Навигация</li>
+                  <li><a href="#" data-method="make_popup">Path</a></li>
+                  <li><a href="#" onclick="init_document('root');">Список дисков</a></li>
+                  <li><a href="#" onclick="fm_refresh();">Обновить</a></li>
+                  <li class="divider"></li>
+                </ul>
+              </div>
+            </td>
+<!--
             <td>
               <div class="dropdown" id="dropdown-left">
                 <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
                   <span class="glyphicon glyphicon-th-list"></span>
-                  <!-- <span class="caret"></span>-->
                 </button>
-
                 <ul class="dropdown-menu">
                   <li class="dropdown-header">Навигация</li>
                   <li><a href="#" onclick="init_document('root');">Список дисков</a></li>
@@ -143,41 +150,14 @@ function toggleFullScreen() {
                   <li><a href="http://www.maxbuk.com" target="_blank">Сайт www.maxbuk.com</a></li>
                 </ul>
               </div>
-
             </td>
-            <td class="btn text-primary" onclick="init_document('root'); " style="cursor:pointer;">
-              <button type="button" class="btn btn-default"><span class="glyphicon glyphicon-home"></span></button>
-            </td>
-            <td class="text-primary" onclick="fm_refresh();">
-              <button type="button" class="btn btn-default"><span class="glyphicon glyphicon-refresh"></span></button>
-            </td>
-            <td class="text-primary" onclick="init_document('..');">
-              <button type="button" class="btn btn-default"><span class="glyphicon glyphicon-arrow-left"></span></button>
-            </td>
-
-            <td>
-              <div class="dropdown" id="dropdown-right">
-                <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
-                  <span class="glyphicon glyphicon-th-list"></span>
-                </button>
-
-                <ul class="dropdown-menu dropdown-menu-right">
-                  <li class="divider"></li>
-                  <li><a href="#" data-method="make_popup">Path</a></li>
-                  <li class="divider"></li>
-                  <li><a href="#" data-method="create_upload_form">Загрузить на сервер</a></li>
-                  <li><a href="#" data-method="create_folder_form">Создать папку</a></li>
-                  <li class="divider"></li>
-                </ul>
-              </div>
-
-            </td>
-
+-->
           </tr>
         </table>
 
-
+<!--
     <div id="td-path" class="container-fluid"></div>
+    -->
   <!-- pre-scrollable -->
     <div id="fm-main-content" class="container-fluid"></div>
 </div>
