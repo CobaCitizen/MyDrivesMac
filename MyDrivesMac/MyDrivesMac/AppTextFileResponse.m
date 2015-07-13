@@ -201,7 +201,179 @@
 	*chunck = *end - *start +1;
 }
 
--(CFDataRef) _sendForMacRange:(NSString*) range {
+-(void) _sendPartialFile:(long long)start chunck:(long long ) chunck{
+
+	FILE *fd = fopen([filePath cStringUsingEncoding:NSUTF8StringEncoding], "rb");
+	if(fd == NULL)
+		return; // handle error
+	
+	const int BUFFER_SIZE = 128 * 1024;
+	char *buffer = (char*)malloc(BUFFER_SIZE * sizeof(char));
+	
+	NSData *data;
+	
+	fseek(fd, start,SEEK_SET);
+	
+	while (chunck > 0) {
+		
+
+		size_t readed = fread(buffer, 1, BUFFER_SIZE, fd);
+		if(readed < BUFFER_SIZE)
+			break;
+
+		data = [NSData dataWithBytesNoCopy:buffer length:readed];
+		@try {
+			[self.fileHandle writeData:data];
+			chunck -= readed;
+		}
+		@catch (NSException *exception) {
+			chunck = -1;
+			break;
+		}
+		@finally {
+			
+		}
+	}
+	free(buffer);
+	fclose(fd);
+	
+}
+-(BOOL) _writeData2:(NSData *) data{
+	@try {
+		[self.fileHandle writeData:data];
+		return YES;
+	}
+	@catch (NSException *exception) {
+		return NO;
+	}
+	@finally {
+	}
+
+}
+-(void) _sendForNSPlayer:(NSString*) range{
+
+	NSNumber* size = [[NSFileManager defaultManager] attributesOfItemAtPath:filePath error:nil][@"NSFileSize"];
+	
+	long long start,end,chunck;
+	[self _parseRange:range start:&start end:&end chunck:&chunck fileSize:size.longLongValue];
+
+	if(end == -1){
+		end = size.longLongValue -1;
+		chunck = end - start + 1;
+	}
+		
+
+	NSString *mime = [AppTextFileResponse getMimeType: filePath];
+	
+	CFHTTPMessageRef response =	CFHTTPMessageCreateResponse(kCFAllocatorDefault, 206, NULL, kCFHTTPVersion1_1);
+	CFHTTPMessageSetHeaderFieldValue(response, (CFStringRef)@"Content-Type", (__bridge CFStringRef)mime);
+	CFHTTPMessageSetHeaderFieldValue(response, (CFStringRef)@"Connection", (CFStringRef)@"close");
+	CFHTTPMessageSetHeaderFieldValue(response, (CFStringRef)@"Content-Length",(__bridge CFStringRef)[NSString stringWithFormat:@"%lld", chunck]);
+	CFHTTPMessageSetHeaderFieldValue(response, (CFStringRef)@"Accept-Ranges",(CFStringRef)@"bytes");
+	CFHTTPMessageSetHeaderFieldValue(response, (CFStringRef)@"Content-Range",
+									 (__bridge CFStringRef)[NSString stringWithFormat:@"bytes %lld-%lld/%lld",start,end,size.longLongValue]);
+
+	CFHTTPMessageSetHeaderFieldValue(response, (CFStringRef)@"TransferMode.DLNA.ORG",(CFStringRef)@"Streaming");
+	CFHTTPMessageSetHeaderFieldValue(response, (CFStringRef)@"Access-Control-Allow-Origin",(CFStringRef)@"*");
+	CFHTTPMessageSetHeaderFieldValue(response, (CFStringRef)@"File-Size",
+									 (__bridge CFStringRef)[NSString stringWithFormat:@"%lld", size.longLongValue]);;
+	
+	CFDataRef headerData = CFHTTPMessageCopySerializedMessage(response);
+	/*
+	//[self _sendPartialFile:start chunck:chunck];
+	[self.fileHandle writeData:(__bridge NSData *)headerData];
+
+	
+	FILE *fd = fopen([filePath cStringUsingEncoding:NSUTF8StringEncoding], "rb");
+	if(fd == NULL)
+		return; // handle error
+	
+	const int BUFFER_SIZE = 64 * 1024;
+	char buffer[BUFFER_SIZE];
+	
+	
+	fseek(fd, start,SEEK_SET);
+	
+	@try {
+	while (chunck > 0) {
+		
+		size_t readed = fread(buffer, 1, BUFFER_SIZE, fd);
+		if(readed < BUFFER_SIZE)
+			break;
+		NSData *data = [NSData dataWithBytes:buffer length:readed];
+		if(![self _writeData2:data]) break;
+		chunck -= readed;
+      }
+	}
+	@catch (NSException *exception) {
+
+	}
+	@finally {
+		CFRelease(headerData);
+		headerData = nil;
+		CFRelease(response);
+		response = nil;
+	}
+	
+	fclose(fd);
+
+	 
+
+//	CFRelease(headerData);
+//	headerData = nil;
+//	CFRelease(response);
+//	response = nil;
+	
+	[self.server closeHandler:self];
+*/
+
+	NSFileHandle *file;
+	NSData *buffer;
+	@try
+	{
+		[self.fileHandle writeData:(__bridge NSData *)headerData];
+		
+		file = [NSFileHandle fileHandleForReadingAtPath: filePath ];
+		
+		if (file == nil)
+			NSLog(@"Failed to open file");
+		
+		[file seekToFileOffset: start];
+		
+		while (chunck > 0) {
+			
+			
+			buffer = [file readDataOfLength: 128*1024];
+			if (buffer.length > 0) {
+				[self.fileHandle writeData:buffer];
+				chunck -= buffer.length;
+			}
+			else break;
+
+		
+			buffer = nil;
+		}
+	}
+	@catch (NSException *exception)
+	{
+		// Ignore the exception, it normally just means the client
+		// closed the connection from the other end.
+	}
+	@finally
+	{
+		CFRelease(headerData);
+		headerData = nil;
+		CFRelease(response);
+		response = nil;
+		
+		buffer = nil;
+		
+		[self.server closeHandler:self];
+		[file closeFile];
+		file=nil;
+	}
+}
+-(void) _sendForMacRange:(NSString*) range {
 
 	NSNumber* size = [[NSFileManager defaultManager] attributesOfItemAtPath:filePath error:nil][@"NSFileSize"];
 	long long start,end,chunck;
@@ -236,9 +408,8 @@
 		
 		while (chunck > 0) {
 	
-			buffer = [file readDataOfLength: 128*1024];
+			buffer = [file readDataOfLength: 128*1024 ];
 			if (buffer.length > 0) {
-				//if(![self writeResponseData:buffer]) break;
 				[self.fileHandle writeData:buffer];
 				chunck -= buffer.length;
 			}
@@ -252,19 +423,20 @@
 	{
 		// Ignore the exception, it normally just means the client
 		// closed the connection from the other end.
-		[self.server closeHandler:self];
 	}
 	@finally
 	{
 		CFRelease(headerData);
+		headerData = nil;
 		CFRelease(response);
+		response = nil;
+		
 		buffer = nil;
 		
 		[self.server closeHandler:self];
 		[file closeFile];
+		file=nil;
 	}
-
-	return headerData;
 }
 -(void) _createDirectory{
 
@@ -285,32 +457,11 @@
 	
 	[self sendJsonString:@"{result:true,msg:'created'}" closeConnect:YES];
 }
--(NSString *) makeFilePath:(NSString *)url {
-	NSString *path;
-//	path = [[NSBundle mainBundle] pathForResource:@"loader" ofType:@"js" inDirectory:@"site/js"];
-//	path = [[NSBundle mainBundle] pathForResource:@"loader" ofType:@"js" inDirectory:@"js"];
-//	path = [[NSBundle mainBundle] pathForResource:@"index" ofType:@"html"];
 
+-(NSString *) makeFilePath:(NSString *)url {
 	NSString* fileName = [[url lastPathComponent] stringByDeletingPathExtension];
 	NSString* extension = [url pathExtension];
-	path = [[NSBundle mainBundle] pathForResource:fileName ofType:extension];
-
-//	NSArray *items = [url componentsSeparatedByString:@"/"];
-//	if ([items count] == 2) {
-////		NSRange range = [items[2] rangeOfString:@"."];
-//		NSString *ext = [url pathExtension];
-//       path = [[NSBundle mainBundle] pathForResource:items[1] ofType:ext];
-//	}
-//	else if([items count] == 3) {
-//		NSString *ext = [url pathExtension];
-//		NSRange range = [items[2] rangeOfString:@"."];
-//		
-//	
-//		path = [[NSBundle mainBundle] pathForResource:items[2] ofType:ext];
-//		path = [[NSBundle mainBundle] pathForResource:@"loader" ofType:@"js" inDirectory:@"js"];
-//	}
-////    path = [[NSBundle mainBundle] pathForResource:@"data" ofType:@"bin"];
-	return path;
+	return [[NSBundle mainBundle] pathForResource:fileName ofType:extension];
 }
 //
 // startResponse
@@ -331,15 +482,13 @@
 	}
 	
 	if([[self.url path] isEqualTo:@"/"]){
-//		filePath = [NSString stringWithFormat: [self.server site] ,@"/index.html"];
-		filePath = [NSString stringWithFormat: [self makeFilePath:@"/index.html"]];
+		filePath = [NSString stringWithString: [self makeFilePath:@"/index.html"]];
 	}
 	else if([[self.url path]  characterAtIndex:1] == '~'){
 		NSString *s = [HTTPServer URLDecode:[self.url path]];
 		filePath = [self.server redirect:[s substringFromIndex:1]];
 	}
 	else {
-		//filePath = [NSString stringWithFormat:[self.server site],[HTTPServer URLDecode:[self.url path]]];
 		filePath = [self makeFilePath:[self.url path]];
 	}
 	
@@ -349,26 +498,17 @@
 		NSLog(@"File not found : %@", filePath);
 	}
 	
-	/*
-	if(	 [[self.url path] isEqualToString:@"/open"]
-	   ||[[self.url path] isEqualToString:@"/continue"]
-	   ||[[self.url path] isEqualToString:@"/close"]){
-		[self _upload];
-		return;
-	}
-*/
-	if([self.requestMethod isEqualTo:@"GET"]){
-		
-	}
 	CFDataRef headerData;
 	
 	NSString *range = self.headerFields[@"Range"];
 	if(range != nil){
-//		NSNumber* size = [[NSFileManager defaultManager] attributesOfItemAtPath:_filePath error:nil][@"NSFileSize"];
-//		long long start,end,chunck;
-//		[self _parseRange:range start:&start end:&end chunck:&chunck fileSize:size.longLongValue];
-
 		[self _sendForMacRange:range];
+		return;
+	}
+	NSString *userAgent = self.headerFields[@"User-Agent"];
+	
+	if ([userAgent containsString:@"NSPlayer/"]) {
+		[self _sendForNSPlayer:range];
 		return;
 	}
 	
@@ -385,11 +525,8 @@
 
 	@try
 	{
-		if([self writeResponseData:(__bridge NSData *)headerData]){
-			[self writeResponseData:fileData];
-		  //[self.fileHandle writeData:(__bridge NSData *)headerData];
-		  // [self.fileHandle writeData:fileData];
-		}
+	  [self.fileHandle writeData:(__bridge NSData *)headerData];
+	  [self.fileHandle writeData:fileData];
 	}
 	@catch (NSException *exception)
 	{
@@ -400,7 +537,7 @@
 	{
 		CFRelease(headerData);
 		CFRelease(response);
-		//fileData = nil;
+		fileData = nil;
 		[self.server closeHandler:self];
 	}
 }

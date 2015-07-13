@@ -366,24 +366,24 @@ static NSMutableArray *registeredHandlers = nil;
 	
 	[incomingFileHandle waitForDataInBackgroundAndNotify];
 }
--(BOOL) writeResponseData:(NSData *) data{
-
-	[self.fileHandle writeData:data];
-	return YES;
-}
-
--(BOOL) writeResponseData2:(NSData *) data{
-	BOOL result = YES;
-	@try {
-		[self.fileHandle writeData:data];
-	}
-	@catch (NSException *exception) {
-		result = NO;
-	}
-	@finally {
-	}
-	return result;
-}
+//-(BOOL) writeResponseData:(NSData *) data{
+//
+//	[self.fileHandle writeData:data];
+//	return YES;
+//}
+//
+//-(BOOL) writeResponseData2:(NSData *) data{
+//	BOOL result = YES;
+//	@try {
+//		[self.fileHandle writeData:data];
+//	}
+//	@catch (NSException *exception) {
+//		result = NO;
+//	}
+//	@finally {
+//	}
+//	return result;
+//}
 //
 // dealloc
 //
@@ -426,11 +426,11 @@ static NSMutableArray *registeredHandlers = nil;
 	
 	@try
 	{
-		//[self.fileHandle writeData:(__bridge NSData *)headerData];
-		//[self.fileHandle writeData:data];
-		if([self writeResponseData:(__bridge NSData *)headerData]){
-			[self writeResponseData:data];
-		}
+		[self.fileHandle writeData:(__bridge NSData *)headerData];
+		[self.fileHandle writeData:data];
+//		if([self writeResponseData:(__bridge NSData *)headerData]){
+//			[self writeResponseData:data];
+//		}
 	}
 	@catch (NSException *exception)
 	{

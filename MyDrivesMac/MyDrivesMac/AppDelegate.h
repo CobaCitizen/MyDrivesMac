@@ -12,5 +12,6 @@
 
 @property (nonatomic, retain) IBOutlet NSComboBox *cbAddresses;
 @property (nonatomic, retain) IBOutlet NSTextField *fldPort;
+@property (nonatomic, retain) IBOutlet NSTextField *timerLabel;
 @end
 

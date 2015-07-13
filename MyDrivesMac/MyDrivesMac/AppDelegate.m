@@ -13,7 +13,7 @@
 @interface AppDelegate ()
 
 @property (weak) IBOutlet NSWindow *window;
-@property (strong) WndWebView *wndWebViewController;
+//@property (strong) WndWebView *wndWebViewController;
 
 
 
@@ -24,6 +24,7 @@
 @implementation AppDelegate
 {
 	HTTPServer *_server;
+	long long timer_count;
 }
 
 
@@ -31,9 +32,18 @@
 
     [self readSettingsFile];
     [self fillAddressesCombo];
+	//----------------------------
+	timer_count = 0;
 	
+	NSTimer*timer=[NSTimer scheduledTimerWithTimeInterval:5
+												   target:self
+												 selector:@selector(timerFired:)
+												 userInfo:nil
+												  repeats:YES];
 }
-
+- (void)timerFired:(NSTimer*)theTimer{
+	self.timerLabel.stringValue = [NSString stringWithFormat:@"%lld", timer_count++ ];
+}
 - (void)applicationWillTerminate:(NSNotification *)aNotification {
 }
 
@@ -57,12 +67,12 @@
 	self.fldPort.stringValue = @"13003";
 }
 
--(IBAction)actViewLog:(id)sender {
-    
-    self.wndWebViewController = [[WndWebView alloc] initWithWindowNibName:@"WndWebView"];
-	self.wndWebViewController.url = [NSString stringWithFormat:@"http://%@:%d", _server.host,_server.port];
-    [self.wndWebViewController showWindow:self];
-}
+//-(IBAction)actViewLog:(id)sender {
+//    
+//    self.wndWebViewController = [[WndWebView alloc] initWithWindowNibName:@"WndWebView"];
+//	self.wndWebViewController.url = [NSString stringWithFormat:@"http://%@:%d", _server.host,_server.port];
+//    [self.wndWebViewController showWindow:self];
+//}
 
 -(IBAction)actAddFolder:(id)sender {
 }
