@@ -100,6 +100,8 @@
 		}
 		_server = [[HTTPServer alloc] initWithHost:host andPort:port];
 		[_server start];
+		
+		[_foldersView setDataSource:self];
 	}
 	@catch (NSException *exception) {
 		NSLog(@"Exception .....");
@@ -114,6 +116,37 @@
 	if(_server){
 		[_server stop];
 		_server = nil;
+		[_foldersView setDataSource:nil];
+
 	}
 }
+
+//- (void)applicationDidFinishLaunching:(NSNotification*)notification
+//{
+//	[tableView setDataSource:self];
+//}
+
+- (NSInteger)numberOfRowsInTableView:(NSTableView *)aTableView
+{
+	return [_server.folders count];
+}
+
+- (id)tableView:(NSTableView *)aTableView objectValueForTableColumn:(NSTableColumn *)aTableColumn row:(NSInteger)rowIndex
+{
+	
+	NSString* returnValue=nil;
+ 
+	// The column identifier string is the easiest way to identify a table column.
+	NSString *columnIdentifer = [aTableColumn identifier];
+ 
+	// Get the name at the specified row in namesArray
+	NSDictionary *item = [_server.folders objectAtIndex:rowIndex];
+ 
+ 
+	returnValue = item[columnIdentifer];
+	return [NSString stringWithString:returnValue];
+//	return [_server.folders objectAtIndex:rowIndex];
+}
+
+
 @end

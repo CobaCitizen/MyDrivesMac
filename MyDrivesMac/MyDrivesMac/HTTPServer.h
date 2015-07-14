@@ -38,7 +38,7 @@ typedef enum
 @property (nonatomic, readonly, retain) NSError *lastError;
 @property (readonly, assign) HTTPServerState state;
 //@property (nonatomic) NSString *site;
-@property (nonatomic, readonly, retain) NSArray *folders;
+@property (nonatomic, readonly, retain) NSMutableArray *folders;
 @property (nonatomic, readonly, retain) NSString *host;
 @property int port;
 

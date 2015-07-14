@@ -8,10 +8,15 @@
 
 #import <Cocoa/Cocoa.h>
 
-@interface AppDelegate : NSObject <NSApplicationDelegate>
+@interface AppDelegate : NSObject <NSApplicationDelegate, NSTableViewDataSource>
+
+@property (nonatomic, retain) NSMutableArray *dataFolders;
 
 @property (nonatomic, retain) IBOutlet NSComboBox *cbAddresses;
 @property (nonatomic, retain) IBOutlet NSTextField *fldPort;
 @property (nonatomic, retain) IBOutlet NSTextField *timerLabel;
+@property (nonatomic, retain) IBOutlet NSTableView *foldersView;
+
+
 @end
 
