@@ -100,8 +100,8 @@
 		}
 		_server = [[HTTPServer alloc] initWithHost:host andPort:port];
 		[_server start];
-		
-		[_foldersView setDataSource:self];
+		[_foldersView reloadData];
+//		[_foldersView setDataSource:self];
 	}
 	@catch (NSException *exception) {
 		NSLog(@"Exception .....");
@@ -116,7 +116,8 @@
 	if(_server){
 		[_server stop];
 		_server = nil;
-		[_foldersView setDataSource:nil];
+		[_foldersView reloadData];
+//		[_foldersView setDataSource:nil];
 
 	}
 }
@@ -128,25 +129,46 @@
 
 - (NSInteger)numberOfRowsInTableView:(NSTableView *)aTableView
 {
+	if(_server == nil) return 0;
 	return [_server.folders count];
 }
-
+//- (void)tableView:(NSTableView *)tableView
+//  willDisplayCell:(id)cell
+//  forTableColumn:(NSTableColumn *)tableColumn
+//  row:(NSInteger)row;
+//{
+//	NSDictionary *item = [_server.folders objectAtIndex:row];
+//	[cell setTitle:@"Name"];
+//	NSString *name = [cell title];
+//	[cell setState:item[name] ];
+//}
 - (id)tableView:(NSTableView *)aTableView objectValueForTableColumn:(NSTableColumn *)aTableColumn row:(NSInteger)rowIndex
 {
 	
 	NSString* returnValue=nil;
  
-	// The column identifier string is the easiest way to identify a table column.
 	NSString *columnIdentifer = [aTableColumn identifier];
  
-	// Get the name at the specified row in namesArray
 	NSDictionary *item = [_server.folders objectAtIndex:rowIndex];
- 
  
 	returnValue = item[columnIdentifer];
 	return [NSString stringWithString:returnValue];
-//	return [_server.folders objectAtIndex:rowIndex];
 }
-
+//- (NSView *)tableView:(NSTableView *)tableView
+//   viewForTableColumn:(NSTableColumn *)tableColumn
+//	row:(NSInteger)row {
+//
+//	NSString *columnIdentifer = [tableColumn identifier];
+//
+//	NSTableCellView *result = [tableView makeViewWithIdentifier:columnIdentifer owner:self];
+//	
+//	NSDictionary *item = [_server.folders objectAtIndex:row];
+// 
+//	NSString *returnValue = item[columnIdentifer];
+//	result.textField.stringValue = item[columnIdentifer];
+//
+//	// Return the result
+//	return result;
+//}
 
 @end
