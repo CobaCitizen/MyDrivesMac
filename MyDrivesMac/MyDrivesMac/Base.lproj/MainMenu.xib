@@ -16,7 +16,7 @@
                 <outlet property="cbAddresses" destination="1gj-ER-Fkh" id="ewJ-Lj-Mlu"/>
                 <outlet property="fldPort" destination="B8e-D0-RVC" id="sMa-2N-462"/>
                 <outlet property="foldersView" destination="fxW-Ur-1v0" id="afH-Cv-032"/>
-                <outlet property="timerLabel" destination="XYr-eT-PmE" id="70P-y0-GdY"/>
+                <outlet property="timerLabel" destination="nNC-Ol-IU4" id="yd3-RO-tx7"/>
                 <outlet property="window" destination="QvC-M9-y7g" id="gIp-Ho-8D9"/>
             </connections>
         </customObject>
@@ -771,14 +771,6 @@
                             <action selector="actStopServer:" target="Voe-Tx-rLC" id="6QL-38-pAn"/>
                         </connections>
                     </button>
-                    <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="XYr-eT-PmE">
-                        <rect key="frame" x="420" y="368" width="147" height="22"/>
-                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="vh4-rg-wEW">
-                            <font key="font" metaFont="system"/>
-                            <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
-                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                        </textFieldCell>
-                    </textField>
                     <scrollView fixedFrame="YES" autohidesScrollers="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="B6N-yH-ZX2">
                         <rect key="frame" x="20" y="55" width="547" height="265"/>
                         <clipView key="contentView" misplaced="YES" id="q7j-Cp-xvl">
@@ -840,6 +832,14 @@
                             <autoresizingMask key="autoresizingMask"/>
                         </tableHeaderView>
                     </scrollView>
+                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="nNC-Ol-IU4">
+                        <rect key="frame" x="281" y="373" width="272" height="17"/>
+                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Label" id="v83-54-G4Z">
+                            <font key="font" metaFont="system"/>
+                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
                 </subviews>
             </view>
             <point key="canvasLocation" x="335.5" y="294"/>

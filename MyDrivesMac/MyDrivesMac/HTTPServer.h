@@ -37,13 +37,19 @@ typedef enum
 
 @property (nonatomic, readonly, retain) NSError *lastError;
 @property (readonly, assign) HTTPServerState state;
-//@property (nonatomic) NSString *site;
+
 @property (nonatomic, readonly, retain) NSMutableArray *folders;
 @property (nonatomic, readonly, retain) NSString *host;
 @property int port;
 
 //+ (HTTPServer *)sharedHTTPServer;
-+ (NSString *)URLDecode:(NSString *)stringToDecode;
++(NSString *)URLDecode:(NSString *)stringToDecode;
++(NSMutableDictionary*) loadServerSettings;
++(NSString*) MyDrivesFolder;
++(NSString*) DocumentFolder;
++(NSString*) MoviesFolder;
++(NSString*) MusicFolder;
+	
 -(id) initWithHost:(NSString*) host andPort:(int) port;
 
 - (void)start;

@@ -13,10 +13,6 @@
 @interface AppDelegate ()
 
 @property (weak) IBOutlet NSWindow *window;
-//@property (strong) WndWebView *wndWebViewController;
-
-
-
 
 @end
 
@@ -24,25 +20,35 @@
 @implementation AppDelegate
 {
 	HTTPServer *_server;
-	long long timer_count;
+	long long _timer_count;
+	NSMutableDictionary *_settings;
+	NSMutableArray *_folders;
+	
+	NSTimer *_timer;
+	NSDateFormatter *_dateFormatter;
 }
 
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
 
-    [self readSettingsFile];
     [self fillAddressesCombo];
-	//----------------------------
-	timer_count = 0;
 	
-	NSTimer*timer=[NSTimer scheduledTimerWithTimeInterval:5
-												   target:self
-												 selector:@selector(timerFired:)
-												 userInfo:nil
-												  repeats:YES];
+	_settings = [HTTPServer loadServerSettings];
+	_folders = _settings[@"folders"];
+	
+	[_foldersView reloadData];
+	
+	_timer_count = 0;
+	_dateFormatter = [[NSDateFormatter alloc]init];
+	[_dateFormatter setDateFormat:@"dd.MM.YY HH:mm:ss"];
+	[self.timerLabel setStringValue:@"Server Stopped"];
+	
 }
 - (void)timerFired:(NSTimer*)theTimer{
-	self.timerLabel.stringValue = [NSString stringWithFormat:@"%lld", timer_count++ ];
+	self.timerLabel.stringValue = [NSString stringWithFormat:@"%lld", _timer_count++ ];
+	
+	NSDate *currDate = [NSDate date];
+	[self.timerLabel setStringValue:[_dateFormatter stringFromDate:currDate]];
 }
 - (void)applicationWillTerminate:(NSNotification *)aNotification {
 }
@@ -67,13 +73,6 @@
 	self.fldPort.stringValue = @"13003";
 }
 
-//-(IBAction)actViewLog:(id)sender {
-//    
-//    self.wndWebViewController = [[WndWebView alloc] initWithWindowNibName:@"WndWebView"];
-//	self.wndWebViewController.url = [NSString stringWithFormat:@"http://%@:%d", _server.host,_server.port];
-//    [self.wndWebViewController showWindow:self];
-//}
-
 -(IBAction)actAddFolder:(id)sender {
 }
 
@@ -85,7 +84,27 @@
 
 -(IBAction)actGetFreePort:(id)sender {
 }
+-(void)_stopTimer{
+	if(_timer != nil){
+		[_timer invalidate];
+		_timer = nil;
+    	[self.timerLabel setStringValue:@"Server Stopped"];
+	}
+}
+-(void) _showServerError{
 
+	NSString *errorName = _server.lastError.description;
+	
+	NSAlert *alert = [[NSAlert alloc] init] ;
+	[alert setMessageText:errorName];
+	[alert setAlertStyle:NSCriticalAlertStyle];
+	[alert setInformativeText:@"Error"];
+	[alert runModal];
+	
+	_server = nil;
+	[self _stopTimer];
+	
+}
 -(IBAction)actStartServer:(id)sender {
 	if(_server){
 		return;
@@ -100,11 +119,20 @@
 		}
 		_server = [[HTTPServer alloc] initWithHost:host andPort:port];
 		[_server start];
-		[_foldersView reloadData];
-//		[_foldersView setDataSource:self];
+		
+		if(_server.lastError != nil) {
+			[self _showServerError];
+		}
+		else {
+			_timer=[NSTimer scheduledTimerWithTimeInterval:1
+													target:self
+												  selector:@selector(timerFired:)
+												  userInfo:nil
+												   repeats:YES];
+		}
 	}
 	@catch (NSException *exception) {
-		NSLog(@"Exception .....");
+
 	}
 	@finally {
 		
@@ -116,10 +144,8 @@
 	if(_server){
 		[_server stop];
 		_server = nil;
-		[_foldersView reloadData];
-//		[_foldersView setDataSource:nil];
-
 	}
+	[self _stopTimer];
 }
 
 //- (void)applicationDidFinishLaunching:(NSNotification*)notification
@@ -129,8 +155,7 @@
 
 - (NSInteger)numberOfRowsInTableView:(NSTableView *)aTableView
 {
-	if(_server == nil) return 0;
-	return [_server.folders count];
+	return [_folders count];
 }
 //- (void)tableView:(NSTableView *)tableView
 //  willDisplayCell:(id)cell
@@ -149,7 +174,7 @@
  
 	NSString *columnIdentifer = [aTableColumn identifier];
  
-	NSDictionary *item = [_server.folders objectAtIndex:rowIndex];
+	NSDictionary *item = [_folders objectAtIndex:rowIndex];
  
 	returnValue = item[columnIdentifer];
 	return [NSString stringWithString:returnValue];

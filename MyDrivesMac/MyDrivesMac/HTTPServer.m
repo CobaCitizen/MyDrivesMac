@@ -41,6 +41,37 @@ NSString * const HTTPServerNotificationStateChanged = @"ServerNotificationStateC
 
 //SYNTHESIZE_SINGLETON_FOR_CLASS(HTTPServer);
 
+
++(NSString*) MyDrivesFolder{
+	NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+	NSString *directory = [NSString stringWithFormat:@"%@/MyDrivesMac/",[paths objectAtIndex:0]];
+	
+	
+	NSFileManager *fileManager= [NSFileManager defaultManager];
+	BOOL isDir;
+	if([fileManager fileExistsAtPath:directory isDirectory: &isDir]){
+		return directory;
+	}
+	NSError *error = nil;
+	if(![fileManager createDirectoryAtPath:directory withIntermediateDirectories:YES attributes:nil error:&error]) {
+		// An error has occurred, do something to handle it
+		NSLog(@"Failed to create directory \"%@\". Error: %@", directory, error);
+	}
+	return  directory;
+}
++(NSString*) DocumentFolder{
+	NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+	return [NSString stringWithFormat:@"%@/",[paths objectAtIndex:0]];
+}
++(NSString*) MoviesFolder{
+	NSArray *paths = NSSearchPathForDirectoriesInDomains(NSMoviesDirectory, NSUserDomainMask, YES);
+	return [NSString stringWithFormat:@"%@/",[paths objectAtIndex:0]];
+}
++(NSString*) MusicFolder{
+	NSArray *paths = NSSearchPathForDirectoriesInDomains(NSMusicDirectory, NSUserDomainMask, YES);
+	return [NSString stringWithFormat:@"%@/",[paths objectAtIndex:0]];
+}
+
 //
 // init
 //
@@ -107,38 +138,9 @@ NSString * const HTTPServerNotificationStateChanged = @"ServerNotificationStateC
 	[self stop];
 	
 	self.state = SERVER_STATE_IDLE;
-	NSLog(@"HTTPServer error: %@", self.lastError);
+	//NSLog(@"HTTPServer error: %@", self.lastError);
 }
 
--(NSString*) _getMyDrivesFolder{
-	NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-	NSString *directory = [NSString stringWithFormat:@"%@/MyDrivesMac/",[paths objectAtIndex:0]];
-	
-	
-	NSFileManager *fileManager= [NSFileManager defaultManager];
-	BOOL isDir;
-	if([fileManager fileExistsAtPath:directory isDirectory: &isDir]){
-		return directory;
-	}
-	NSError *error = nil;
-	if(![fileManager createDirectoryAtPath:directory withIntermediateDirectories:YES attributes:nil error:&error]) {
-		// An error has occurred, do something to handle it
-		NSLog(@"Failed to create directory \"%@\". Error: %@", directory, error);
-	}
-	return  directory;
-}
--(NSString*) _getDocumentFolder{
-	NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-	return [NSString stringWithFormat:@"%@/",[paths objectAtIndex:0]];
-}
--(NSString*) _getMoviesFolder{
-	NSArray *paths = NSSearchPathForDirectoriesInDomains(NSMoviesDirectory, NSUserDomainMask, YES);
-	return [NSString stringWithFormat:@"%@/",[paths objectAtIndex:0]];
-}
--(NSString*) _getMusicFolder{
-	NSArray *paths = NSSearchPathForDirectoriesInDomains(NSMusicDirectory, NSUserDomainMask, YES);
-	return [NSString stringWithFormat:@"%@/",[paths objectAtIndex:0]];
-}
 
 //
 // errorWithName:
@@ -160,7 +162,7 @@ NSString * const HTTPServerNotificationStateChanged = @"ServerNotificationStateC
 					errorName,
 					@"",
 					@"HTTPServerErrors")
-				forKey:NSLocalizedDescriptionKey]];	
+				forKey:NSLocalizedDescriptionKey]];
 }
 
 //
@@ -184,6 +186,7 @@ NSString * const HTTPServerNotificationStateChanged = @"ServerNotificationStateC
 		postNotificationName:HTTPServerNotificationStateChanged
 		object:self];
 }
+
 -(bool)getHostAddress:(NSString*)hostname sockAddressIn:(struct sockaddr_in*)result {
 	struct addrinfo hints, *res, *iterateRes;
 	int retval;
@@ -223,13 +226,13 @@ NSString * const HTTPServerNotificationStateChanged = @"ServerNotificationStateC
 	return foundAddress;
 }
 
--(NSMutableDictionary*) _loadServerSettings
++(NSMutableDictionary*) loadServerSettings
 {
 	
 	NSMutableDictionary *list = nil;
 	
 	NSFileManager *fileManager = [NSFileManager defaultManager];
-	NSString *fileName = [NSString stringWithFormat:@"%@/folders.plist",[self _getMyDrivesFolder]];
+	NSString *fileName = [NSString stringWithFormat:@"%@/folders.plist",[HTTPServer MyDrivesFolder]];
 	BOOL isDir;
 	
 	if([fileManager fileExistsAtPath:fileName isDirectory: &isDir]){
@@ -240,7 +243,7 @@ NSString * const HTTPServerNotificationStateChanged = @"ServerNotificationStateC
 	//Main Container
 	NSDictionary * dict =[NSMutableDictionary new];
  
-	NSNumber * port = [NSNumber numberWithInt:_port];
+	NSNumber * port = [NSNumber numberWithInt:3030];
 	NSString * site =  @"/Users/maximbukshovan/MyDrivesMac/MyDrivesMac%@";
  
 	//NSString * dataString =@"My Photo";
@@ -250,23 +253,23 @@ NSString * const HTTPServerNotificationStateChanged = @"ServerNotificationStateC
  
 	NSMutableDictionary * folder =[NSMutableDictionary new];
 	[folder setValue: @"~Documents" forKey:@"name"];
-	[folder setValue: [self _getDocumentFolder] forKey:@"path"];
+	[folder setValue: [HTTPServer DocumentFolder] forKey:@"path"];
 	[folder setValue: [NSNumber numberWithInt:1] forKey:@"d"];
 	[folders addObject:folder];
 
 	folder =[NSMutableDictionary new];
 	[folder setValue: @"~Movies" forKey:@"name"];
-	[folder setValue: [self _getMoviesFolder] forKey:@"path"];
+	[folder setValue: [HTTPServer MoviesFolder] forKey:@"path"];
 	[folder setValue: [NSNumber numberWithInt:1] forKey:@"d"];
 	[folders addObject:folder];
 
 	folder =[NSMutableDictionary new];
 	[folder setValue: @"~Music" forKey:@"name"];
-	[folder setValue: [self _getMusicFolder] forKey:@"path"];
+	[folder setValue: [HTTPServer MusicFolder] forKey:@"path"];
 	[folder setValue: [NSNumber numberWithInt:1] forKey:@"d"];
 	[folders addObject:folder];
 
-	[dict setValue:_host forKey:@"host"];
+	[dict setValue:@"192.168.0.1" forKey:@"host"];
 	[dict setValue:port forKey:@"port"];
 	[dict setValue:site forKey:@"site"];
 	[dict setValue:folders forKey:@"folders"];
@@ -288,7 +291,10 @@ NSString * const HTTPServerNotificationStateChanged = @"ServerNotificationStateC
 - (void)start
 {
 //	NSString *docFolder = [self _getMyDrivesFolder];
-	NSMutableDictionary *dic = [self _loadServerSettings];
+	NSMutableDictionary *dic = [HTTPServer loadServerSettings];
+	
+//	_port = [dic[@"port"] intValue];
+//	_host = dic[@"host"];
 	
 	_folders = dic[@"folders"];
 	
