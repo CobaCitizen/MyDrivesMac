@@ -41,8 +41,8 @@ function fm_viewer(ident) {
       tr.className = "text-default";
     }
     var elem = id(this.id);
-    //elem.src = 'get.file?file=' + fm.join_path() + this.files[i].name;
-    elem.src = fm.join_path() + this.files[i].name;
+    elem.src = "";
+	elem.src = fm.join_path() + this.files[i].name;
     elem.play();
     this.index = i;
     tr = id("tr" + this.index);

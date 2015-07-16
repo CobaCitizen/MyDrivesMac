@@ -23,6 +23,8 @@
 
 #define HTTP_SERVER_PORT 8080
 
+extern int start_socket_server();
+
 NSString * const HTTPServerNotificationStateChanged = @"ServerNotificationStateChanged";
 
 //
@@ -225,7 +227,12 @@ NSString * const HTTPServerNotificationStateChanged = @"ServerNotificationStateC
 	
 	return foundAddress;
 }
++(void) saveSettings:(NSMutableDictionary *)list{
+	
+	NSString *fileName = [NSString stringWithFormat:@"%@/folders.plist",[HTTPServer MyDrivesFolder]];
+	[list writeToFile:fileName atomically:YES];
 
+}
 +(NSMutableDictionary*) loadServerSettings
 {
 	
@@ -244,7 +251,7 @@ NSString * const HTTPServerNotificationStateChanged = @"ServerNotificationStateC
 	NSDictionary * dict =[NSMutableDictionary new];
  
 	NSNumber * port = [NSNumber numberWithInt:3030];
-	NSString * site =  @"/Users/maximbukshovan/MyDrivesMac/MyDrivesMac%@";
+	//NSString * site =  @"/Users/maximbukshovan/MyDrivesMac/MyDrivesMac%@";
  
 	//NSString * dataString =@"My Photo";
 	//NSData * photo = [dataString dataUsingEncoding:NSUTF8StringEncoding];
@@ -271,7 +278,7 @@ NSString * const HTTPServerNotificationStateChanged = @"ServerNotificationStateC
 
 	[dict setValue:@"192.168.0.1" forKey:@"host"];
 	[dict setValue:port forKey:@"port"];
-	[dict setValue:site forKey:@"site"];
+//	[dict setValue:site forKey:@"site"];
 	[dict setValue:folders forKey:@"folders"];
  
 	NSString * plist = [PList objToPlistAsString:dict];
@@ -288,8 +295,12 @@ NSString * const HTTPServerNotificationStateChanged = @"ServerNotificationStateC
 //
 // Creates the socket and starts listening for connections on it.
 //
+
 - (void)start
 {
+	
+	//start_socket_server();
+	
 //	NSString *docFolder = [self _getMyDrivesFolder];
 	NSMutableDictionary *dic = [HTTPServer loadServerSettings];
 	

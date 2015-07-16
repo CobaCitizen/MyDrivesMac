@@ -9,6 +9,7 @@
 #import "AppDelegate.h"
 #import "WndWebView.h"
 #import "HTTPServer.h"
+#import "EditFolder.h"
 
 @interface AppDelegate ()
 
@@ -54,12 +55,12 @@
 }
 
 
--(void)readSettingsFile {
-    NSString *plistPath;
-    NSString *rootPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,
-                                                              NSUserDomainMask, YES) objectAtIndex:0];
-    plistPath = [rootPath stringByAppendingPathComponent:@"Folders.plist"];
-}
+//-(void)readSettingsFile {
+//    NSString *plistPath;
+//    NSString *rootPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,
+//                                                              NSUserDomainMask, YES) objectAtIndex:0];
+//    plistPath = [rootPath stringByAppendingPathComponent:@"Folders.plist"];
+//}
 
 -(void)fillAddressesCombo {
     NSArray *ipAddresses =  [[NSHost currentHost] addresses];
@@ -72,14 +73,62 @@
 	[self.cbAddresses selectItemAtIndex:0];
 	self.fldPort.stringValue = @"13003";
 }
-
 -(IBAction)actAddFolder:(id)sender {
-}
+	
+	[EditFolder showRecord: @"~New Name" folder:@"/Users/"];
+	
+	EditFolder *frm = [EditFolder currentForm];
+	if(frm.needSaveRecord){
+		NSMutableDictionary * item = [NSMutableDictionary new];
+		item[@"name"] = frm.textName.stringValue;
+		item[@"path"] = frm.textFolder.stringValue;
+    	[item setValue: [NSNumber numberWithInt:1] forKey:@"d"];
+		[_folders addObject:item];
+		[HTTPServer saveSettings:_settings];
+		[_foldersView reloadData];
+	}
+	[frm close];
 
+	return;
+}
 -(IBAction)actRemoveFolder:(id)sender {
+	NSInteger index = [self.foldersView selectedRow];
+	if(index == -1){
+		[self _showMessage:@"Select record for edit!"];
+		return;
+	}
+	
+	NSAlert *alert = [[NSAlert alloc] init];
+	[alert addButtonWithTitle:@"Delete"];
+	[alert addButtonWithTitle:@"Cancel"];
+	[alert setMessageText:@"Delete the record?"];
+	[alert setInformativeText:@"Deleted records cannot be restored."];
+	[alert setAlertStyle:NSWarningAlertStyle];
+	
+	if ([alert runModal] == NSAlertFirstButtonReturn) {
+		[_folders removeObjectAtIndex:index];
+		[HTTPServer saveSettings:_settings];
+		[_foldersView reloadData];
+	}
+	alert = nil;
 }
-
 -(IBAction)actEditFolder:(id)sender {
+	NSInteger index = [self.foldersView selectedRow];
+	if(index == -1){
+		[self _showMessage:@"Select record for edit!"];
+		return;
+	}
+	NSMutableDictionary *item = _folders[index];
+	[EditFolder showRecord: item[@"name"] folder:item[@"path"]];
+	
+	EditFolder *frm = [EditFolder currentForm];
+	if(frm.needSaveRecord){
+		item[@"name"] = frm.textName.stringValue;
+		item[@"path"] = frm.textFolder.stringValue;
+		[HTTPServer saveSettings:_settings];
+	}
+	[frm close];
+	return;
 }
 
 -(IBAction)actGetFreePort:(id)sender {
@@ -91,6 +140,16 @@
     	[self.timerLabel setStringValue:@"Server Stopped"];
 	}
 }
+-(void) _showMessage:(NSString*) message{
+	
+	NSAlert *alert = [[NSAlert alloc] init] ;
+	[alert setMessageText:message];
+	[alert setAlertStyle:NSCriticalAlertStyle];
+	[alert setInformativeText:@"Message"];
+	[alert runModal];
+	
+}
+
 -(void) _showServerError{
 
 	NSString *errorName = _server.lastError.description;

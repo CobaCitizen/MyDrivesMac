@@ -328,7 +328,7 @@
 */
 
 	NSFileHandle *file;
-	NSData *buffer;
+	//NSData *buffer;
 	@try
 	{
 		[self.fileHandle writeData:(__bridge NSData *)headerData];
@@ -343,9 +343,10 @@
 		while (chunck > 0) {
 			
 			
-			buffer = [file readDataOfLength: 128*1024];
+			NSData *buffer = [file readDataOfLength: 128*1024];
 			if (buffer.length > 0) {
 				[self.fileHandle writeData:buffer];
+			//	[self.fileHandle synchronizeFile];
 				chunck -= buffer.length;
 			}
 			else break;
@@ -366,7 +367,7 @@
 		CFRelease(response);
 		response = nil;
 		
-		buffer = nil;
+//		buffer = nil;
 		
 		[self.server closeHandler:self];
 		[file closeFile];
@@ -393,7 +394,7 @@
 
 	
 	NSFileHandle *file;
-	NSData *buffer;
+//	NSData *buffer;
 	@try
 	{
 	//if([self writeResponseData:(__bridge NSData *)headerData]) {
@@ -406,11 +407,13 @@
 		
 		[file seekToFileOffset: start];
 		
+		
 		while (chunck > 0) {
 	
-			buffer = [file readDataOfLength: 128*1024 ];
+			NSData *buffer = [file readDataOfLength: 64*1024 ];
 			if (buffer.length > 0) {
 				[self.fileHandle writeData:buffer];
+			//	[self.fileHandle synchronizeFile];
 				chunck -= buffer.length;
 			}
 			else break;
@@ -431,7 +434,7 @@
 		CFRelease(response);
 		response = nil;
 		
-		buffer = nil;
+//		buffer = nil;
 		
 		[self.server closeHandler:self];
 		[file closeFile];

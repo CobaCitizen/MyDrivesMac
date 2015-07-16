@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		997585B81B5776B5000C1E4F /* EditFolder.m in Sources */ = {isa = PBXBuildFile; fileRef = 997585B61B5776B5000C1E4F /* EditFolder.m */; };
+		997585B91B5776B5000C1E4F /* EditFolder.xib in Resources */ = {isa = PBXBuildFile; fileRef = 997585B71B5776B5000C1E4F /* EditFolder.xib */; };
 		997962011B4CD6C300459652 /* JSONParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 997962001B4CD6C300459652 /* JSONParser.m */; };
 		999B91001B53739F00F4725A /* jquery.min.map in Resources */ = {isa = PBXBuildFile; fileRef = 99B152AB1B4BB8C800732AF5 /* jquery.min.map */; };
 		999B91011B5378B700F4725A /* loader.js in Resources */ = {isa = PBXBuildFile; fileRef = 99B152871B4BB69000732AF5 /* loader.js */; };
@@ -56,6 +58,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		997585B51B5776B5000C1E4F /* EditFolder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditFolder.h; sourceTree = "<group>"; };
+		997585B61B5776B5000C1E4F /* EditFolder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditFolder.m; sourceTree = "<group>"; };
+		997585B71B5776B5000C1E4F /* EditFolder.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EditFolder.xib; sourceTree = "<group>"; };
 		997961FF1B4CD6C300459652 /* JSONParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSONParser.h; sourceTree = "<group>"; };
 		997962001B4CD6C300459652 /* JSONParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSONParser.m; sourceTree = "<group>"; };
 		99B1526E1B4B2BAD00732AF5 /* AppTextFileResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppTextFileResponse.h; sourceTree = "<group>"; };
@@ -166,6 +171,9 @@
 				99B152B01B4BF3A700732AF5 /* PList.m */,
 				997961FF1B4CD6C300459652 /* JSONParser.h */,
 				997962001B4CD6C300459652 /* JSONParser.m */,
+				997585B51B5776B5000C1E4F /* EditFolder.h */,
+				997585B61B5776B5000C1E4F /* EditFolder.m */,
+				997585B71B5776B5000C1E4F /* EditFolder.xib */,
 			);
 			path = MyDrivesMac;
 			sourceTree = "<group>";
@@ -346,6 +354,7 @@
 				99B152AE1B4BBA1C00732AF5 /* coba_upload.js in Resources */,
 				99B152A11B4BB83300732AF5 /* glyphicons-halflings-regular.woff in Resources */,
 				99B1529F1B4BB83300732AF5 /* glyphicons-halflings-regular.svg in Resources */,
+				997585B91B5776B5000C1E4F /* EditFolder.xib in Resources */,
 				99B152891B4BB69000732AF5 /* bootstrap.min.js in Resources */,
 				B5D0DBD71B4B165800B39CC7 /* index.html in Resources */,
 				B55B2AC41B4A86C900DED7E2 /* Images.xcassets in Resources */,
@@ -386,6 +395,7 @@
 				B55B2AC01B4A86C900DED7E2 /* AppDelegate.m in Sources */,
 				99B152AC1B4BB8C800732AF5 /* jquery.min.map in Sources */,
 				997962011B4CD6C300459652 /* JSONParser.m in Sources */,
+				997585B81B5776B5000C1E4F /* EditFolder.m in Sources */,
 				99B152B11B4BF3A700732AF5 /* PList.m in Sources */,
 				99B152761B4B2BBA00732AF5 /* HTTPServer.m in Sources */,
 				99B152751B4B2BBA00732AF5 /* HTTPResponseHandler.m in Sources */,

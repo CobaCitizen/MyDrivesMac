@@ -45,6 +45,7 @@ typedef enum
 //+ (HTTPServer *)sharedHTTPServer;
 +(NSString *)URLDecode:(NSString *)stringToDecode;
 +(NSMutableDictionary*) loadServerSettings;
++(void) saveSettings:(NSMutableDictionary *)list;
 +(NSString*) MyDrivesFolder;
 +(NSString*) DocumentFolder;
 +(NSString*) MoviesFolder;
