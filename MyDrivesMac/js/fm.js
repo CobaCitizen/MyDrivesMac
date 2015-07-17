@@ -164,27 +164,13 @@ var img = {
 }
 , show_modal : function(filename){
   var d =  document.getElementById("dd");
-  generator.gen([],"i", "dd");
+  d.innerHTML = generator.gen([],"images-view");
   img.find();
   img.refresh_by_name(decodeURIComponent(filename));
-  //d.requestFullScreen();
-}
-,scale : 1
-, zoomin:function(){
-  //var d = document.getElementById("dd");
-  //d.clientWidth += d.clientWidth *0.1;
-
-  this.image.clientWidth += this.image.clientWidth *0.2;
-}
-,zoomout : function(){
-//  var d = document.getElementById("dd");
-//  d.clientWidth -= d.clientWidth *0.1;
-  this.scale -= 0.5;
-  this.image.style = "transform:scale(" + this.scale + ")";
-
+//	toggleFullScreen();
  }
 };
-//         -----------------------------------
+//-----------------------------------------------
 //                 fm
 //-----------------------------------------------
 var fm = {
@@ -319,19 +305,6 @@ var fm = {
   this.reset_notes();
   fm_set_main_content(generator.generate_one(null, "fm-ext-menu", null));
 }
-, show_servers: function () {
-  var self = this;
-  load_async_json("/get.servers?tm=" + new Date().getTime(), function (data) {
-    if (data.result) {
-      fm_set_main_content(generator.gen(data, "servers"));
-    }
-    else {
-      fm_set_main_content(generator.generate_one(data.msg, "fm-mysql-error"));
-      $("myModal").modal();
-      self.show_ext_menu();
-    }
-  });
-}
 , dropdown_hide: function (dropdown_name) {
   var drop = id(dropdown_name);//"dropdown-left");
   if (drop) {
@@ -343,104 +316,6 @@ var fm = {
 }
 , hide_right_popup: function () {
   this.dropdown_hide("dropdown-right");
-}
-, offset: 0
-, last_notes: false
-, reset_notes: function () {
-  this.offset = 0;
-  this.last_notes = false;
-}
-, show_notes_offset: function (delta) {
-
-  
-  this.offset += parseInt(delta);
-  if (this.offset < 0) this.offset = 0;
-  this.show_notes();
-}
-, show_notes: function () {
-  var count = 10;
-
-  
-  var self = this;
-  var url = "/notes.get?offset=" + this.offset + "&count=" + count + "&tm="+ new Date().getTime();
-  load_async_json(url, function (data) {
-
-    if (data.result) {
-      var info = id("notes-info");
-      if (data.msg.length == 0) {
-        if (info) {
-          self.last_notes = true;
-          info.innerHTML = "last records";
-        }
-        return;// self.show_add_note();
-      }
-      fm_set_main_content(generator.gen(data.msg, "notes"));
-      self.last_notes = false;
-      if (info) {
-        info.innerHTML = "records:" + self.offset;
-      }
-      self.dropdown_hide("dropdown-left");
-    } else {
-      fm_set_main_content(generator.generate_one(data.msg, "fm-mysql-error"));
-      $("myModal").modal();
-    }
-
-  });
-}
-, delete_note: function (ident) {
-  var self = this;
-  load_async_json("/notes.delete?id=" + ident, function (data) {
-    if (data.result) {
-      self.show_notes();
-    }
-    else {
-      alert(data.msg);
-    }
-    
-  });
-}
-, save_new_note: function (txt) {
-    var elem = id("txt");
-    if (elem.value.length == 0) {
-      elem.value = "Введите текст...";
-      return;
-    }
-    var self = this;
-    post("note.add?", "txt=" + encodeURI(elem.value), function (data) {
-      if (data.result) {
-        self.show_notes();
-      }
-      else {
-        elem.value = data.msg + "\n\n" +elem.value;
-      }
-    });
-}
-, show_add_note: function () {
-  fm_set_main_content(generator.gen(null, "add-note"));
-}
-, show_edit_note: function (ident) {
-  var self = this;
-  load_async_json("/notes.note?tm="+ new Date().getTime() + "&id=" + ident, function (data) {
-    if (data.result) {
-      fm_set_main_content(generator.gen(data.msg[0], "edit-note"));
-    }
-    else {
-      alert(data.msg);
-    }
-  });
-}
-, update_note: function (ident) {
-  var elem = id("txt");
-  var self = this;
-  post("note.update?", "id=" + ident + "&txt=" + encodeURI(elem.value), function (data) {
-    if (data.result) {
-      self.show_notes();
-    }
-    else {
-      elem.value = data.msg + "\n\n" + elem.value;
-    }
-  });
-
 }
 };
 
@@ -608,18 +483,18 @@ function make_popup() {
   elem.innerHTML = html;
   fm.dropdown_hide("dropdown-right");
 }
-function make_breadcrumbs() {
-
- var e = id("td-path");
- if(e) {
-  var html = generator.generate_one(fm.stack, "fm-bread-header")
-   + generator.generate(fm.stack, "fm-bread-body")
-   + generator.generate_one(fm.stack, "fm-bread-footer");
-
-  id("td-path").innerHTML = html;
-  }
-
-}
+//function make_breadcrumbs() {
+//
+// var e = id("td-path");
+// if(e) {
+//  var html = generator.generate_one(fm.stack, "fm-bread-header")
+//   + generator.generate(fm.stack, "fm-bread-body")
+//   + generator.generate_one(fm.stack, "fm-bread-footer");
+//
+//  id("td-path").innerHTML = html;
+//  }
+//
+//}
 function fm_delete_file(file) {
   confirm("delete " + file);
 }
@@ -674,7 +549,7 @@ function init_document(folder) {
 
     fm.state.current = fm.state.navigator;
     folder = fm.set_folder(folder);
-    make_breadcrumbs();
+ //   make_breadcrumbs();
 
     fm.video.reset();
     fm.audio.reset();

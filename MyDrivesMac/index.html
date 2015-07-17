@@ -38,7 +38,7 @@ img1:active {
   <script type="text/javascript" src="js/jquery.min.js"></script>
   <script type="text/javascript" src="js/bootstrap.min.js"></script>
   <script type="text/javascript" src="js/table.js"></script>
-  <script type="text/javascript" src="js/generator.js"></script>
+  <script type="text/javascript" src="js/generator.js"></script> 
   <script type="text/javascript" src="js/fm.js"></script>
   <script type="text/javascript" src="js/coba_upload.js"></script>
 
@@ -46,14 +46,9 @@ img1:active {
 <script type="text/javascript">
 
   function fm_load_document(){
-    //load_async_script("js/generator.js", function () {
     generator.load(function () {
-   //       load_async_script("js/fm.js", function () {
             init_document("root");
-   //         load_async_script("js/coba_upload.js", function () { });
          });
-   // })
-  //});
   }
 
 
@@ -71,9 +66,9 @@ img1:active {
 
   ////////////////////////-
   function fm_restore_main(){
-  var d =  document.getElementById("dd");
-  generator.gen([],"main", "dd");
-  fm_refresh();
+	  var d =  document.getElementById("dd");
+	  d.innerHTML = generator.gen([],"main");
+	  fm_refresh();
   }
 
  window.addEventListener('load', function(){
@@ -93,8 +88,7 @@ img1:active {
 
 <body>
 <div id="dd">
-    <!--                         -->
-        <table class="table container-fluid">
+  <table class="table container-fluid">
           <tr>
    			<td class="text-primary" onclick="init_document('..');">
 				<button type="button" class="btn btn-default"><span class="glyphicon glyphicon-arrow-left"></span></button>
@@ -130,37 +124,10 @@ img1:active {
                 </ul>
               </div>
             </td>
-<!--
-            <td>
-              <div class="dropdown" id="dropdown-left">
-                <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
-                  <span class="glyphicon glyphicon-th-list"></span>
-                </button>
-                <ul class="dropdown-menu">
-                  <li class="dropdown-header">Навигация</li>
-                  <li><a href="#" onclick="init_document('root');">Список дисков</a></li>
-                  <li><a href="#" onclick="fm_refresh();">Обновить</a></li>
-                  <li class="divider"></li>
-                  <li class="dropdown-header">Личное</li>
-                  <li><a href="#" data-method="fm.show_notes">Заметки</a></li>
-                  <li><a href="#" data-method="fm.links.show">Ссылки</a></li>
-                  <li class="divider"></li>
-                  <li class="dropdown-header">Сайты</li>
-                  <li><a href="#" data-method="fm.show_servers">Список серверов</a></li>
-                  <li><a href="http://www.maxbuk.com" target="_blank">Сайт www.maxbuk.com</a></li>
-                </ul>
-              </div>
-            </td>
--->
           </tr>
         </table>
-
-<!--
-    <div id="td-path" class="container-fluid"></div>
-    -->
-  <!-- pre-scrollable -->
+  <div class="container-fluid" id="fm-main-content"></div>
 </div>
-<div id="fm-main-content"></div>
 
     </body>
     </html>

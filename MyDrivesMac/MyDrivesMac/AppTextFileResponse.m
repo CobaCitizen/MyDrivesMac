@@ -102,6 +102,8 @@
 		@"woff" :@"application/octet-stream",
 		@"mov" :@"video/quicktime",
 		@"mp4" :@"video/quicktime",
+//		@"mkv" :@"video/x-matroska",
+		@"mkv" :@"video/quicktime",
 		@"pdf" :@"application/pdf",
 		@"woff2" :@"application/octet-stream"
 								};
@@ -263,8 +265,15 @@
 	}
 		
 
+//	const int MAX_CHUNK_SIZE = 64 * 1024;
+//	
+//	if(chunck > MAX_CHUNK_SIZE) {
+//		chunck = MAX_CHUNK_SIZE;
+//		end = start + MAX_CHUNK_SIZE;
+//	}
+
 	NSString *mime = [AppTextFileResponse getMimeType: filePath];
-	
+	mime = @"video/mp4";
 	CFHTTPMessageRef response =	CFHTTPMessageCreateResponse(kCFAllocatorDefault, 206, NULL, kCFHTTPVersion1_1);
 	CFHTTPMessageSetHeaderFieldValue(response, (CFStringRef)@"Content-Type", (__bridge CFStringRef)mime);
 	CFHTTPMessageSetHeaderFieldValue(response, (CFStringRef)@"Connection", (CFStringRef)@"close");
@@ -279,56 +288,8 @@
 									 (__bridge CFStringRef)[NSString stringWithFormat:@"%lld", size.longLongValue]);;
 	
 	CFDataRef headerData = CFHTTPMessageCopySerializedMessage(response);
-	/*
-	//[self _sendPartialFile:start chunck:chunck];
-	[self.fileHandle writeData:(__bridge NSData *)headerData];
-
-	
-	FILE *fd = fopen([filePath cStringUsingEncoding:NSUTF8StringEncoding], "rb");
-	if(fd == NULL)
-		return; // handle error
-	
-	const int BUFFER_SIZE = 64 * 1024;
-	char buffer[BUFFER_SIZE];
-	
-	
-	fseek(fd, start,SEEK_SET);
-	
-	@try {
-	while (chunck > 0) {
-		
-		size_t readed = fread(buffer, 1, BUFFER_SIZE, fd);
-		if(readed < BUFFER_SIZE)
-			break;
-		NSData *data = [NSData dataWithBytes:buffer length:readed];
-		if(![self _writeData2:data]) break;
-		chunck -= readed;
-      }
-	}
-	@catch (NSException *exception) {
-
-	}
-	@finally {
-		CFRelease(headerData);
-		headerData = nil;
-		CFRelease(response);
-		response = nil;
-	}
-	
-	fclose(fd);
-
-	 
-
-//	CFRelease(headerData);
-//	headerData = nil;
-//	CFRelease(response);
-//	response = nil;
-	
-	[self.server closeHandler:self];
-*/
-
 	NSFileHandle *file;
-	//NSData *buffer;
+	NSData *buffer;
 	@try
 	{
 		[self.fileHandle writeData:(__bridge NSData *)headerData];
@@ -341,17 +302,10 @@
 		[file seekToFileOffset: start];
 		
 		while (chunck > 0) {
-			
-			
-			NSData *buffer = [file readDataOfLength: 128*1024];
-			if (buffer.length > 0) {
-				[self.fileHandle writeData:buffer];
-			//	[self.fileHandle synchronizeFile];
-				chunck -= buffer.length;
-			}
-			else break;
-
-		
+			buffer = [file readDataOfLength: 64*1024];
+			if (buffer.length == 0) break;
+			[self.fileHandle writeData:buffer];
+			chunck -= buffer.length;
 			buffer = nil;
 		}
 	}
@@ -367,7 +321,7 @@
 		CFRelease(response);
 		response = nil;
 		
-//		buffer = nil;
+		buffer = nil;
 		
 		[self.server closeHandler:self];
 		[file closeFile];
@@ -380,6 +334,12 @@
 	long long start,end,chunck;
 	[self _parseRange:range start:&start end:&end chunck:&chunck fileSize:size.longLongValue];
 
+	const int MAX_CHUNK_SIZE = 64 * 1024;
+	
+	if(chunck > MAX_CHUNK_SIZE) {
+		chunck = MAX_CHUNK_SIZE;
+		end = start + MAX_CHUNK_SIZE;
+	}
 	NSString *mime = [AppTextFileResponse getMimeType: filePath];
 
 	CFHTTPMessageRef response =	CFHTTPMessageCreateResponse(kCFAllocatorDefault, 206, NULL, kCFHTTPVersion1_1);
@@ -394,10 +354,9 @@
 
 	
 	NSFileHandle *file;
-//	NSData *buffer;
+	NSData *buffer;
 	@try
 	{
-	//if([self writeResponseData:(__bridge NSData *)headerData]) {
 		[self.fileHandle writeData:(__bridge NSData *)headerData];
 	
 		file = [NSFileHandle fileHandleForReadingAtPath: filePath];
@@ -409,18 +368,12 @@
 		
 		
 		while (chunck > 0) {
-	
-			NSData *buffer = [file readDataOfLength: 64*1024 ];
-			if (buffer.length > 0) {
-				[self.fileHandle writeData:buffer];
-			//	[self.fileHandle synchronizeFile];
-				chunck -= buffer.length;
-			}
-			else break;
-			
+			buffer = [file readDataOfLength: 64*1024 ];
+			if (buffer.length <= 0) break;
+			[self.fileHandle writeData:buffer];
+			chunck -= buffer.length;
 			buffer = nil;
-	//	}
-	}
+		}
 	}
 	@catch (NSException *exception)
 	{
@@ -434,11 +387,13 @@
 		CFRelease(response);
 		response = nil;
 		
-//		buffer = nil;
+		buffer = nil;
 		
-		[self.server closeHandler:self];
 		[file closeFile];
 		file=nil;
+
+		[self.server closeHandler:self];
+
 	}
 }
 -(void) _createDirectory{

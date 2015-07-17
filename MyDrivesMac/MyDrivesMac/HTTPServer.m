@@ -284,7 +284,7 @@ NSString * const HTTPServerNotificationStateChanged = @"ServerNotificationStateC
 	NSString * plist = [PList objToPlistAsString:dict];
  
 	list = [PList plistToObjectFromString:plist];
-	NSLog(@"Plist =%@",plist);
+//	NSLog(@"Plist =%@",plist);
 	
 	[list writeToFile:fileName atomically:YES];
 	

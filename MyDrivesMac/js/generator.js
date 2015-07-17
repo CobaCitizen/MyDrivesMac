@@ -54,7 +54,14 @@ var generator = {
 , generate_one: function (item, maket_name, index) {
 
   var html = "";
-  var maket = (maket_name instanceof Object ? maket_name : this.makets[maket_name].p);
+	var maket;
+	try{
+      maket = (maket_name instanceof Object ? maket_name : this.makets[maket_name].p);
+	}
+	catch(e){
+		console.log(e);
+		return "";
+	}
 
   var i = 0, count = maket.length;
   while (i < count) {
@@ -76,7 +83,11 @@ var generator = {
 }
 , generate: function (data, maket_name) {
   var m = this.makets[maket_name];
-  
+	if(!m) {
+		console.log("maket [" + maket_name +"] not found!");
+		return "";
+	}
+	
   var maket = this.makets[maket_name].p;
   var html = "";
 

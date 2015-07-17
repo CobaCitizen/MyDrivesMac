@@ -21,7 +21,7 @@
 @implementation AppDelegate
 {
 	HTTPServer *_server;
-	long long _timer_count;
+	//long long _timer_count;
 	NSMutableDictionary *_settings;
 	NSMutableArray *_folders;
 	
@@ -39,17 +39,17 @@
 	
 	[_foldersView reloadData];
 	
-	_timer_count = 0;
+//	_timer_count = 0;
 	_dateFormatter = [[NSDateFormatter alloc]init];
 	[_dateFormatter setDateFormat:@"dd.MM.YY HH:mm:ss"];
 	[self.timerLabel setStringValue:@"Server Stopped"];
 	
 }
 - (void)timerFired:(NSTimer*)theTimer{
-	self.timerLabel.stringValue = [NSString stringWithFormat:@"%lld", _timer_count++ ];
+	//self.timerLabel.stringValue = [NSString stringWithFormat:@"%lld", _timer_count++ ];
 	
-	NSDate *currDate = [NSDate date];
-	[self.timerLabel setStringValue:[_dateFormatter stringFromDate:currDate]];
+//	NSDate *currDate = [NSDate date];
+	[self.timerLabel setStringValue:[_dateFormatter stringFromDate:[NSDate date]]];
 }
 - (void)applicationWillTerminate:(NSNotification *)aNotification {
 }
@@ -183,6 +183,10 @@
 			[self _showServerError];
 		}
 		else {
+			_settings[@"host"] = host;
+			[_settings setValue: [NSNumber numberWithInt:port] forKey:@"port"];
+			[HTTPServer saveSettings:_settings];
+			
 			_timer=[NSTimer scheduledTimerWithTimeInterval:1
 													target:self
 												  selector:@selector(timerFired:)

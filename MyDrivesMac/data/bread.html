@@ -1,37 +1,9 @@
-﻿
-<!--#fm-file-row111-->
-<div class="row">
-  <div class="col-xs-12 bg-success">
-    <p style="cursor:pointer"
-       data-method="fm_get_file" data-args="{{encodeURI(item.name)}}"><b>{{item.name}}</b></p>
-
-    <p style="font-size:xx-small;">
-      <div class="row">
-        <div class="col-xs-3">{{coba_format_bytes(item.size)}}</div>
-        <div class="col-xs-3 text-success text-center" data-method="fm_get_file" data-args="{{encodeURI(item.name)}}">view</div>
-        <div class="col-xs-3 text-primary text-center" 
-             data-method="fm.download_file" data-args="{{encodeURI(item.name)}}">download</div>
-        <div class="col-xs-3 text-primary text-center"
-             data-method="fm_delete_file" 
-             data-args="{{encodeURI(item.name)}}"><b>{{get_file_ext(item.name)}}</b></div>
-      </div>
-    </p>
-  </div>
-</div>
-<!--#fm-folder-row111-->
-<div class="row">
-  <div class="btn btn-primary col-xs-12 text-left"
-       data-method="init_document" data-args="{{encodeURIComponent(item.name)}}">
-    {{item.name}}
-  </div>
-</div>
-
-<!--#fm-list-header-->
+﻿<!--#fm-list-header-->
 <table class="table table-striped" style="cursor:pointer">
   <!--#fm-list-folder-body-->
   <tr class="text-primary">
     <td onclick="init_document('{{item.name}}');"><b><i>{{item.name}}</i></b></td>
-    <td data-method="init_document" data-args="{{item.name}}">&gt;</td>
+    <td class="text-primary text-right"  data-method="init_document" data-args="{{item.name}}">&gt;</td>
   </tr>
   <!--#fm-list-file-body-->
   <tr class="text-success">
@@ -55,12 +27,12 @@
     <tr><th>Перейти в папку</th></tr>
   </thead>
   <tbody>
-    <!--#fm-popup-body-->
+<!--#fm-popup-body-->
     <tr>
 <td data-method="fm_refresh_by_index" data-args="{{index}}">{{item}}</td>
 <td>&gt;</td>
 </tr>
-    <!--#fm-popup-footer-->
+<!--#fm-popup-footer-->
   </tbody>
 </table>
 
@@ -162,189 +134,6 @@
 
   </div>
 </div>
-<!--#fm-servers-footer-->
-
-<!--#fm-notes-header-->
- 
-<ul class="pager">
-  <li class="previous"><a href="#" data-method="fm.show_notes_offset" data-args="-10">Prev</a></li>
-  <li><a href="#" data-method="fm.show_add_note">Add</a></li>
-  <li class="text-danger" id="notes-info">...</li>
-  <li class="next"><a href="#" data-method="fm.show_notes_offset" data-args="10">Next</a></li>
-</ul>
-<!--#fm-notes-body-->
-<div class="panel panel-default" id="tr{{index}}">
-  <div class="panel-heading" style="cursor:pointer;"
-data-method="fm.show_edit_note" data-args="{{item.id}}">{{(index+1+fm.offset)}}.
- <b class="text-primary">{{item.data}}</b>
-    <span class="glyphicon glyphicon-pencil"></span>
-  </div>
-  <div class="panel-body">
-    {{item.txt}}
-  </div>
-</div>
-
-<!--#fm-notes-footer-->   
-<ul class="pager">
-  <li class="previous"><a href="#" data-method="fm.show_notes_offset" data-args="-10">Prev</a></li>
-  <li><a href="#" data-method="fm.show_add_note">Add</a></li>
-  <li class="text-danger" id="notes-info">...</li>
-  <li class="next"><a href="#" data-method="fm.show_notes_offset" data-args="10">Next</a></li>
-</ul>
-
-
-
-
-<!--#fm-add-note-header-->
-<div class="panel panel-primary">
-  <div class="panel-heading">Add new note</div>
-  <div class="panel-body">
-    <form role="form">
-      <div class="form-group">
-        <label for="comment">Comment:</label>
-        <textarea class="form-control" rows="5" id="txt"></textarea>
-      </div>
-      <button type="button" class="btn btn-default" data-method="fm.show_notes">Cancel</button>
-      <button type="button" class="btn btn-primary"
-              data-method="fm.save_new_note">Save</button>
-    </form>
-</div>
-  <div class="panel-footer">
-  </div>
-</div>
-
-<!--#fm-add-note-body-->
-<!--#fm-add-note-footer-->
-
-<!--#fm-edit-note-header-->
-<div class="panel panel-primary">
-  <div class="panel-heading">Edit {{item.id}} date:{{item.data}}</div>
-  <div class="panel-body">
-    <form role="form">
-      <div class="form-group">
-        <label for="comment">Comment:</label>
-        <textarea class="form-control" rows="5" id="txt" >{{item.txt}}</textarea>
-      </div>
-      <button type="button" class="btn btn-danger"
-              data-method="fm.delete_note" data-args="{{item.id}}">Delete
-      </button>
-      <button type="button" class="btn btn-default" data-method="fm.show_notes">Cancel</button>
-      <button type="button" class="btn btn-primary"
-              data-method="fm.update_note" data-args="{{item.id}}">
-        &nbsp; Save &nbsp;
-      </button>
-    </form>
-  </div>
-  <div class="panel-footer">
-  </div>
-</div>
-
-<!--#fm-edit-note-body-->
-<!--#fm-edit-note-footer-->
-
-
-<!--#fm-links-header-->
-
-<ul class="pager">
-  <li class="previous"><a href="#" data-method="fm.links.show_offset" data-args="-10">Prev</a></li>
-  <li><a href="#" data-method="fm.links.show_add">Add</a></li>
-  <li class="text-danger" id="notes-info">...</li>
-  <li class="next"><a href="#" data-method="fm.links.show_offset" data-args="10">Next</a></li>
-</ul>
-
-
-<!--#fm-links-body-->
-<div class="panel panel-default" id="tr{{index}}">
-  <div class="panel-heading" data-method="fm.links.edit" data-args="{{item.id}}">
-    {{(index+1+fm.links.offset)}}. <b class="text-primary">{{item.title}}</b> id:{{item.id}}
-    <span class="glyphicon glyphicon-pencil"></span>
-  </div>
-  <div class="panel-body">
-    {{item.href}}
-  </div>
-</div>
-
-<!--#fm-links-footer-->
-<ul class="pager">
-  <li class="previous"><a href="#" data-method="fm.links.show_offset" data-args="-10">Prev</a></li>
-  <li><a href="#" data-method="fm.links.show_add">Add</a></li>
-  <li class="text-danger" id="notes-info">...</li>
-  <li class="next"><a href="#" data-method="fm.links.show_offset" data-args="10">Next</a></li>
-</ul>
-
-<!--#fm-links-edit-header-->
-<div class="panel panel-primary">
-  <div class="panel-heading">Edit link Id:{{item.id}} {{item.title}}</div>
-  <div class="panel-body">
-    <form role="form">
-      <div class="form-group">
-        <label for="title">Title:</label>
-        <textarea class="form-control" rows="5" id="title" fm-name="title" >{{item.title}}</textarea>
-        <label for="href">href:</label>
-        <textarea class="form-control" rows="5" id="href" fm-name="href">{{item.href}}</textarea>
-      </div>
-      <button type="button" class="btn btn-danger"
-              data-method="fm.links.delete" data-args="{{item.id}}">
-        Delete
-      </button>
-      <button type="button" class="btn btn-default" data-method="fm.links.show">Cancel</button>
-      <button type="button" class="btn btn-primary"
-              data-method="fm.links.update" data-args="{{item.id}}">
-        &nbsp; Save &nbsp;
-      </button>
-    </form>
-  </div>
-  <div class="panel-footer">
-  </div>
-</div>
-
-<!--#fm-links-edit-body-->
-<!--#fm-links-edit-footer-->
-
-<!--#fm-links-add-header-->
-<div class="panel panel-primary">
-  <div class="panel-heading">Add new link</div>
-  <div class="panel-body">
-    <form role="form">
-      <div class="form-group">
-        <label for="title">Title:</label>
-        <textarea class="form-control" rows="5" id="title" fm-name="title"></textarea>
-        <label for="href">href:</label>
-        <textarea class="form-control" rows="5" id="href" fm-name="href"></textarea>
-      </div>
-      <button type="button" class="btn btn-default" data-method="fm.links.show">Cancel</button>
-      <button type="button" class="btn btn-primary" data-method="fm.links.add">&nbsp; Save &nbsp;</button>
-    </form>
-  </div>
-  <div class="panel-footer">
-  </div>
-</div>
-
-<!--#fm-links-add-body-->
-<!--#fm-links-add-footer-->
-
-
-<!--#fm-mysql-error-->
-
-<div id="myModal" class="modal fade" role="dialog">
-  <div class="modal-dialog">
-    <!-- Modal content-->
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Ошибка на сервере SQL</h4>
-      </div>
-      <div class="modal-body">
-        <p>Код ошибки {{item.code}}  #<b>{{item.errno}}</b>.</p>
-        <p class="text-danger">{{item.text}}.</p>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-      </div>
-    </div>
-
-  </div>
-</div>
 
 <!--#fm-images-header-->
 <div >
@@ -365,16 +154,13 @@ data-method="fm.show_edit_note" data-args="{{item.id}}">{{(index+1+fm.offset)}}.
         <img id="img-view" src="" onclick="fm_show_img_modal();" alt="" width="460" height="345"/>
         <div class="carousel-caption">
           <h6 id="img-caption"></h6>
-<p><span id="img-index"></span> <span id="img-count"></span></p>
+			<p><span id="img-index"></span> <span id="img-count"></span></p>
         </div>
       </div>
-      <!--#fm-images-body-->
-
-
-<!--#fm-images-footer-->
     </div>
-    <!-- Left and right controls -->
-    <a class="left carousel-control" href="#" role="button" data-method="img.prev">
+	
+    <!-- Left and right controls
+	 <a class="left carousel-control" href="#" role="button" data-method="img.prev">
       <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
       <span class="sr-only">Previous</span>
     </a>
@@ -382,8 +168,14 @@ data-method="fm.show_edit_note" data-args="{{item.id}}">{{(index+1+fm.offset)}}.
       <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
       <span class="sr-only">Next</span>
     </a>
+	 -->
   </div>
 </div>
+
+<!--#fm-images-body-->
+<!--#fm-images-footer-->
+
+
 <!--#fm-->
 <div class="item">
   <img src="{{fm.join_path() + item}}" alt="{{item}}" width="460" height="345">
@@ -392,15 +184,15 @@ data-method="fm.show_edit_note" data-args="{{item.id}}">{{(index+1+fm.offset)}}.
   </div>
 </div>
 
-<!--#fm-i-header-->
+<!--#fm-images-view-header-->
 {{*img.image=null;}}
-<div class="row-fluid navbar-inverse navbar-fixed-bottom" style="height:30%;opacity:0.5;">
-				<!--
+<div class="row-fluid navbar-inverse navbar-fixed-bottom" style="height:20%;opacity:0.5;">
+	<!--
 	<a class="left carousel-control" data-method="img.prev">‹</a>
 	<a class="right carousel-control" data-method="fm_restore_main">home</a>
 	<a class="right carousel-control" data-method="img.next">›</a>
 	-->
-<table class="table">
+<table class="table container">
 <tr>
 <td>
    <button type="button" class="btn btn-primary btn-circle navbar-inverse" data-method="fm_restore_main">
@@ -410,16 +202,6 @@ data-method="fm.show_edit_note" data-args="{{item.id}}">{{(index+1+fm.offset)}}.
 <td>
    <button type="button" class="btn btn-primary btn-circle navbar-inverse" onclick="img.prev()">
     <i class="glyphicon glyphicon-step-backward"></i>
-    </button>
- </td>
-<td>
-   <button type="button" class="btn btn-primary btn-circle navbar-inverse" data-method="img.zoomin">
-    <i class="glyphicon glyphicon-zoom-in"></i>
-    </button>
- </td>
-<td>
-   <button type="button" class="btn btn-primary btn-circle navbar-inverse" data-method="img.zoomout">
-    <i class="glyphicon glyphicon-zoom-out"></i>
     </button>
  </td>
 <td>
@@ -435,29 +217,14 @@ data-method="fm.show_edit_note" data-args="{{item.id}}">{{(index+1+fm.offset)}}.
  </tr>
 
  <tr>
-  <td id="img-caption" style="color:white;" colspan="4"></td>
+  <td id="img-caption" style="color:white;" colspan="3"></td>
   <td id="img-index" style="color:white;"  ></td> 
   <td id="img-count" style="color:white;" ></td>
  </tr>
 
 </table>
-
-<!--
-  <div class="col-xs-2"ondblclick2 ="toggleFullScreen();">
-   <span class="glyphicon glyphicon-home"  onclick="fm_restore_main();"
-    style="color:white;opacity:1;height:100%;background-color:black;">home</span>
-  </div>
-  <div id="xxx" style="color:white;" class="col-xs-2">121</div>
-  <div class="col-xs-2">+</div>
-  <div class="col-xs-2" onclick="fm_restore_main();" style="color:white;cursor:pointer;zindex:-1000;">1:1</div>
-  <div class="col-xs-2">-</div>
-  				<div class="carousel-caption">
-					<h4 id="img-caption">121</h4>
-					<p><span id="img-index"></span> <span id="img-count"></span>
-					</p>
-				</div>
-				-->
 </div>
+
 <div class="row-fluid">
 	<!--<div class="span9">
 	<div id="myCarousel" class="carousel slide">
@@ -470,8 +237,8 @@ data-method="fm.show_edit_note" data-args="{{item.id}}">{{(index+1+fm.offset)}}.
 	</div>-->
 </div>
 
-<!--#fm-i-body-->
-<!--#fm-i-footer-->
+<!--#fm-images-view-body-->
+<!--#fm-images-view-footer-->
 
 <!--#fm-main-header-->
 <table class="table container-fluid">
@@ -512,7 +279,6 @@ data-method="fm.show_edit_note" data-args="{{item.id}}">{{(index+1+fm.offset)}}.
 		</td>
 	</tr>
 </table>
-</div>
 <div id="fm-main-content"></div>
 
 <!--#fm-main-body-->
